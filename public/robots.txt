@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://cybokrafts.vercel.app
+
+# Sitemaps
+Sitemap: https://cybokrafts.vercel.app/sitemap.xml
