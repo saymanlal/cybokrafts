@@ -188,6 +188,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+      <meta name="msvalidate.01" content="97C9E42B6BA2F653B1D1B55F184ED3B8" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+      <meta name="google-site-verification" content="GtDRX3ONvRXYgr6Gxfgy4zf1Cml79WpXWbHNIvIoTwE" />
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -395,7 +398,7 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only">
           Skip to main content
         </a>
-        
+        Verification: 3ff81350da35c2b0
         {children}
       </body>
     </html>
