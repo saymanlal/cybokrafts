@@ -1,4 +1,4 @@
-# Cybokrafts Universal Innovations Pvt. Ltd.
+# Cybokrafts Universal Innovations Private Limited
 
 **Intelligent Energy Infrastructure for the Future**
 
