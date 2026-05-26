@@ -1,11 +1,27 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Barlow_Condensed, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { LazyMotion, domAnimation } from "framer-motion";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-barlow",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-dm",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-jetbrains",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cybokrafts.vercel.app"),
@@ -362,19 +378,21 @@ export default function RootLayout({
         />
       </head>
 
-      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-white text-[#0F172A]`}>
-        {/* Accessibility */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only"
-        >
-          Skip to main content
-        </a>
-        <Navbar />
-        <main id="main-content">
-          {children}
-        </main>
-        <Footer />
+      <body suppressHydrationWarning className={`${dmSans.variable} ${barlowCondensed.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#F4F6F9] text-[#0C1929]`}>
+        <LazyMotion features={domAnimation}>
+          {/* Accessibility */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only"
+          >
+            Skip to main content
+          </a>
+          <Navbar />
+          <main id="main-content">
+            {children}
+          </main>
+          <Footer />
+        </LazyMotion>
       </body>
     </html>
   );
