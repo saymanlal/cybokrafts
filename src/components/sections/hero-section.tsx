@@ -107,7 +107,8 @@ export default function HeroSection() {
             variants={fadeUp}
             className="font-sans text-[17px] font-normal text-text-secondary leading-relaxed max-w-[440px] mb-10"
           >
-            Real-time monitoring and predictive intelligence for 18+ critical power assets — engineered entirely in India.
+                        AI-Powered Monitoring Systems for Modern Energy Networks
+
           </m.p>
 
           {/* CTA row */}

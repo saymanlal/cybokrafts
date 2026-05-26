@@ -54,7 +54,7 @@ export default function AboutSection() {
         >
           <m.div variants={slideLeft} className="bg-bg-surface border border-bg-border rounded-[3px] p-6">
             <p className="font-mono text-xs text-text-muted uppercase tracking-wider mb-6">
-              // SYSTEM ARCHITECTURE
+              SYSTEM ARCHITECTURE
             </p>
             <div className="flex flex-col gap-3">
               {layers.map((layer, i) => (
@@ -97,7 +97,7 @@ export default function AboutSection() {
           viewport={VIEWPORT}
         >
           <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-5">
-            // WHO WE ARE
+            WHO WE ARE
           </m.p>
 
           <m.h2
