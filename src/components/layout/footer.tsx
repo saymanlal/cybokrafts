@@ -71,11 +71,21 @@ export default function Footer() {
           <m.div variants={fadeUp}>
             <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">// COMPANY</h3>
             <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
-              {["About Us", "Our 7G Values", "Careers", "Contact", "Privacy Policy"].map((item) => (
-                <li key={item}>
-                  <a href="#about" className="text-white/60 hover:text-white transition-colors duration-200">{item}</a>
-                </li>
-              ))}
+              <li>
+                <a href="#about" className="text-white/60 hover:text-white transition-colors duration-200">About Us</a>
+              </li>
+              <li>
+                <a href="#values" className="text-white/60 hover:text-white transition-colors duration-200">Our 7G Values</a>
+              </li>
+              <li>
+                <a href="#contact" className="text-white/60 hover:text-white transition-colors duration-200">Careers</a>
+              </li>
+              <li>
+                <a href="#contact" className="text-white/60 hover:text-white transition-colors duration-200">Contact</a>
+              </li>
+              <li>
+                <a href="/privacy" className="text-white/60 hover:text-white transition-colors duration-200">Privacy Policy</a>
+              </li>
             </ul>
           </m.div>
         </m.div>
