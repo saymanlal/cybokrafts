@@ -192,7 +192,7 @@ npm start
 
 ## License
 
-MIT License - Copyright (c) 2025 Cybokrafts Universal Innovations Pvt. Ltd.
+MIT License - Copyright (c) 2025 Cybokrafts Universal Innovations Private Limited
 
 See [LICENSE](./LICENSE) file for details.
 
