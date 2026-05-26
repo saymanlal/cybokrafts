@@ -1,6 +1,7 @@
 "use client";
 
-import { m } from "framer-motion";
+import { useState } from "react";
+import { m, AnimatePresence } from "framer-motion";
 import { staggerContainer, fadeUp, cellFadeUp, VIEWPORT, VIEWPORT_CLOSE } from "@/lib/motion";
 
 interface CoreValue {
@@ -106,6 +107,8 @@ const values: CoreValue[] = [
 ];
 
 export default function ValuesSection() {
+  const [expandedNumber, setExpandedNumber] = useState<string | null>("01");
+
   return (
     <section
       id="values"
@@ -136,13 +139,13 @@ export default function ValuesSection() {
           </m.p>
         </m.div>
 
-        {/* Blueprint Values Bento Grid — stagger wave */}
+        {/* ==================== DESKTOP BENTO GRID (LAPTOP VIEW - UNCHANGED) ==================== */}
         <m.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT_CLOSE}
-          className="grid grid-cols-12 gap-[1px] bg-bg-border border border-bg-border overflow-hidden rounded-[3px]"
+          className="hidden lg:grid grid-cols-12 gap-[1px] bg-bg-border border border-bg-border overflow-hidden rounded-[3px]"
         >
           {values.map((value) => (
             <m.div
@@ -317,8 +320,134 @@ export default function ValuesSection() {
             </m.div>
           ))}
         </m.div>
+
+        {/* ==================== CREATIVE RESPONSIVE GRID (MOBILE & TABLET VIEW) ==================== */}
+        <div className="lg:hidden flex flex-col gap-3">
+          {values.map((value) => {
+            const isExpanded = expandedNumber === value.number;
+            return (
+              <div
+                key={value.name}
+                className="bg-bg-surface border border-bg-border rounded-[3px] overflow-hidden transition-all duration-200"
+              >
+                {/* Accordion Row Header */}
+                <div
+                  onClick={() => setExpandedNumber(isExpanded ? null : value.number)}
+                  className="p-5 flex items-center justify-between cursor-pointer select-none"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="font-mono text-xs font-semibold text-text-muted">{value.number}</span>
+                    <div className={value.isGreen ? "text-status-green" : "text-accent-blue"}>
+                      {value.icon}
+                    </div>
+                    <h3 className={`font-heading font-bold text-base uppercase tracking-wider ${
+                      value.isGreen ? "text-status-green" : "text-[#1C5FD1]"
+                    }`}>
+                      {value.name}
+                    </h3>
+                  </div>
+
+                  {/* Expand Caret Indicator */}
+                  <div
+                    className="text-text-muted transition-transform duration-200"
+                    style={{ transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)" }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Expanded Accordion Body */}
+                <AnimatePresence initial={false}>
+                  {isExpanded && (
+                    <m.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25, ease: "easeOut" as const }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-6 border-t border-bg-border/60 pt-4 relative">
+                        {/* Ghost Number watermark for absolute tech vibe */}
+                        <div className="absolute bottom-1 right-2 font-heading font-bold text-[64px] text-accent-blue/5 select-none pointer-events-none leading-none">
+                          {value.number}
+                        </div>
+
+                        {/* Tagline */}
+                        <p className="font-mono text-[9px] font-semibold text-text-secondary uppercase tracking-wider mb-2">
+                          {value.tagline}
+                        </p>
+                        
+                        {/* Description */}
+                        <p className="font-sans text-text-secondary text-xs leading-relaxed mb-4">
+                          {value.description}
+                        </p>
+
+                        {/* Custom Hero / Green / Full structures */}
+                        {value.isHero && (
+                          <div className="mt-4 border-l-2 border-[#1C5FD1] pl-4 py-1.5 bg-[#EBF1FC] max-w-sm rounded-[1px]">
+                            <span className="font-mono text-[8px] text-[#1C5FD1] font-bold tracking-widest uppercase block mb-1">
+                              // MANIFESTO BLOCK
+                            </span>
+                            <blockquote className="font-heading font-semibold text-[#0C1929] text-[12px] leading-snug italic uppercase">
+                              "Knowledge is the ultimate power grid. We lead by serving."
+                            </blockquote>
+                          </div>
+                        )}
+
+                        {value.isGreen && (
+                          <div className="mt-4 pt-4 border-t border-bg-border/60 grid grid-cols-2 gap-3">
+                            <div className="bg-[#ECFDF5]/60 p-3 rounded-[2px] border border-[#ECFDF5]">
+                              <div className="font-mono text-[8px] text-status-green font-bold uppercase tracking-wider">// TARGET</div>
+                              <div className="font-heading font-bold text-text-primary text-sm mt-0.5">NET ZERO</div>
+                            </div>
+                            <div className="bg-[#ECFDF5]/60 p-3 rounded-[2px] border border-[#ECFDF5]">
+                              <div className="font-mono text-[8px] text-status-green font-bold uppercase tracking-wider">// COMPLIANCE</div>
+                              <div className="font-heading font-bold text-text-primary text-sm mt-0.5">100% CLEAN</div>
+                            </div>
+                          </div>
+                        )}
+
+                        {value.isFull && (
+                          <div className="mt-4 pt-4 border-t border-bg-border/60">
+                            <div className="font-mono text-[8px] text-accent-blue font-bold uppercase tracking-widest mb-3">
+                              // INCLUSIVE PROSPERITY SCHEMA
+                            </div>
+                            <ul className="space-y-3">
+                              <li className="flex items-start gap-2.5">
+                                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-accent-blue-light text-accent-blue flex items-center justify-center font-mono text-[9px] font-bold">1</span>
+                                <div>
+                                  <h5 className="font-heading font-bold text-text-primary text-[11px] uppercase tracking-wider">Stakeholder Alignment</h5>
+                                  <p className="font-sans text-[10px] text-text-secondary">Shared value loops across clients & environment.</p>
+                                </div>
+                              </li>
+                              <li className="flex items-start gap-2.5">
+                                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-accent-blue-light text-accent-blue flex items-center justify-center font-mono text-[9px] font-bold">2</span>
+                                <div>
+                                  <h5 className="font-heading font-bold text-text-primary text-[11px] uppercase tracking-wider">Indigenous Engineering</h5>
+                                  <p className="font-sans text-[10px] text-text-secondary">Tech solutions engineered locally in India.</p>
+                                </div>
+                              </li>
+                              <li className="flex items-start gap-2.5">
+                                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-accent-blue-light text-accent-blue flex items-center justify-center font-mono text-[9px] font-bold">3</span>
+                                <div>
+                                  <h5 className="font-heading font-bold text-text-primary text-[11px] uppercase tracking-wider">Future Experts</h5>
+                                  <p className="font-sans text-[10px] text-text-secondary">Incubating next-gen grid analytics intelligence.</p>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </m.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
 }
-

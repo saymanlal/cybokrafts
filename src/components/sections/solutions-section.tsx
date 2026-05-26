@@ -1,6 +1,7 @@
 "use client";
 
-import { m } from "framer-motion";
+import { useState } from "react";
+import { m, AnimatePresence } from "framer-motion";
 import { staggerContainer, fadeUp, cellFadeUp, VIEWPORT, VIEWPORT_CLOSE } from "@/lib/motion";
 
 interface Asset {
@@ -317,6 +318,11 @@ const getAccentTextHover = (group: string) => {
 };
 
 export default function SolutionsSection() {
+  const [activeGroup, setActiveGroup] = useState<"Power Assets" | "Generation & Energy" | "Auxiliary & Control">("Power Assets");
+
+  // Mobile filtered array
+  const filteredAssets = assets.filter((asset) => asset.group === activeGroup);
+
   return (
     <section
       id="solutions"
@@ -347,13 +353,13 @@ export default function SolutionsSection() {
           </m.h2>
         </m.div>
 
-        {/* Blueprint Asset Grid — staggered cells */}
+        {/* ==================== DESKTOP BENTO GRID (LAPTOP VIEW - UNCHANGED) ==================== */}
         <m.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
           viewport={VIEWPORT_CLOSE}
-          className="grid grid-cols-12 gap-[1px] bg-bg-border border border-bg-border overflow-hidden rounded-[3px]"
+          className="hidden lg:grid grid-cols-12 gap-[1px] bg-bg-border border border-bg-border overflow-hidden rounded-[3px]"
         >
           {assets.map((asset) => (
             <m.div
@@ -407,6 +413,104 @@ export default function SolutionsSection() {
             </m.div>
           ))}
         </m.div>
+
+        {/* ==================== CREATIVE RESPONSIVE GRID (MOBILE & TABLET VIEW) ==================== */}
+        <div className="lg:hidden flex flex-col">
+          {/* Subsystem Switcher Console */}
+          <div className="flex flex-col sm:flex-row gap-2 mb-8 bg-[#EEF1F6] p-1 border border-[#D1D9E4] rounded-[3px]">
+            {(["Power Assets", "Generation & Energy", "Auxiliary & Control"] as const).map((group) => {
+              const isActive = activeGroup === group;
+              let activeBorderColor = "border-t-[#1C5FD1]";
+              let activePulseBg = "bg-[#1C5FD1]";
+              if (group === "Generation & Energy") {
+                activeBorderColor = "border-t-[#D97706]";
+                activePulseBg = "bg-[#D97706]";
+              } else if (group === "Auxiliary & Control") {
+                activeBorderColor = "border-t-[#3D5470]";
+                activePulseBg = "bg-[#3D5470]";
+              }
+
+              return (
+                <button
+                  key={group}
+                  onClick={() => setActiveGroup(group)}
+                  className={`flex-1 py-3 px-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border-t-2 rounded-[2px] flex items-center justify-center gap-2 cursor-pointer ${
+                    isActive
+                      ? `bg-white text-[#0C1929] ${activeBorderColor} border-b border-x border-[#D1D9E4] shadow-[0_1px_3px_rgba(0,0,0,0.06)]`
+                      : "border-t-transparent text-[#7A93AD] hover:text-[#0C1929] hover:bg-white/30"
+                  }`}
+                >
+                  {isActive && <span className={`w-1.5 h-1.5 rounded-full ${activePulseBg} animate-pulse`} />}
+                  {group.replace(" & Control", "").replace(" & Energy", "")}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Animated Filtered Cards List */}
+          <div className="min-h-[400px]">
+            <AnimatePresence mode="wait">
+              <m.div
+                key={activeGroup}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.25, ease: "easeOut" as const }}
+                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              >
+                {filteredAssets.map((asset) => (
+                  <m.div
+                    key={asset.name}
+                    className={`group bg-bg-surface p-6 border border-bg-border rounded-[3px] border-t-2 border-t-transparent ${getHoverClasses(asset.group)} transition-all duration-200 ease-out flex flex-col justify-between`}
+                  >
+                    <div>
+                      {/* Category tag & Dot Accent */}
+                      <div className="flex items-center gap-2 mb-4">
+                        <span className={`w-1.5 h-1.5 rounded-full ${asset.dotColor}`} aria-hidden="true" />
+                        <span className="font-mono text-[9px] font-bold text-text-muted uppercase tracking-wider">
+                          {asset.category}
+                        </span>
+                      </div>
+
+                      {/* Icon */}
+                      <div className={`text-text-secondary ${getAccentTextHover(asset.group)} transition-colors duration-200 mb-4`}>
+                        {asset.icon}
+                      </div>
+
+                      {/* Asset Name */}
+                      <h4 className={`font-heading font-bold text-text-primary text-base mb-2 uppercase tracking-tight ${getAccentTextHover(asset.group)} transition-colors duration-200`}>
+                        {asset.name}
+                      </h4>
+                      
+                      {/* Benefit */}
+                      <p className="font-sans text-xs text-text-secondary leading-relaxed mb-3">
+                        {asset.benefit}
+                      </p>
+                    </div>
+
+                    {/* Telemetry Panel for Featured Bento Cards */}
+                    {asset.isFeatured && asset.metrics && (
+                      <div className="mt-4 border-t border-bg-border/60 pt-4">
+                        <div className="font-mono text-[9px] font-bold text-text-muted uppercase mb-2 tracking-wider flex items-center gap-1.5">
+                          <span className="w-1 h-1 bg-status-green rounded-full animate-pulse" />
+                          LIVE SCADA TELEMETRY
+                        </div>
+                        <ul className="grid grid-cols-2 gap-x-2 gap-y-1 font-mono text-[9px] text-text-secondary/90">
+                          {asset.metrics.map((metric, i) => (
+                            <li key={i} className="flex items-center gap-0.5 overflow-hidden text-ellipsis whitespace-nowrap">
+                              <span className="text-text-muted font-bold">›</span>
+                              <span>{metric}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </m.div>
+                ))}
+              </m.div>
+              </AnimatePresence>
+          </div>
+        </div>
       </div>
     </section>
   );

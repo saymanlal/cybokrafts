@@ -74,22 +74,21 @@ export default function Footer() {
             </h3>
 
             <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
-              {[
-                { label: "About Us", href: "#about" },
-                { label: "Our 7G Values", href: "#values" },
-                { label: "Careers", href: "/careers" },
-                { label: "Contact", href: "#contact" },
-                { label: "Privacy Policy", href: "/privacy-policy" },
-              ].map((item) => (
-                <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="text-white/60 hover:text-white transition-colors duration-200"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="#about" className="text-white/60 hover:text-white transition-colors duration-200">About Us</a>
+              </li>
+              <li>
+                <a href="#values" className="text-white/60 hover:text-white transition-colors duration-200">Our 7G Values</a>
+              </li>
+              <li>
+                <a href="#contact" className="text-white/60 hover:text-white transition-colors duration-200">Careers</a>
+              </li>
+              <li>
+                <a href="#contact" className="text-white/60 hover:text-white transition-colors duration-200">Contact</a>
+              </li>
+              <li>
+                <a href="/privacy" className="text-white/60 hover:text-white transition-colors duration-200">Privacy Policy</a>
+              </li>
             </ul>
           </m.div>
         </m.div>
