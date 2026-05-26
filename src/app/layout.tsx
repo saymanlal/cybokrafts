@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cybokrafts.vercel.app"),
@@ -281,7 +287,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Charset */}
         <meta
@@ -356,7 +362,7 @@ export default function RootLayout({
         />
       </head>
 
-      <body>
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-white text-[#0F172A]`}>
         {/* Accessibility */}
         <a
           href="#main-content"
@@ -364,8 +370,11 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
-
-        {children}
+        <Navbar />
+        <main id="main-content">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
