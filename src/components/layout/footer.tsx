@@ -1,74 +1,104 @@
+"use client";
+
+import { m } from "framer-motion";
+import { staggerContainer, fadeUp, fadeIn, VIEWPORT } from "@/lib/motion";
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#0F172A] text-[#94A3B8]" role="contentinfo">
+    <footer className="bg-[#0C1929] text-white/60 border-t border-[#1E293B]" role="contentinfo">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-20 pb-10">
 
         {/* Top row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-
+        <m.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
+        >
           {/* Brand */}
-          <div className="lg:col-span-2">
+          <m.div variants={fadeUp} className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-8 bg-[#2563EB] rounded flex items-center justify-center flex-shrink-0">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M2 8L8 2L14 8L8 14L2 8Z" fill="white" />
+              <div className="flex-shrink-0">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L21 7.2V16.8L12 22L3 16.8V7.2L12 2Z" fill="#0C1929" stroke="#1C5FD1" strokeWidth="1.5"/>
+                  <circle cx="12" cy="12" r="2.5" fill="#1C5FD1" />
+                  <path d="M12 2.5V6.5M12 17.5V21.5M3.5 12H7.5M16.5 12H20.5" stroke="#1C5FD1" strokeWidth="1" strokeLinecap="round"/>
                 </svg>
               </div>
-              <span className="font-heading font-bold text-xl text-white tracking-tight">Cybokrafts</span>
+              <div className="flex flex-col -space-y-1">
+                <span className="font-heading font-bold text-xl text-white tracking-[0.06em] leading-tight">
+                  CYBOKRAFTS
+                </span>
+                <span className="font-mono text-[9px] font-semibold text-white/40 tracking-wider">
+                  ENERGY INTELLIGENCE
+                </span>
+              </div>
             </div>
-            <p className="text-sm leading-relaxed mb-6 max-w-sm">
+
+            <p className="font-sans text-[14px] leading-relaxed mb-6 max-w-sm text-white/70">
               Driving Digital Energy Transformation under the Atmanirbhar Vision. AI-powered monitoring systems for India's critical energy infrastructure.
             </p>
-            <p className="text-xs font-semibold text-[#64748B] italic leading-relaxed max-w-sm">
-              "Inspired by the vision and legacy of Sir Ratan Naval Tata Ji — with deep gratitude and resolve to build something worthy."
-            </p>
-          </div>
+
+            {/* Ratan Tata tribute */}
+            <div className="mb-4">
+              <blockquote className="border-l-2 border-accent-amber pl-5 py-1 mb-2 max-w-md">
+                <p className="font-sans italic text-[14px] text-white/70 leading-relaxed">
+                  "Inspired by the vision and legacy of Sir Ratan Naval Tata Ji — with deep gratitude and resolve to build something worthy."
+                </p>
+              </blockquote>
+              <cite className="block font-mono text-[11px] text-white/35 not-italic pl-5">
+                — In memory of Sir Ratan Naval Tata Ji
+              </cite>
+            </div>
+          </m.div>
 
           {/* Products */}
-          <div>
-            <h3 className="text-white font-bold text-sm mb-6 uppercase tracking-wider">Products</h3>
-            <ul className="space-y-3 text-sm">
+          <m.div variants={fadeUp}>
+            <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">// PRODUCTS</h3>
+            <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
               {["AIpowerOS Platform", "CYBO-VAJRA Device", "Solar Intelligence", "EV Infrastructure", "Transformer Analytics"].map((item) => (
                 <li key={item}>
-                  <a href="#solutions" className="hover:text-white transition-colors duration-200">{item}</a>
+                  <a href="#solutions" className="text-white/60 hover:text-white transition-colors duration-200">{item}</a>
                 </li>
               ))}
             </ul>
-          </div>
+          </m.div>
 
           {/* Company */}
-          <div>
-            <h3 className="text-white font-bold text-sm mb-6 uppercase tracking-wider">Company</h3>
-            <ul className="space-y-3 text-sm">
+          <m.div variants={fadeUp}>
+            <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">// COMPANY</h3>
+            <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
               {["About Us", "Our 7G Values", "Careers", "Contact", "Privacy Policy"].map((item) => (
                 <li key={item}>
-                  <a href="#about" className="hover:text-white transition-colors duration-200">{item}</a>
+                  <a href="#about" className="text-white/60 hover:text-white transition-colors duration-200">{item}</a>
                 </li>
               ))}
             </ul>
-          </div>
-        </div>
+          </m.div>
+        </m.div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[#1E293B] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs">
+        <m.div
+          variants={fadeIn}
+          initial="hidden"
+          whileInView="show"
+          viewport={VIEWPORT}
+          className="border-t border-[#1E293B] pt-8 flex flex-col md:flex-row items-center justify-between gap-4"
+        >
+          <p className="font-sans text-xs text-white/40">
             © {year} Cybokrafts Universal Innovations Private Limited. All rights reserved.
           </p>
-          <div className="flex items-center gap-6 text-xs">
-            <span className="flex items-center gap-2 font-semibold text-[#64748B]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /><line x1="2" y1="12" x2="22" y2="12" />
-              </svg>
-              Made in India
-            </span>
-            <span className="text-[#1E293B]">·</span>
-            <span className="font-semibold text-[#64748B]">Atmanirbhar Bharat</span>
-            <span className="text-[#1E293B]">·</span>
-            <span className="font-semibold text-[#64748B]">DPIIT Recognized</span>
+          <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] text-accent-amber uppercase tracking-[0.05em] font-semibold">
+            <span>Made in India 🇮🇳</span>
+            <span className="text-white/20">·</span>
+            <span>Atmanirbhar Bharat</span>
+            <span className="text-white/20">·</span>
+            <span>DPIIT Recognized</span>
           </div>
-        </div>
+        </m.div>
       </div>
     </footer>
   );
