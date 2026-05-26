@@ -23,9 +23,9 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-5">
               <div className="flex-shrink-0">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L21 7.2V16.8L12 22L3 16.8V7.2L12 2Z" fill="#0C1929" stroke="#1C5FD1" strokeWidth="1.5"/>
+                  <path d="M12 2L21 7.2V16.8L12 22L3 16.8V7.2L12 2Z" fill="#0C1929" stroke="#1C5FD1" strokeWidth="1.5" />
                   <circle cx="12" cy="12" r="2.5" fill="#1C5FD1" />
-                  <path d="M12 2.5V6.5M12 17.5V21.5M3.5 12H7.5M16.5 12H20.5" stroke="#1C5FD1" strokeWidth="1" strokeLinecap="round"/>
+                  <path d="M12 2.5V6.5M12 17.5V21.5M3.5 12H7.5M16.5 12H20.5" stroke="#1C5FD1" strokeWidth="1" strokeLinecap="round" />
                 </svg>
               </div>
               <div className="flex flex-col -space-y-1">
@@ -57,7 +57,7 @@ export default function Footer() {
 
           {/* Products */}
           <m.div variants={fadeUp}>
-            <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">// PRODUCTS</h3>
+            <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">PRODUCTS</h3>
             <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
               {["AIpowerOS Platform", "CYBO-VAJRA Device", "Solar Intelligence", "EV Infrastructure", "Transformer Analytics"].map((item) => (
                 <li key={item}>
@@ -69,11 +69,25 @@ export default function Footer() {
 
           {/* Company */}
           <m.div variants={fadeUp}>
-            <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">// COMPANY</h3>
+            <h3 className="text-white font-heading font-bold text-xs mb-6 uppercase tracking-widest">
+              COMPANY
+            </h3>
+
             <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
-              {["About Us", "Our 7G Values", "Careers", "Contact", "Privacy Policy"].map((item) => (
-                <li key={item}>
-                  <a href="#about" className="text-white/60 hover:text-white transition-colors duration-200">{item}</a>
+              {[
+                { label: "About Us", href: "#about" },
+                { label: "Our 7G Values", href: "#values" },
+                { label: "Careers", href: "/careers" },
+                { label: "Contact", href: "#contact" },
+                { label: "Privacy Policy", href: "/privacy-policy" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    className="text-white/60 hover:text-white transition-colors duration-200"
+                  >
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>
