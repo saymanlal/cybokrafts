@@ -80,7 +80,7 @@ export default function HeroSection() {
               initial="hidden"
               animate="show"
               className="flex flex-col"
-              aria-label="India's Intelligent Energy Infrastructure Platform"
+              aria-label="Advanced Intelligence for Modern Energy Infrastructure"
             >
               {HEADLINE_LINES.map((line, li) => (
                 <span key={li} className="flex flex-wrap gap-x-[0.25em]">
