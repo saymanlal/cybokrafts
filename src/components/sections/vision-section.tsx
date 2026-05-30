@@ -50,8 +50,8 @@ export default function VisionSection() {
             className="font-heading font-semibold text-2xl md:text-[30px] leading-[1.25] text-text-primary max-w-3xl mx-auto mb-8 uppercase tracking-tight"
           >
             Cybokrafts is committed to building reliable, indigenous energy intelligence systems to support the{" "}
-            <span className="text-accent-blue font-semibold">Atmanirbhar</span> vision with{" "}
-            <span className="text-accent-blue font-semibold">zero foreign dependencies</span> — and set a{" "}
+            <span className="text-accent-blue font-semibold">Atmanirbhar Bharat</span> vision with{" "}
+            <span className="text-accent-blue font-semibold">zero foreign dependencies</span>  and set a{" "}
             <span className="text-accent-blue font-semibold">global benchmark</span> for what Indian engineering companies can achieve.
           </m.h2>
 
