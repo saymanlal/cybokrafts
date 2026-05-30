@@ -2,23 +2,47 @@
 
 import { useEffect, useState, useRef } from "react";
 import { m, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
+import type { Variants } from "framer-motion";
 
 // ─── Motion variants ──────────────────────────────────────────────────────────
-const fadeUp = {
-  hidden: { opacity: 0, y: 32, filter: "blur(4px)" },
-  show: (d = 0) => ({
-    opacity: 1, y: 0, filter: "blur(0px)",
-    transition: { duration: 0.9, delay: d, ease: [0.16, 1, 0.3, 1] },
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const fadeUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 32,
+    filter: "blur(4px)",
+  },
+  show: (d: number = 0) => ({
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.9,
+      delay: d,
+      ease: EASE,
+    },
   }),
 };
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
 
-const wordAnim = {
-  hidden: { opacity: 0, y: 24, rotateX: -30, filter: "blur(8px)" },
+const wordAnim: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    rotateX: -30,
+    filter: "blur(8px)",
+  },
   show: {
-    opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.85,
+      ease: EASE,
+    },
   },
 };
 
