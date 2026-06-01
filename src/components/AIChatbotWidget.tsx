@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 type Message = { role: "bot" | "user"; text: string };
 type View = "home" | "chat" | "faq";
 
-// ─── Greeting speech (spoken aloud when widget opens) ─────────────────────────
+// ─── Greeting speech ──────────────────────────────────────────────────────────
 function getGreetingText(): string {
   const h = new Date().getHours();
   const salutation =
@@ -78,7 +78,7 @@ const FAQS: { q: string; a: string }[] = [
 function autoReply(text: string): string {
   const t = text.toLowerCase();
   if (/\b(hi|hello|hey|namaste|greetings)\b/.test(t))
-    return "Hello. I am the Cybokrafts AI assistant. Feel free to ask about CYBO-VAJRA, AIpowerOS, our partnerships, or how we can support your energy infrastructure.";
+    return "Hello! I am the Cybokrafts AI assistant. Feel free to ask about CYBO-VAJRA, AIpowerOS, our partnerships, or how we can support your energy infrastructure.";
   if (/vajra|patent|device|iot|sensor/.test(t)) return FAQS[1].a;
   if (/aipoweros|dashboard|platform|cloud|software/.test(t)) return FAQS[2].a;
   if (/partner|iit|tata|collaboration/.test(t)) return FAQS[3].a;
@@ -109,18 +109,25 @@ function speak(text: string, onStart?: () => void, onEnd?: () => void) {
     u.onend = onEnd;
     u.onerror = onEnd;
   }
-  // Prefer a natural-sounding voice
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(
-    (v) =>
-      v.lang.startsWith("en") &&
-      (v.name.toLowerCase().includes("google") ||
-        v.name.toLowerCase().includes("natural") ||
-        v.name.toLowerCase().includes("neural") ||
-        v.name.toLowerCase().includes("premium"))
-  );
-  if (preferred) u.voice = preferred;
-  window.speechSynthesis.speak(u);
+  const trySpeak = () => {
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(
+      (v) =>
+        v.lang.startsWith("en") &&
+        (v.name.toLowerCase().includes("google") ||
+          v.name.toLowerCase().includes("natural") ||
+          v.name.toLowerCase().includes("neural") ||
+          v.name.toLowerCase().includes("premium"))
+    );
+    if (preferred) u.voice = preferred;
+    window.speechSynthesis.speak(u);
+  };
+  // Voices may not be loaded yet on first call
+  if (window.speechSynthesis.getVoices().length === 0) {
+    window.speechSynthesis.onvoiceschanged = trySpeak;
+  } else {
+    trySpeak();
+  }
 }
 
 function stopSpeech() {
@@ -139,41 +146,61 @@ export default function AIChatbotWidget() {
   const [pulse, setPulse]             = useState(false);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [typing, setTyping]           = useState(false);
+  const [faqSpeaking, setFaqSpeaking] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Show silent greeting bubble 1.5s after mount; pulse FAB at dismissal
+  // ── 1. Audible greeting on site open (once, after a short delay) ────────────
+  useEffect(() => {
+    const t = setTimeout(() => {
+      speak(getGreetingText());
+    }, 1800);
+    return () => clearTimeout(t);
+  }, []); // runs once on mount
+
+  // ── 2. Show silent bubble 1.5 s after mount; pulse FAB at dismissal ─────────
   useEffect(() => {
     const t1 = setTimeout(() => setShowBubble(true), 1500);
     const t2 = setTimeout(() => {
       setShowBubble(false);
       setPulse(true);
       setTimeout(() => setPulse(false), 2400);
-    }, 6000);
+    }, 7000);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
-  // On first open: seed chat message + speak greeting aloud
+  // ── 3. On first widget open: seed chat message (no extra speech — already spoken) ─
   useEffect(() => {
     if (open && !greeted) {
-      const greetText = getGreetingText();
-      setMessages([{ role: "bot", text: greetText }]);
+      setMessages([{ role: "bot", text: getGreetingText() }]);
       setGreeted(true);
-      // Small delay so the panel animation completes before speech starts
-      setTimeout(() => {
-        speak(greetText);
-      }, 500);
     }
   }, [open, greeted]);
 
-  // Stop speech when panel closes
+  // ── 4. Stop speech when panel closes ────────────────────────────────────────
   useEffect(() => {
-    if (!open) { stopSpeech(); setSpeaking(false); }
+    if (!open) {
+      stopSpeech();
+      setSpeaking(false);
+      setFaqSpeaking(null);
+    }
   }, [open]);
 
-  // Auto-scroll to latest message
+  // ── 5. Auto-scroll ───────────────────────────────────────────────────────────
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
+
+  // ── 6. Prevent background scroll when panel scroll reaches bounds ────────────
+  const handlePanelWheel = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const atTop = el.scrollTop === 0 && e.deltaY < 0;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight && e.deltaY > 0;
+    if (!atTop && !atBottom) {
+      e.stopPropagation();
+    } else {
+      e.preventDefault();
+    }
+  }, []);
 
   // ─── Send message ──────────────────────────────────────────────────────────
   const sendMessage = useCallback(() => {
@@ -195,10 +222,28 @@ export default function AIChatbotWidget() {
       stopSpeech();
       setSpeaking(false);
     } else {
+      setFaqSpeaking(null);
       speak(
         COMPANY_NARRATION,
         () => setSpeaking(true),
         () => setSpeaking(false)
+      );
+    }
+  }
+
+  // ─── FAQ speak individual answer ────────────────────────────────────────────
+  function handleFaqSpeak(index: number) {
+    if (faqSpeaking === index) {
+      stopSpeech();
+      setFaqSpeaking(null);
+    } else {
+      stopSpeech();
+      setSpeaking(false);
+      setFaqSpeaking(index);
+      speak(
+        `${FAQS[index].q}. ${FAQS[index].a}`,
+        undefined,
+        () => setFaqSpeaking(null)
       );
     }
   }
@@ -212,20 +257,23 @@ export default function AIChatbotWidget() {
   // ─── Render ────────────────────────────────────────────────────────────────
   return (
     <>
-      {/* ── Styles ── */}
       <style>{`
-        /* ── Variables ── */
+        /* ── Variables — LIGHT THEME ── */
         .ck-root {
-          --ck-navy:    #06101e;
-          --ck-navy2:   #0b1d35;
-          --ck-navy3:   #102648;
-          --ck-cyan:    #00AEEF;
-          --ck-cyan2:   #33c3f7;
-          --ck-text:    #e8edf3;
-          --ck-muted:   #7a8fa6;
-          --ck-border:  rgba(0,174,239,0.14);
-          --ck-border2: rgba(255,255,255,0.07);
-          --ck-radius:  18px;
+          --ck-bg:       #ffffff;
+          --ck-bg2:      #f8fafc;
+          --ck-bg3:      #f1f5f9;
+          --ck-cyan:     #0284c7;
+          --ck-cyan2:    #0ea5e9;
+          --ck-cyan-lt:  #e0f2fe;
+          --ck-text:     #0f172a;
+          --ck-text2:    #334155;
+          --ck-muted:    #64748b;
+          --ck-border:   #e2e8f0;
+          --ck-border2:  #cbd5e1;
+          --ck-shadow:   rgba(15,23,42,0.10);
+          --ck-shadow2:  rgba(15,23,42,0.06);
+          --ck-radius:   16px;
           --ck-font-head: var(--font-barlow, 'Barlow Condensed', sans-serif);
           --ck-font-body: var(--font-dm, 'DM Sans', sans-serif);
         }
@@ -238,11 +286,10 @@ export default function AIChatbotWidget() {
         .ck-fab {
           position: fixed; bottom: 30px; right: 30px; z-index: 9999;
           width: 58px; height: 58px; border-radius: 50%; border: none;
-          background: var(--ck-navy2);
+          background: linear-gradient(145deg, #0369a1, #0284c7);
           box-shadow:
-            0 0 0 1px var(--ck-border),
-            0 8px 32px rgba(0,0,0,0.5),
-            0 0 28px rgba(0,174,239,0.2);
+            0 4px 14px rgba(2,132,199,0.45),
+            0 2px 4px rgba(0,0,0,0.12);
           cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: transform 0.22s ease, box-shadow 0.22s ease;
@@ -251,15 +298,14 @@ export default function AIChatbotWidget() {
         .ck-fab:hover {
           transform: scale(1.07);
           box-shadow:
-            0 0 0 1px rgba(0,174,239,0.35),
-            0 12px 40px rgba(0,0,0,0.6),
-            0 0 40px rgba(0,174,239,0.35);
+            0 6px 20px rgba(2,132,199,0.55),
+            0 2px 6px rgba(0,0,0,0.15);
         }
         .ck-fab:focus-visible { outline: 2px solid var(--ck-cyan); outline-offset: 3px; }
         .ck-fab.ck-pulse { animation: ckFabPulse 2.2s ease-in-out; }
         @keyframes ckFabPulse {
-          0%,100% { box-shadow: 0 0 0 1px var(--ck-border), 0 8px 32px rgba(0,0,0,.5), 0 0 28px rgba(0,174,239,.2); }
-          45%      { box-shadow: 0 0 0 1px rgba(0,174,239,.4), 0 8px 32px rgba(0,0,0,.5), 0 0 0 18px rgba(0,174,239,.08), 0 0 50px rgba(0,174,239,.4); }
+          0%,100% { box-shadow: 0 4px 14px rgba(2,132,199,.45); }
+          45%      { box-shadow: 0 4px 14px rgba(2,132,199,.45), 0 0 0 14px rgba(2,132,199,.12), 0 0 0 26px rgba(2,132,199,.05); }
         }
 
         /* FAB inner icon */
@@ -269,31 +315,33 @@ export default function AIChatbotWidget() {
         }
         .ck-fab-ring {
           position: absolute; border-radius: 50%;
-          border: 1px solid rgba(0,174,239,0.5);
+          border: 1.5px solid rgba(255,255,255,0.55);
           animation: ckRingPulse 3s ease-in-out infinite;
         }
-        .ck-fab-ring:nth-child(1) { width: 20px; height: 20px; animation-delay: 0s; }
-        .ck-fab-ring:nth-child(2) { width: 30px; height: 30px; animation-delay: 1s; opacity: 0.4; }
+        .ck-fab-ring:nth-child(1) { width: 18px; height: 18px; animation-delay: 0s; }
+        .ck-fab-ring:nth-child(2) { width: 28px; height: 28px; animation-delay: 1s; opacity: 0.45; }
         @keyframes ckRingPulse {
           0%,100% { transform: scale(0.9); opacity: 0.6; }
           50%      { transform: scale(1.1); opacity: 0.15; }
         }
         .ck-fab-center {
           width: 8px; height: 8px;
-          background: var(--ck-cyan);
+          background: #fff;
           border-radius: 50%; z-index: 1;
-          box-shadow: 0 0 12px rgba(0,174,239,0.9), 0 0 4px rgba(0,174,239,1);
+          box-shadow: 0 0 10px rgba(255,255,255,0.9);
         }
 
         /* ── Greeting bubble ── */
         .ck-greeting-bubble {
-          position: fixed; bottom: 98px; right: 30px; z-index: 9998;
-          background: var(--ck-navy2);
+          position: fixed; bottom: 100px; right: 30px; z-index: 9998;
+          background: #fff;
           border: 1px solid var(--ck-border);
           border-radius: 12px 12px 3px 12px;
           padding: 14px 18px;
-          max-width: 260px;
-          box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+          max-width: 270px;
+          box-shadow:
+            0 8px 30px var(--ck-shadow),
+            0 2px 8px var(--ck-shadow2);
           animation: ckBubbleIn 0.35s cubic-bezier(0.22,1,0.36,1);
         }
         @keyframes ckBubbleIn {
@@ -308,7 +356,7 @@ export default function AIChatbotWidget() {
         }
         .ck-bubble-text {
           font-size: 12.5px; line-height: 1.6;
-          color: var(--ck-text);
+          color: var(--ck-text2);
         }
         .ck-bubble-dismiss {
           display: block; margin-top: 10px;
@@ -321,17 +369,17 @@ export default function AIChatbotWidget() {
 
         /* ── Main panel ── */
         .ck-panel {
-          position: fixed; bottom: 98px; right: 30px; z-index: 9998;
-          width: 380px;
-          max-height: 580px;
-          background: var(--ck-navy);
+          position: fixed; bottom: 100px; right: 30px; z-index: 9998;
+          width: 390px;
+          max-height: 590px;
+          background: var(--ck-bg);
           border: 1px solid var(--ck-border);
           border-radius: var(--ck-radius);
           display: flex; flex-direction: column; overflow: hidden;
           box-shadow:
-            0 24px 80px rgba(0,0,0,0.7),
-            0 0 0 1px rgba(0,174,239,0.05),
-            inset 0 1px 0 rgba(255,255,255,0.04);
+            0 20px 60px var(--ck-shadow),
+            0 4px 16px var(--ck-shadow2),
+            0 0 0 1px rgba(2,132,199,0.06);
           animation: ckPanelIn 0.38s cubic-bezier(0.34,1.46,0.64,1);
         }
         @keyframes ckPanelIn {
@@ -341,43 +389,36 @@ export default function AIChatbotWidget() {
 
         /* ── Panel header ── */
         .ck-header {
-          background: linear-gradient(160deg, var(--ck-navy3) 0%, var(--ck-navy2) 100%);
+          background: linear-gradient(135deg, #0369a1 0%, #0284c7 60%, #0ea5e9 100%);
           padding: 16px 18px;
           display: flex; align-items: center; gap: 13px;
-          border-bottom: 1px solid var(--ck-border);
           flex-shrink: 0;
         }
         .ck-header-logo {
           width: 38px; height: 38px; flex-shrink: 0;
           border-radius: 10px;
-          background: linear-gradient(145deg, var(--ck-navy3), var(--ck-navy2));
-          border: 1px solid var(--ck-border);
+          background: rgba(255,255,255,0.18);
+          border: 1px solid rgba(255,255,255,0.3);
           display: flex; align-items: center; justify-content: center;
-          position: relative; overflow: hidden;
+          backdrop-filter: blur(4px);
         }
-        .ck-header-logo::after {
-          content: '';
-          position: absolute; inset: 0;
-          background: radial-gradient(circle at 60% 30%, rgba(0,174,239,0.18), transparent 70%);
-        }
-        /* SVG lightning bolt mark */
-        .ck-bolt-svg { width: 16px; height: 20px; fill: var(--ck-cyan); z-index: 1; }
+        .ck-bolt-svg { width: 14px; height: 18px; fill: #fff; }
 
         .ck-header-text { flex: 1; }
         .ck-header-name {
           font-family: var(--ck-font-head);
           font-size: 14.5px; font-weight: 700;
           letter-spacing: 0.08em; text-transform: uppercase;
-          color: var(--ck-text); line-height: 1.1;
+          color: #fff; line-height: 1.1;
         }
         .ck-header-sub {
-          font-size: 11px; color: var(--ck-muted);
+          font-size: 11px; color: rgba(255,255,255,0.78);
           margin-top: 3px; display: flex; align-items: center; gap: 5px;
         }
         .ck-online-dot {
           width: 5px; height: 5px; border-radius: 50%;
-          background: #22c55e;
-          box-shadow: 0 0 6px rgba(34,197,94,0.8);
+          background: #86efac;
+          box-shadow: 0 0 5px rgba(134,239,172,0.9);
           animation: ckDotBlink 3s ease-in-out infinite;
         }
         @keyframes ckDotBlink {
@@ -385,108 +426,108 @@ export default function AIChatbotWidget() {
         }
         .ck-close-btn {
           width: 28px; height: 28px; border-radius: 7px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid var(--ck-border2);
-          cursor: pointer; color: var(--ck-muted);
+          background: rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.25);
+          cursor: pointer; color: #fff;
           display: flex; align-items: center; justify-content: center;
-          transition: background 0.15s, color 0.15s, border-color 0.15s;
+          transition: background 0.15s;
           flex-shrink: 0;
         }
-        .ck-close-btn:hover {
-          background: rgba(255,255,255,0.08);
-          border-color: rgba(255,255,255,0.14);
-          color: var(--ck-text);
-        }
-        /* close X icon */
+        .ck-close-btn:hover { background: rgba(255,255,255,0.25); }
         .ck-close-svg { width: 10px; height: 10px; stroke: currentColor; stroke-width: 2; fill: none; }
 
         /* ── Nav tabs ── */
         .ck-nav {
           display: flex;
-          background: rgba(0,0,0,0.25);
-          border-bottom: 1px solid var(--ck-border2);
+          background: var(--ck-bg2);
+          border-bottom: 1px solid var(--ck-border);
           flex-shrink: 0;
         }
         .ck-nav-btn {
           flex: 1; padding: 10px 6px; background: none; border: none;
-          cursor: pointer; font-size: 11px; font-weight: 500;
-          letter-spacing: 0.04em;
+          cursor: pointer; font-size: 10.5px; font-weight: 600;
+          letter-spacing: 0.05em;
           color: var(--ck-muted);
           display: flex; flex-direction: column; align-items: center; gap: 4px;
           border-bottom: 2px solid transparent;
-          transition: color 0.15s, background 0.15s, border-color 0.15s;
+          transition: color 0.15s, border-color 0.15s, background 0.15s;
           text-transform: uppercase;
         }
         .ck-nav-btn.active {
           color: var(--ck-cyan);
           border-bottom-color: var(--ck-cyan);
-          background: rgba(0,174,239,0.04);
+          background: rgba(2,132,199,0.05);
         }
-        .ck-nav-btn:hover:not(.active) { color: rgba(232,237,243,0.7); }
+        .ck-nav-btn:hover:not(.active) { color: var(--ck-text2); background: var(--ck-bg3); }
         .ck-nav-icon {
-          width: 15px; height: 15px; stroke: currentColor;
-          stroke-width: 1.8; fill: none;
+          width: 14px; height: 14px; stroke: currentColor;
+          stroke-width: 2; fill: none;
         }
 
         /* ── HOME VIEW ── */
         .ck-home {
-          flex: 1; overflow-y: auto; padding: 18px;
-          display: flex; flex-direction: column; gap: 13px;
+          flex: 1;
+          overflow-y: auto;
+          overscroll-behavior: contain;     /* ← prevents background scroll bleed */
+          -webkit-overflow-scrolling: touch;
+          padding: 16px;
+          display: flex; flex-direction: column; gap: 12px;
           scrollbar-width: thin;
-          scrollbar-color: rgba(0,174,239,0.18) transparent;
+          scrollbar-color: var(--ck-border2) transparent;
         }
 
         /* Identity card */
         .ck-id-card {
-          background: linear-gradient(145deg, rgba(0,174,239,0.07) 0%, rgba(0,174,239,0.02) 100%);
-          border: 1px solid var(--ck-border);
-          border-radius: 12px; padding: 18px;
+          background: linear-gradient(145deg, #eff6ff 0%, #f0f9ff 100%);
+          border: 1px solid #bae6fd;
+          border-radius: 12px; padding: 16px;
           position: relative; overflow: hidden;
         }
         .ck-id-card::before {
           content: '';
-          position: absolute; top: 0; left: 0; right: 0; height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(0,174,239,0.4), transparent);
+          position: absolute; top: 0; left: 0; right: 0; height: 2px;
+          background: linear-gradient(90deg, #0284c7, #38bdf8, #0284c7);
         }
         .ck-id-company {
           font-family: var(--ck-font-head);
-          font-size: 13.5px; font-weight: 700;
-          letter-spacing: 0.09em; text-transform: uppercase;
-          color: var(--ck-text); margin-bottom: 5px;
+          font-size: 13px; font-weight: 700;
+          letter-spacing: 0.08em; text-transform: uppercase;
+          color: #0369a1; margin-bottom: 5px;
         }
         .ck-id-tagline {
-          font-size: 12px; color: var(--ck-muted); line-height: 1.55;
+          font-size: 12px; color: var(--ck-text2); line-height: 1.6;
         }
         .ck-id-pills {
           display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px;
         }
         .ck-pill {
-          font-size: 10px; font-weight: 500;
-          letter-spacing: 0.05em;
-          padding: 4px 10px; border-radius: 20px;
-          background: rgba(0,174,239,0.09);
-          border: 1px solid rgba(0,174,239,0.22);
-          color: rgba(0,174,239,0.9);
+          font-size: 10px; font-weight: 600;
+          letter-spacing: 0.04em;
+          padding: 3px 9px; border-radius: 20px;
+          background: #dbeafe;
+          border: 1px solid #93c5fd;
+          color: #1d4ed8;
         }
 
         /* Action grid */
-        .ck-action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+        .ck-action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .ck-action-btn {
-          background: rgba(255,255,255,0.025);
-          border: 1px solid var(--ck-border2);
-          border-radius: 10px; padding: 14px 12px;
+          background: var(--ck-bg);
+          border: 1px solid var(--ck-border);
+          border-radius: 10px; padding: 13px 12px;
           cursor: pointer; text-align: left;
-          transition: border-color 0.2s, background 0.2s, transform 0.15s;
-          display: flex; flex-direction: column; gap: 4px;
+          transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+          display: flex; flex-direction: column; gap: 3px;
         }
         .ck-action-btn:hover {
-          border-color: var(--ck-border);
-          background: rgba(0,174,239,0.05);
+          border-color: #7dd3fc;
+          background: #f0f9ff;
           transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(2,132,199,0.12);
         }
         .ck-action-icon {
-          width: 20px; height: 20px; stroke: var(--ck-cyan);
-          stroke-width: 1.6; fill: none; margin-bottom: 4px;
+          width: 18px; height: 18px; stroke: var(--ck-cyan);
+          stroke-width: 1.8; fill: none; margin-bottom: 4px;
         }
         .ck-action-label {
           font-size: 12px; font-weight: 600; color: var(--ck-text);
@@ -495,20 +536,18 @@ export default function AIChatbotWidget() {
 
         /* Narration card */
         .ck-narration-card {
-          background: rgba(0,174,239,0.04);
+          background: var(--ck-bg);
           border: 1px solid var(--ck-border);
-          border-radius: 10px; padding: 14px 16px;
-          display: flex; align-items: center; gap: 14px;
+          border-radius: 10px; padding: 14px 15px;
+          display: flex; align-items: center; gap: 13px;
         }
-        .ck-narration-info { flex: 1; }
+        .ck-narration-info { flex: 1; min-width: 0; }
         .ck-narration-title {
           font-size: 12.5px; font-weight: 600; color: var(--ck-text);
-          letter-spacing: 0.02em;
         }
         .ck-narration-sub {
-          font-size: 11px; color: var(--ck-muted); margin-top: 3px;
+          font-size: 11px; color: var(--ck-muted); margin-top: 2px;
         }
-        /* Waveform */
         .ck-waveform {
           display: flex; align-items: center; gap: 2.5px; margin-top: 8px; height: 16px;
         }
@@ -527,26 +566,26 @@ export default function AIChatbotWidget() {
           0%,100% { transform: scaleY(0.4); opacity: 0.5; }
           50%      { transform: scaleY(1.2); opacity: 1; }
         }
-        /* Play/stop button */
         .ck-play-btn {
-          width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0;
-          background: linear-gradient(145deg, var(--ck-navy3), var(--ck-navy2));
-          border: 1px solid var(--ck-border);
+          width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+          background: var(--ck-bg2);
+          border: 1px solid var(--ck-border2);
           cursor: pointer;
           display: flex; align-items: center; justify-content: center;
-          transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+          transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.15s;
         }
         .ck-play-btn:hover {
-          border-color: rgba(0,174,239,0.4);
-          box-shadow: 0 0 18px rgba(0,174,239,0.2);
+          border-color: #7dd3fc;
+          background: #f0f9ff;
+          box-shadow: 0 2px 12px rgba(2,132,199,0.15);
           transform: scale(1.04);
         }
         .ck-play-btn.active {
-          border-color: rgba(239,68,68,0.4);
-          background: linear-gradient(145deg, rgba(127,29,29,0.3), rgba(127,29,29,0.15));
+          border-color: #fca5a5;
+          background: #fff1f2;
         }
         .ck-play-svg {
-          width: 14px; height: 14px; fill: var(--ck-cyan);
+          width: 13px; height: 13px; fill: var(--ck-cyan);
           transition: fill 0.15s;
         }
         .ck-play-btn.active .ck-play-svg { fill: #ef4444; }
@@ -554,10 +593,15 @@ export default function AIChatbotWidget() {
         /* ── CHAT VIEW ── */
         .ck-chat-view { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
         .ck-messages {
-          flex: 1; overflow-y: auto; padding: 16px;
+          flex: 1;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+          padding: 16px;
           display: flex; flex-direction: column; gap: 10px;
           scrollbar-width: thin;
-          scrollbar-color: rgba(0,174,239,0.18) transparent;
+          scrollbar-color: var(--ck-border2) transparent;
+          background: var(--ck-bg2);
         }
         .ck-msg { max-width: 86%; display: flex; flex-direction: column; }
         .ck-msg.bot { align-self: flex-start; }
@@ -566,26 +610,28 @@ export default function AIChatbotWidget() {
           padding: 10px 14px; font-size: 13px; line-height: 1.65;
         }
         .ck-msg.bot .ck-msg-bubble {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid var(--ck-border2);
+          background: var(--ck-bg);
+          border: 1px solid var(--ck-border);
           border-radius: 3px 12px 12px 12px;
           color: var(--ck-text);
+          box-shadow: 0 1px 4px var(--ck-shadow2);
         }
         .ck-msg.user .ck-msg-bubble {
-          background: linear-gradient(145deg, #005fa3, #0080c8);
-          border: 1px solid rgba(0,174,239,0.3);
+          background: linear-gradient(145deg, #0369a1, #0284c7);
+          border: none;
           border-radius: 12px 12px 3px 12px;
           color: #fff;
-          box-shadow: 0 2px 16px rgba(0,100,180,0.25);
+          box-shadow: 0 2px 12px rgba(2,132,199,0.3);
         }
         /* Typing indicator */
         .ck-typing-bubble {
           align-self: flex-start;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid var(--ck-border2);
+          background: var(--ck-bg);
+          border: 1px solid var(--ck-border);
           border-radius: 3px 12px 12px 12px;
           padding: 12px 16px;
           display: flex; align-items: center; gap: 4px;
+          box-shadow: 0 1px 4px var(--ck-shadow2);
         }
         .ck-typing-dot {
           width: 5px; height: 5px; border-radius: 50%;
@@ -601,81 +647,119 @@ export default function AIChatbotWidget() {
         /* Input row */
         .ck-input-row {
           padding: 12px 14px;
-          border-top: 1px solid var(--ck-border2);
+          border-top: 1px solid var(--ck-border);
           display: flex; gap: 8px; align-items: center;
           flex-shrink: 0;
-          background: rgba(0,0,0,0.15);
+          background: var(--ck-bg);
         }
         .ck-text-input {
           flex: 1;
-          background: rgba(255,255,255,0.04);
+          background: var(--ck-bg2);
           border: 1px solid var(--ck-border2);
           border-radius: 9px; padding: 9px 13px;
           font-size: 13px; color: var(--ck-text); outline: none;
-          transition: border-color 0.2s, background 0.2s;
+          transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         }
-        .ck-text-input::placeholder { color: rgba(122,143,166,0.6); }
+        .ck-text-input::placeholder { color: var(--ck-muted); }
         .ck-text-input:focus {
-          border-color: rgba(0,174,239,0.4);
-          background: rgba(255,255,255,0.06);
+          border-color: #7dd3fc;
+          background: var(--ck-bg);
+          box-shadow: 0 0 0 3px rgba(2,132,199,0.1);
         }
         .ck-send-btn {
           width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
-          background: linear-gradient(145deg, #005fa3, #007ec0);
-          border: 1px solid rgba(0,174,239,0.35);
+          background: linear-gradient(145deg, #0369a1, #0284c7);
+          border: none;
           cursor: pointer;
           display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 2px 12px rgba(0,100,180,0.25);
-          transition: transform 0.15s, box-shadow 0.15s;
+          box-shadow: 0 2px 8px rgba(2,132,199,0.35);
+          transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
         }
-        .ck-send-btn:hover {
+        .ck-send-btn:hover:not(:disabled) {
           transform: scale(1.07);
-          box-shadow: 0 4px 18px rgba(0,100,180,0.4);
+          box-shadow: 0 4px 16px rgba(2,132,199,0.45);
         }
-        .ck-send-svg {
-          width: 14px; height: 14px; fill: #fff;
-        }
+        .ck-send-btn:disabled { opacity: 0.45; cursor: default; }
+        .ck-send-svg { width: 13px; height: 13px; fill: #fff; }
 
         /* ── FAQ VIEW ── */
         .ck-faq-view {
-          flex: 1; overflow-y: auto; padding: 14px;
-          display: flex; flex-direction: column; gap: 7px;
+          flex: 1;
+          overflow-y: auto;
+          overscroll-behavior: contain;   /* ← key fix for background scroll */
+          -webkit-overflow-scrolling: touch;
+          padding: 12px;
+          display: flex; flex-direction: column; gap: 6px;
           scrollbar-width: thin;
-          scrollbar-color: rgba(0,174,239,0.18) transparent;
+          scrollbar-color: var(--ck-border2) transparent;
+          background: var(--ck-bg2);
         }
         .ck-faq-item {
-          background: rgba(255,255,255,0.025);
-          border: 1px solid var(--ck-border2);
+          background: var(--ck-bg);
+          border: 1px solid var(--ck-border);
           border-radius: 10px; overflow: hidden;
-          transition: border-color 0.2s;
+          transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .ck-faq-item.open { border-color: var(--ck-border); }
+        .ck-faq-item.open {
+          border-color: #7dd3fc;
+          box-shadow: 0 2px 10px rgba(2,132,199,0.1);
+        }
         .ck-faq-q {
           width: 100%; background: none; border: none;
-          padding: 12px 14px; text-align: left; cursor: pointer;
+          padding: 12px 13px; text-align: left; cursor: pointer;
           display: flex; justify-content: space-between; align-items: flex-start;
           color: var(--ck-text); font-size: 12.5px; font-weight: 500;
-          line-height: 1.45; gap: 10px;
-          transition: color 0.15s;
+          line-height: 1.45; gap: 8px;
+          transition: background 0.15s, color 0.15s;
         }
-        .ck-faq-q:hover { color: var(--ck-cyan-2, #33c3f7); }
-        .ck-faq-item.open .ck-faq-q { color: var(--ck-cyan); }
+        .ck-faq-q:hover { background: var(--ck-bg2); }
+        .ck-faq-item.open .ck-faq-q { color: var(--ck-cyan); background: #f0f9ff; }
+        .ck-faq-q-text { flex: 1; }
+
+        /* chevron + speak button row */
+        .ck-faq-controls {
+          display: flex; align-items: center; gap: 6px; flex-shrink: 0; margin-top: 1px;
+        }
+        .ck-faq-speak-btn {
+          width: 22px; height: 22px; border-radius: 5px; flex-shrink: 0;
+          background: transparent;
+          border: 1px solid transparent;
+          cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: background 0.15s, border-color 0.15s;
+          padding: 0;
+        }
+        .ck-faq-speak-btn:hover {
+          background: #e0f2fe;
+          border-color: #7dd3fc;
+        }
+        .ck-faq-speak-btn.speaking {
+          background: #fff1f2;
+          border-color: #fca5a5;
+        }
+        .ck-faq-speak-svg {
+          width: 11px; height: 11px;
+          stroke: var(--ck-cyan); stroke-width: 1.8; fill: none;
+          transition: stroke 0.15s;
+        }
+        .ck-faq-speak-btn.speaking .ck-faq-speak-svg { stroke: #ef4444; }
+
         .ck-faq-chevron {
-          width: 14px; height: 14px; flex-shrink: 0;
+          width: 13px; height: 13px; flex-shrink: 0;
           stroke: var(--ck-muted); stroke-width: 2; fill: none;
           transition: transform 0.22s ease, stroke 0.15s;
-          margin-top: 1px;
         }
         .ck-faq-item.open .ck-faq-chevron {
           transform: rotate(180deg);
           stroke: var(--ck-cyan);
         }
         .ck-faq-a {
-          padding: 0 14px 13px;
-          font-size: 12px; color: var(--ck-muted); line-height: 1.7;
-          border-top: 1px solid var(--ck-border2);
-          padding-top: 11px;
+          padding: 11px 13px 13px;
+          font-size: 12px; color: var(--ck-text2); line-height: 1.75;
+          border-top: 1px solid var(--ck-border);
           animation: ckFadeSlide 0.2s ease;
+          word-break: break-word;        /* ← prevents text overflow */
+          overflow-wrap: break-word;
         }
         @keyframes ckFadeSlide {
           from { opacity: 0; transform: translateY(-4px); }
@@ -684,9 +768,9 @@ export default function AIChatbotWidget() {
 
         /* ── Mobile ── */
         @media (max-width: 440px) {
-          .ck-panel { width: calc(100vw - 24px); right: 12px; bottom: 80px; max-height: 72vh; }
-          .ck-fab { right: 14px; bottom: 16px; }
-          .ck-greeting-bubble { right: 12px; max-width: calc(100vw - 80px); }
+          .ck-panel { width: calc(100vw - 20px); right: 10px; bottom: 82px; max-height: 75vh; }
+          .ck-fab { right: 14px; bottom: 14px; }
+          .ck-greeting-bubble { right: 10px; max-width: calc(100vw - 72px); bottom: 82px; }
         }
       `}</style>
 
@@ -696,11 +780,9 @@ export default function AIChatbotWidget() {
         {showBubble && !open && (
           <div className="ck-greeting-bubble">
             <span className="ck-bubble-label">Cybokrafts AI</span>
-            <p className="ck-bubble-text">
-              {getGreetingText()}
-            </p>
+            <p className="ck-bubble-text">{getGreetingText()}</p>
             <button className="ck-bubble-dismiss" onClick={() => setShowBubble(false)}>
-              Dismiss
+              Dismiss ×
             </button>
           </div>
         )}
@@ -712,7 +794,6 @@ export default function AIChatbotWidget() {
             {/* Header */}
             <div className="ck-header">
               <div className="ck-header-logo">
-                {/* Lightning bolt SVG mark */}
                 <svg className="ck-bolt-svg" viewBox="0 0 14 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M8 0L0 11h6l-1 9 9-12H8L8 0z" />
                 </svg>
@@ -745,7 +826,6 @@ export default function AIChatbotWidget() {
                   onClick={() => setView(v)}
                   aria-current={view === v ? "page" : undefined}
                 >
-                  {/* Icons */}
                   {v === "home" && (
                     <svg className="ck-nav-icon" viewBox="0 0 24 24">
                       <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
@@ -773,7 +853,6 @@ export default function AIChatbotWidget() {
             {view === "home" && (
               <div className="ck-home">
 
-                {/* Identity card */}
                 <div className="ck-id-card">
                   <div className="ck-id-company">Cybokrafts Universal Innovations</div>
                   <div className="ck-id-tagline">
@@ -786,7 +865,6 @@ export default function AIChatbotWidget() {
                   </div>
                 </div>
 
-                {/* Action grid */}
                 <div className="ck-action-grid">
                   <button className="ck-action-btn" onClick={() => setView("chat")}>
                     <svg className="ck-action-icon" viewBox="0 0 24 24">
@@ -821,12 +899,12 @@ export default function AIChatbotWidget() {
                   </button>
                 </div>
 
-                {/* Narration card */}
+                {/* Narration / Audible Explanation card */}
                 <div className="ck-narration-card">
                   <div className="ck-narration-info">
-                    <div className="ck-narration-title">Company Overview</div>
+                    <div className="ck-narration-title">🎧 Audible Company Overview</div>
                     <div className="ck-narration-sub">
-                      {speaking ? "Narration in progress…" : "Listen to an audio introduction"}
+                      {speaking ? "Playing audio narration…" : "Listen to a full spoken introduction"}
                     </div>
                     {speaking && (
                       <div className="ck-waveform">
@@ -842,13 +920,11 @@ export default function AIChatbotWidget() {
                     aria-label={speaking ? "Stop narration" : "Play company overview"}
                   >
                     {speaking ? (
-                      // Stop icon
                       <svg className="ck-play-svg" viewBox="0 0 14 14" style={{fill:"#ef4444"}}>
                         <rect x="1" y="1" width="5" height="12" rx="1" />
                         <rect x="8" y="1" width="5" height="12" rx="1" />
                       </svg>
                     ) : (
-                      // Play icon
                       <svg className="ck-play-svg" viewBox="0 0 14 14">
                         <polygon points="2,1 13,7 2,13" />
                       </svg>
@@ -914,10 +990,35 @@ export default function AIChatbotWidget() {
                       onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}
                       aria-expanded={expandedFaq === i}
                     >
-                      <span>{faq.q}</span>
-                      <svg className="ck-faq-chevron" viewBox="0 0 24 24">
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
+                      <span className="ck-faq-q-text">{faq.q}</span>
+                      <div className="ck-faq-controls">
+                        {/* Per-FAQ speak button */}
+                        <button
+                          className={`ck-faq-speak-btn ${faqSpeaking === i ? "speaking" : ""}`}
+                          onClick={e => { e.stopPropagation(); handleFaqSpeak(i); }}
+                          aria-label={faqSpeaking === i ? "Stop speaking" : "Speak this answer"}
+                          title={faqSpeaking === i ? "Stop" : "Listen"}
+                        >
+                          {faqSpeaking === i ? (
+                            /* stop bars */
+                            <svg className="ck-faq-speak-svg" viewBox="0 0 12 12"
+                              style={{stroke:"#ef4444",strokeWidth:"2",fill:"none"}}>
+                              <line x1="3" y1="2" x2="3" y2="10"/>
+                              <line x1="9" y1="2" x2="9" y2="10"/>
+                            </svg>
+                          ) : (
+                            /* speaker icon */
+                            <svg className="ck-faq-speak-svg" viewBox="0 0 24 24">
+                              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                              <path d="M19.07 4.93a10 10 0 010 14.14"/>
+                              <path d="M15.54 8.46a5 5 0 010 7.07"/>
+                            </svg>
+                          )}
+                        </button>
+                        <svg className="ck-faq-chevron" viewBox="0 0 24 24">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </div>
                     </button>
                     {expandedFaq === i && (
                       <div className="ck-faq-a">{faq.a}</div>
