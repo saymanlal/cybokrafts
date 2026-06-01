@@ -32,7 +32,7 @@ export default function VisionSection() {
           viewport={VIEWPORT}
         >
           <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-2">
-            // VISION & MISSION
+            VISION & MISSION
           </m.p>
 
           {/* Large quote mark — fades in */}

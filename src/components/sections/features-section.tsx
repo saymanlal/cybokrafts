@@ -275,7 +275,7 @@ export default function FeaturesSection() {
           className="max-w-2xl mb-16"
         >
           <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-4">
-            // WHY CYBOKRAFTS
+            WHY CYBOKRAFTS
           </m.p>
           <m.h2
             id="features-heading"

@@ -3,6 +3,7 @@ import { Barlow_Condensed, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { LazyMotion, domAnimation } from "framer-motion";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
+import AIChatbotWidget from "@/components/AIChatbotWidget";
 import "./globals.css";
 
 const barlowCondensed = Barlow_Condensed({
@@ -166,8 +167,7 @@ export const metadata: Metadata = {
     "application-name": "Cybokrafts",
     "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
-    "apple-mobile-web-app-status-bar-style":
-      "black-translucent",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
     "apple-mobile-web-app-title": "Cybokrafts",
     referrer: "origin-when-cross-origin",
   },
@@ -188,14 +188,7 @@ export default function RootLayout({
     description:
       "Leading AI-powered monitoring systems for energy infrastructure including transformers, solar, and EV charging networks.",
     foundingDate: "2025",
-
-    founders: [
-      {
-        "@type": "Person",
-        name: "Mr. Akhil Chawla",
-      },
-    ],
-
+    founders: [{ "@type": "Person", name: "Mr. Akhil Chawla" }],
     address: {
       "@type": "PostalAddress",
       addressLocality: "Raipur",
@@ -203,39 +196,22 @@ export default function RootLayout({
       postalCode: "492001",
       addressCountry: "IN",
     },
-
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "Sales",
       email: "contact@cybokrafts.com",
       availableLanguage: ["English", "Hindi"],
     },
-
     sameAs: [
       "https://www.linkedin.com/company/cybokrafts",
       "https://twitter.com/cybokrafts",
       "https://www.instagram.com/cybokrafts",
     ],
-
-    award: [
-      "DPIIT Startup India Recognition",
-      "IIT Indore Incubated Startup",
-    ],
-
-    memberOf: {
-      "@type": "Organization",
-      name: "IIT Indore Incubation Center",
-    },
-
+    award: ["DPIIT Startup India Recognition", "IIT Indore Incubated Startup"],
+    memberOf: { "@type": "Organization", name: "IIT Indore Incubation Center" },
     partner: [
-      {
-        "@type": "Organization",
-        name: "Tata Tele Business Services",
-      },
-      {
-        "@type": "Organization",
-        name: "IIT Indore",
-      },
+      { "@type": "Organization", name: "Tata Tele Business Services" },
+      { "@type": "Organization", name: "IIT Indore" },
     ],
   };
 
@@ -243,32 +219,13 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Product",
     name: "CYBO-VAJRA",
-
     description:
       "Patented AI-powered transformer monitoring device for real-time analytics and predictive maintenance",
-
-    brand: {
-      "@type": "Brand",
-      name: "Cybokrafts",
-    },
-
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "50",
-    },
-
+    brand: { "@type": "Brand", name: "Cybokrafts" },
+    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.8", reviewCount: "50" },
     additionalProperty: [
-      {
-        "@type": "PropertyValue",
-        name: "Patent Number",
-        value: "202521117118",
-      },
-      {
-        "@type": "PropertyValue",
-        name: "Category",
-        value: "Industrial IoT Device",
-      },
+      { "@type": "PropertyValue", name: "Patent Number", value: "202521117118" },
+      { "@type": "PropertyValue", name: "Category", value: "Industrial IoT Device" },
     ],
   };
 
@@ -276,23 +233,10 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "AIpowerOS",
-
     applicationCategory: "BusinessApplication",
-
     operatingSystem: "Web-based",
-
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "INR",
-    },
-
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      ratingCount: "120",
-    },
-
+    offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+    aggregateRating: { "@type": "AggregateRating", ratingValue: "4.9", ratingCount: "120" },
     featureList: [
       "Real-time transformer monitoring",
       "Predictive maintenance alerts",
@@ -305,93 +249,35 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Charset */}
-        <meta
-          httpEquiv="Content-Type"
-          content="text/html; charset=UTF-8"
-        />
-
-        {/* Preconnect */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-        />
-
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-
-        {/* DNS Prefetch */}
-        <link
-          rel="dns-prefetch"
-          href="https://www.google-analytics.com"
-        />
-
-        <link
-          rel="dns-prefetch"
-          href="https://www.googletagmanager.com"
-        />
-
-        {/* Icons */}
+        <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
-
-        <link
-          rel="icon"
-          href="/icon.svg"
-          type="image/svg+xml"
-        />
-
-        <link
-          rel="apple-touch-icon"
-          href="/apple-touch-icon.png"
-        />
-
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-
-        {/* Theme */}
         <meta name="theme-color" content="#00AEEF" />
-
-        {/* Organization Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
-          }}
-        />
-
-        {/* Product Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(productSchema),
-          }}
-        />
-
-        {/* Software Schema */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(softwareSchema),
-          }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
       </head>
 
-      <body suppressHydrationWarning className={`${dmSans.variable} ${barlowCondensed.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#F4F6F9] text-[#0C1929]`}>
+      <body
+        suppressHydrationWarning
+        className={`${dmSans.variable} ${barlowCondensed.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#F4F6F9] text-[#0C1929]`}
+      >
         <LazyMotion features={domAnimation}>
-          {/* Accessibility */}
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only"
-          >
+          <a href="#main-content" className="sr-only focus:not-sr-only">
             Skip to main content
           </a>
           <Navbar />
-          <main id="main-content">
-            {children}
-          </main>
+          <main id="main-content">{children}</main>
           <Footer />
+
+          {/* AI Assistant — fixed position, outside scroll flow */}
+          <AIChatbotWidget />
         </LazyMotion>
       </body>
     </html>

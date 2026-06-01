@@ -339,7 +339,7 @@ export default function SolutionsSection() {
           className="max-w-3xl mb-16"
         >
           <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-4">
-            // MONITORED ASSETS
+            MONITORED ASSETS
           </m.p>
           <m.h2
             id="solutions-heading"

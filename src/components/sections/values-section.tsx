@@ -125,7 +125,7 @@ export default function ValuesSection() {
           className="max-w-2xl mb-16"
         >
           <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-4">
-            // FOUNDATIONAL PRINCIPLES
+            FOUNDATIONAL PRINCIPLES
           </m.p>
           <m.h2
             id="values-heading"
@@ -199,7 +199,7 @@ export default function ValuesSection() {
                     {value.isHero && (
                       <div className="hidden lg:flex flex-col justify-center border-l border-bg-border/60 pl-8 max-w-[260px] flex-shrink-0">
                         <span className="font-mono text-[9px] text-accent-blue font-bold tracking-widest uppercase mb-2">
-                          // PRATIPADA
+                          PRATIPADA
                         </span>
                         <blockquote className="font-heading font-semibold text-text-primary text-[14px] leading-normal italic uppercase">
                           "Knowledge is the ultimate power grid. We lead by serving."
@@ -216,7 +216,7 @@ export default function ValuesSection() {
                     <div className="mt-6 pt-5 border-t border-bg-border/60 grid grid-cols-2 gap-4">
                       <div>
                         <div className="font-mono text-[9px] text-status-green font-bold uppercase tracking-wider">
-                          // TARGET
+                          TARGET
                         </div>
                         <div className="font-heading font-bold text-text-primary text-base leading-none mt-1">
                           NET ZERO
@@ -227,7 +227,7 @@ export default function ValuesSection() {
                       </div>
                       <div>
                         <div className="font-mono text-[9px] text-status-green font-bold uppercase tracking-wider">
-                          // COMPLIANCE
+                          COMPLIANCE
                         </div>
                         <div className="font-heading font-bold text-text-primary text-base leading-none mt-1">
                           100% CLEAN
@@ -271,7 +271,7 @@ export default function ValuesSection() {
                   {/* Right Column: Stakeholder prosperity schema checklist */}
                   <div className="lg:col-span-5 border-t border-bg-border/60 pt-6 lg:border-t-0 lg:pt-0 lg:border-l lg:border-bg-border/60 lg:pl-8 flex flex-col justify-center">
                     <div className="font-mono text-[9px] text-accent-blue font-bold uppercase tracking-widest mb-4">
-                      // INCLUSIVE PROSPERITY SCHEMA
+                      INCLUSIVE PROSPERITY SCHEMA
                     </div>
                     <ul className="space-y-4">
                       <li className="flex items-start gap-3">
