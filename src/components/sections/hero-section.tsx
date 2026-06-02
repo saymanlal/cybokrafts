@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { m, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { Variants } from "framer-motion";
 
@@ -210,8 +210,16 @@ function WindSchematic() {
         <pattern id="wg" width="24" height="24" patternUnits="userSpaceOnUse">
           <path d="M24 0H0V24" fill="none" stroke="#7c3aed" strokeWidth="0.3" strokeOpacity="0.1" />
         </pattern>
-        <style>{`.turbine-spin { animation: tspin 4s linear infinite; transform-origin: 230px 100px; }`}
-          {`@keyframes tspin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }`}</style>
+        <style>{`
+          .turbine-spin {
+            animation: tspin 4s linear infinite;
+            transform-origin: 230px 100px;
+          }
+          @keyframes tspin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
       </defs>
       <rect width="460" height="220" fill="url(#wg)" />
       {[40, 65, 90, 110, 130].map((y, i) => (
@@ -354,7 +362,7 @@ export default function HeroSection() {
   // Parallax mouse effect
   const mouseX = useMotionValue(0.5); const mouseY = useMotionValue(0.5);
   const blobX = useTransform(mouseX, [0, 1], ["-4%", "4%"]);
-  const blobY = useTransform(mouseY, [0, 1], ["-4%, "4%"]);
+  const blobY = useTransform(mouseY, [0, 1], ["-4%", "4%"]);
 
   // Clock update
   useEffect(() => {
