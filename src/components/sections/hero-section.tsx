@@ -84,6 +84,13 @@ const METRICS = [
   ],
 ];
 
+const BASELINE_METRICS = [
+  ["84.3", "50.00", "97.5", "0"],
+  ["850", "48.5", "19.2", "LOCK"],
+  ["8.4", "16.2", "2.38", "41.3"],
+  ["12", "347", "28", "ON"],
+];
+
 const STATS = [
   { value: "2,847", label: "Nodes Online", color: "#2563eb" },
   { value: "99.7%", label: "Uptime SLA", color: "#059669" },
@@ -412,7 +419,7 @@ function Counter({ to, duration = 2 }: { to: number; duration?: number }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function HeroSection() {
   const [activeTab, setActiveTab] = useState(0);
-  const [metrics, setMetrics] = useState(METRICS[0].map((m) => m.value()));
+  const [metrics, setMetrics] = useState<string[]>(BASELINE_METRICS[0]);
   const [clock, setClock] = useState("");
   const autoRef = useRef(true);
   const containerRef = useRef<HTMLDivElement>(null);

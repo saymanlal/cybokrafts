@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { m, AnimatePresence } from "framer-motion";
 import { staggerContainer, fadeUp, cellFadeUp, VIEWPORT, VIEWPORT_CLOSE } from "@/lib/motion";
 
@@ -301,26 +301,318 @@ const assets: Asset[] = [
   },
 ];
 
-const getHoverClasses = (group: string) => {
-  if (group === "Power Assets") {
-    return "hover:border-t-accent-blue hover:bg-accent-blue-light/50";
+const getMetricsForAsset = (assetName: string, existingMetrics?: string[]) => {
+  if (existingMetrics && existingMetrics.length > 0) return existingMetrics;
+  
+  switch (assetName) {
+    case "Distribution Transformer Monitoring":
+      return ["Load Ratio", "Hot-Spot Temp", "Oil Level %", "Volt Imbalance", "Neutral Current", "THD Factor"];
+    case "Inverter Duty Transformer Monitoring":
+      return ["Active Harmonics", "MPPT Efficiency", "Oil Temp °C", "Core Flux Index", "Insulation index", "Frequency Hz"];
+    case "Hermetically Sealed Transformer Monitoring":
+      return ["Tank Pressure", "Oil Temp °C", "Gas Detection", "Seal Index", "Load Ratio", "Ambient Temp"];
+    case "Switchgear Monitoring":
+      return ["Contact Wear %", "SF6 Gas Pressure", "Trip Counter", "Arc Detection", "Heater Status", "Spring Charge"];
+    case "Diesel Generator (DG) Monitoring":
+      return ["Fuel Level %", "Battery Volts", "Coolant Temp", "Oil Pressure", "RPM Speed", "Load kW"];
+    case "Solar System Monitoring":
+      return ["Panel Temp °C", "String Voltage", "String Current", "Irradiance W/m²", "Inverter Health", "Daily Yield kWh"];
+    case "Battery Monitoring":
+      return ["State of Charge", "State of Health", "Cell Volts Min/Max", "Cell Temp °C", "Charge Current", "Cycles Count"];
+    case "UPS Monitoring":
+      return ["Backup Time Min", "Output Load %", "Bypass Status", "Input Volts", "Battery Temp", "Inverter Status"];
+    case "Stabilizer Monitoring":
+      return ["Buck-Boost Status", "Input Voltage", "Output Voltage", "Winding Temp", "Servo Motor Load", "Trip Alarm"];
+    case "Feeder Pillar Monitoring":
+      return ["Branch Load", "Breaker Status", "Earth Leakage", "Busbar Temp", "Cabinet Door", "Power Factor"];
+    case "Busbar Monitoring":
+      return ["Busbar Temp", "Joint Resistance", "Contact Force", "Current Balance", "Partial Discharge", "Insulation Index"];
+    case "Annunciator Panel Monitoring":
+      return ["Active Alarms", "Horn Status", "Test Cycle", "Logic Battery", "Comm Link", "Event Log"];
+    case "Pump Monitoring":
+      return ["Flow Rate L/m", "Line Pressure", "Pump RPM", "Vibration mm/s", "Motor Current", "Winding Temp"];
+    default:
+      return ["Load Profile", "Active Power", "Reactive Power", "Frequency Hz", "Neutral Current", "Phase Voltages"];
   }
-  if (group === "Generation & Energy") {
-    return "hover:border-t-accent-amber hover:bg-accent-amber-bg/50";
-  }
-  return "hover:border-t-text-secondary hover:bg-bg-muted/70";
 };
 
-const getAccentTextHover = (group: string) => {
-  if (group === "Power Assets") return "group-hover:text-accent-blue";
-  if (group === "Generation & Energy") return "group-hover:text-accent-amber";
-  return "group-hover:text-text-primary";
+const cardVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 24, 
+    rotateX: 12,
+    scale: 0.95 
+  },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 160,
+      damping: 18,
+      delay: i * 0.05,
+    }
+  }),
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    y: -10,
+    transition: { duration: 0.15 }
+  }
 };
+
+interface BentoCardProps {
+  asset: Asset;
+  index: number;
+}
+
+function BentoCard({ asset, index }: BentoCardProps) {
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [telemetryTicks, setTelemetryTicks] = useState<number[]>([]);
+  const [wavePhase, setWavePhase] = useState(0);
+
+  // Initialize fake fluctuating metrics values
+  useEffect(() => {
+    const metricsCount = asset.metrics ? asset.metrics.length : 6;
+    const initialSeeds = Array.from({ length: metricsCount }, () => Math.random());
+    setTelemetryTicks(initialSeeds);
+
+    const interval = setInterval(() => {
+      setTelemetryTicks(prev => prev.map(seed => seed + (Math.random() * 0.1 - 0.05)));
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [asset]);
+
+  // Sine wave animation frame for Featured card
+  useEffect(() => {
+    if (!asset.isFeatured) return;
+    let frameId: number;
+    const animate = () => {
+      setWavePhase(p => p + 0.12);
+      frameId = requestAnimationFrame(animate);
+    };
+    frameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameId);
+  }, [asset.isFeatured]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCoords({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const activeMetrics = getMetricsForAsset(asset.name, asset.metrics);
+
+  const getFluctuatedValue = (metricName: string, seed: number) => {
+    const normalizedSeed = Math.max(0, Math.min(1, seed));
+    if (metricName.includes("Temp") || metricName.includes("Winding")) {
+      return (52 + normalizedSeed * 18).toFixed(1) + "°C";
+    }
+    if (metricName.includes("Fuel") || metricName.includes("Charge") || metricName.includes("Level") || metricName.includes("Health") || metricName.includes("Efficiency")) {
+      return (88 + normalizedSeed * 10).toFixed(1) + "%";
+    }
+    if (metricName.includes("Voltage") || metricName.includes("Volts")) {
+      return (218 + Math.floor(normalizedSeed * 12)) + "V";
+    }
+    if (metricName.includes("PPM")) {
+      return (12 + Math.floor(normalizedSeed * 8)) + " PPM";
+    }
+    if (metricName.includes("Frequency")) {
+      return (49.8 + normalizedSeed * 0.4).toFixed(2) + " Hz";
+    }
+    return (40 + normalizedSeed * 45).toFixed(1);
+  };
+
+  // Border/Spotlight Colors matching group
+  let colorGlow = "rgba(28, 95, 209, 0.08)";
+  let borderSpotlight = "rgba(28, 95, 209, 0.4)";
+  let accentBorder = "hover:border-accent-blue/30";
+  let activeDot = "bg-accent-blue";
+  
+  if (asset.group === "Generation & Energy") {
+    colorGlow = "rgba(245, 158, 11, 0.08)";
+    borderSpotlight = "rgba(245, 158, 11, 0.35)";
+    accentBorder = "hover:border-accent-amber/30";
+    activeDot = "bg-accent-amber";
+  } else if (asset.group === "Auxiliary & Control") {
+    colorGlow = "rgba(100, 116, 139, 0.08)";
+    borderSpotlight = "rgba(100, 116, 139, 0.35)";
+    accentBorder = "hover:border-text-secondary/30";
+    activeDot = "bg-text-secondary";
+  }
+
+  // Draw smooth sine wave
+  const drawWavePath = () => {
+    const points = [];
+    const width = 160;
+    const height = 45;
+    for (let i = 0; i <= 100; i += 4) {
+      const x = (i / 100) * width;
+      const y = (height / 2) + 
+        Math.sin((i / 100) * Math.PI * 3.5 + wavePhase) * 11 +
+        Math.sin((i / 100) * Math.PI * 7 + wavePhase * 1.5) * 4;
+      points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+    return `M ${points.join(" L ")}`;
+  };
+
+  return (
+    <m.div
+      custom={index}
+      variants={cardVariants}
+      className={`group relative bg-bg-surface border border-bg-border rounded-[8px] p-5 overflow-hidden transition-all duration-300 ${accentBorder} flex flex-col justify-between h-full ${
+        asset.isFeatured ? "col-span-12 lg:col-span-6" : "col-span-12 md:col-span-6 lg:col-span-3"
+      }`}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        transformStyle: "preserve-3d",
+      }}
+    >
+      {/* Spotlight Glow */}
+      {isHovered && (
+        <>
+          <div 
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 opacity-100 z-0"
+            style={{
+              background: `radial-gradient(350px circle at ${coords.x}px ${coords.y}px, ${colorGlow}, transparent 70%)`
+            }}
+          />
+          <div 
+            className="absolute -inset-px pointer-events-none rounded-[8px] transition-opacity duration-300 opacity-100 z-10 border border-transparent"
+            style={{
+              background: `radial-gradient(120px circle at ${coords.x}px ${coords.y}px, ${borderSpotlight}, transparent 70%)`,
+              WebkitMaskImage: "linear-gradient(white, white)",
+              maskImage: "linear-gradient(white, white)",
+            }}
+          />
+        </>
+      )}
+
+      {/* Cyber Corner Accents */}
+      <span className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-bg-border/60 group-hover:border-bg-border-strong" />
+      <span className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-bg-border/60 group-hover:border-bg-border-strong" />
+      <span className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-bg-border/60 group-hover:border-bg-border-strong" />
+      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-bg-border/60 group-hover:border-bg-border-strong" />
+
+      {asset.isFeatured ? (
+        <div className="flex flex-col sm:flex-row gap-5 h-full items-stretch z-20">
+          {/* Left Column: Info */}
+          <div className="flex-1 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className={`w-1.5 h-1.5 rounded-full ${activeDot} animate-pulse`} />
+                <span className="font-mono text-[9px] font-bold text-text-muted uppercase tracking-wider">
+                  {asset.category}
+                </span>
+              </div>
+
+              <div className="text-text-secondary mb-3">
+                {asset.icon}
+              </div>
+
+              <h4 className="font-heading font-bold text-text-primary text-[15px] uppercase tracking-wide leading-snug mb-1.5">
+                {asset.name}
+              </h4>
+              <p className="font-sans text-xs text-text-secondary leading-relaxed">
+                {asset.benefit}
+              </p>
+            </div>
+
+            <div className="mt-4 font-mono text-[9px] text-text-muted/80 flex items-center gap-1.5">
+              <span className="w-1 h-1 bg-status-green rounded-full" />
+              <span>GATEWAY_CONNECTED</span>
+            </div>
+          </div>
+
+          {/* Right Column: Telemetry */}
+          <div className="w-full sm:w-[190px] border-t sm:border-t-0 sm:border-l border-bg-border/60 pt-4 sm:pt-0 sm:pl-4 flex flex-col justify-between">
+            <div>
+              <div className="font-mono text-[9px] font-bold text-text-muted uppercase mb-2 tracking-wider flex items-center justify-between">
+                <span>SCADA FEED</span>
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-status-green-bg border border-status-green/20 font-mono text-[8px] font-bold text-status-green">
+                  LIVE
+                </span>
+              </div>
+
+              {/* Sine Wave */}
+              <div className="h-[45px] w-full bg-bg-muted/40 border border-bg-border/40 rounded flex items-center justify-center overflow-hidden relative mb-3">
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 160 45">
+                  <path d={drawWavePath()} fill="none" stroke={asset.group === "Generation & Energy" ? "#F59E0B" : "#1C5FD1"} strokeWidth="1.25" className="opacity-80" />
+                </svg>
+              </div>
+
+              {/* Metrics */}
+              <ul className="flex flex-col gap-1.5 font-mono text-[9.5px]">
+                {activeMetrics.slice(0, 3).map((metric, i) => {
+                  const seed = telemetryTicks[i] || 0.5;
+                  const displayVal = getFluctuatedValue(metric, seed);
+                  return (
+                    <li key={i} className="flex items-center justify-between border-b border-bg-border/30 pb-0.5">
+                      <span className="text-text-muted uppercase tracking-wider text-[8px]">{metric}</span>
+                      <span className="font-bold text-text-primary text-[9px]">{displayVal}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div className="h-6 w-full bg-bg-muted border border-bg-border rounded flex items-center justify-center mt-3">
+              <span className="font-mono text-[8px] text-text-secondary font-bold uppercase tracking-wider">
+                {asset.name.substring(0, 3).toUpperCase()}-NODE:{index + 1}
+              </span>
+            </div>
+          </div>
+        </div>
+      ) : (
+        // Standard Card Layout
+        <div className="flex flex-col justify-between h-full z-20">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1.5">
+                <span className={`w-1.5 h-1.5 rounded-full ${activeDot}`} />
+                <span className="font-mono text-[9px] font-bold text-text-muted uppercase tracking-wider">
+                  {asset.category.split(" · ")[1]}
+                </span>
+              </div>
+              <span className="font-mono text-[9px] text-text-muted/60 font-semibold">[{String(index + 1).padStart(2, "0")}]</span>
+            </div>
+
+            <div className="text-text-secondary mb-3">
+              {asset.icon}
+            </div>
+
+            <h4 className="font-heading font-bold text-text-primary text-[14px] uppercase tracking-wide leading-snug mb-1.5">
+              {asset.name.replace(" Monitoring", "")}
+            </h4>
+            <p className="font-sans text-xs text-text-secondary leading-relaxed">
+              {asset.benefit}
+            </p>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-bg-border/60 flex items-center justify-between font-mono text-[9px]">
+            <span className="text-text-muted text-[8px]">PRIMARY SIGNAL</span>
+            <span className="font-bold text-text-secondary text-[8.5px]">
+              {activeMetrics[0]}: {getFluctuatedValue(activeMetrics[0], telemetryTicks[0] || 0.5)}
+            </span>
+          </div>
+        </div>
+      )}
+    </m.div>
+  );
+}
 
 export default function SolutionsSection() {
   const [activeGroup, setActiveGroup] = useState<"Power Assets" | "Generation & Energy" | "Auxiliary & Control">("Power Assets");
 
-  // Mobile filtered array
+  // Filtered array
   const filteredAssets = assets.filter((asset) => asset.group === activeGroup);
 
   return (
@@ -353,163 +645,75 @@ export default function SolutionsSection() {
           </m.h2>
         </m.div>
 
-        {/* ==================== DESKTOP BENTO GRID (LAPTOP VIEW - UNCHANGED) ==================== */}
-        <m.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={VIEWPORT_CLOSE}
-          className="hidden lg:grid grid-cols-12 gap-[1px] bg-bg-border border border-bg-border overflow-hidden rounded-[3px]"
-        >
-          {assets.map((asset) => (
-            <m.div
-              key={asset.name}
-              variants={cellFadeUp}
-              whileHover={{ y: -2 }}
-              className={`group bg-bg-surface p-6 border-t-2 border-t-transparent ${getHoverClasses(asset.group)} transition-all duration-200 ease-out cursor-default flex flex-col justify-between ${asset.gridSpan}`}
-            >
-              <div>
-                {/* Category tag & Dot Accent */}
-                <div className="flex items-center gap-2 mb-4">
-                  <span className={`w-1.5 h-1.5 rounded-full ${asset.dotColor}`} aria-hidden="true" />
-                  <span className="font-mono text-[9px] font-bold text-text-muted uppercase tracking-wider">
-                    {asset.category}
-                  </span>
-                </div>
+        {/* Subsystem Switcher Console */}
+        <div className="max-w-4xl mx-auto mb-10 bg-[#EEF1F6] p-1.5 border border-[#D1D9E4] rounded-[6px] flex flex-col sm:flex-row gap-2">
+          {(["Power Assets", "Generation & Energy", "Auxiliary & Control"] as const).map((group) => {
+            const isActive = activeGroup === group;
+            const count = assets.filter((asset) => asset.group === group).length;
+            
+            let activeColor = "text-accent-blue";
+            let activeBorder = "border-t-accent-blue";
+            let activeDot = "bg-accent-blue";
+            
+            if (group === "Generation & Energy") {
+              activeColor = "text-accent-amber";
+              activeBorder = "border-t-accent-amber";
+              activeDot = "bg-accent-amber";
+            } else if (group === "Auxiliary & Control") {
+              activeColor = "text-text-secondary";
+              activeBorder = "border-t-text-secondary";
+              activeDot = "bg-text-secondary";
+            }
 
-                {/* Icon */}
-                <div className={`text-text-secondary ${getAccentTextHover(asset.group)} transition-colors duration-200 mb-4`}>
-                  {asset.icon}
-                </div>
-
-                {/* Asset Name */}
-                <h4 className={`font-heading font-bold text-text-primary text-base mb-2 uppercase tracking-tight ${getAccentTextHover(asset.group)} transition-colors duration-200`}>
-                  {asset.name}
-                </h4>
-                
-                {/* Benefit */}
-                <p className="font-sans text-xs text-text-secondary leading-relaxed mb-3">
-                  {asset.benefit}
-                </p>
-              </div>
-
-              {/* Telemetry Panel for Featured Bento Cards */}
-              {asset.isFeatured && asset.metrics && (
-                <div className="mt-4 border-t border-bg-border/60 pt-4">
-                  <div className="font-mono text-[9px] font-bold text-text-muted uppercase mb-2 tracking-wider flex items-center gap-1.5">
-                    <span className="w-1 h-1 bg-status-green rounded-full animate-pulse" />
-                    LIVE SCADA TELEMETRY
-                  </div>
-                  <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 font-mono text-[9.5px] text-text-secondary/90">
-                    {asset.metrics.map((metric, i) => (
-                      <li key={i} className="flex items-center gap-1 overflow-hidden text-ellipsis whitespace-nowrap">
-                        <span className="text-text-muted font-bold">›</span>
-                        <span>{metric}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </m.div>
-          ))}
-        </m.div>
-
-        {/* ==================== CREATIVE RESPONSIVE GRID (MOBILE & TABLET VIEW) ==================== */}
-        <div className="lg:hidden flex flex-col">
-          {/* Subsystem Switcher Console */}
-          <div className="flex flex-col sm:flex-row gap-2 mb-8 bg-[#EEF1F6] p-1 border border-[#D1D9E4] rounded-[3px]">
-            {(["Power Assets", "Generation & Energy", "Auxiliary & Control"] as const).map((group) => {
-              const isActive = activeGroup === group;
-              let activeBorderColor = "border-t-[#1C5FD1]";
-              let activePulseBg = "bg-[#1C5FD1]";
-              if (group === "Generation & Energy") {
-                activeBorderColor = "border-t-[#D97706]";
-                activePulseBg = "bg-[#D97706]";
-              } else if (group === "Auxiliary & Control") {
-                activeBorderColor = "border-t-[#3D5470]";
-                activePulseBg = "bg-[#3D5470]";
-              }
-
-              return (
-                <button
-                  key={group}
-                  onClick={() => setActiveGroup(group)}
-                  className={`flex-1 py-3 px-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border-t-2 rounded-[2px] flex items-center justify-center gap-2 cursor-pointer ${
-                    isActive
-                      ? `bg-white text-[#0C1929] ${activeBorderColor} border-b border-x border-[#D1D9E4] shadow-[0_1px_3px_rgba(0,0,0,0.06)]`
-                      : "border-t-transparent text-[#7A93AD] hover:text-[#0C1929] hover:bg-white/30"
-                  }`}
-                >
-                  {isActive && <span className={`w-1.5 h-1.5 rounded-full ${activePulseBg} animate-pulse`} />}
-                  {group.replace(" & Control", "").replace(" & Energy", "")}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Animated Filtered Cards List */}
-          <div className="min-h-[400px]">
-            <AnimatePresence mode="wait">
-              <m.div
-                key={activeGroup}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.25, ease: "easeOut" as const }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            return (
+              <button
+                key={group}
+                onClick={() => setActiveGroup(group)}
+                className={`flex-1 py-3 px-5 font-mono text-[10px] font-bold uppercase tracking-wider transition-all duration-200 border-t-2 rounded-[4px] flex items-center justify-center gap-2.5 cursor-pointer outline-none ${
+                  isActive
+                    ? `bg-bg-surface ${activeColor} ${activeBorder} border-b border-x border-[#D1D9E4] shadow-xs`
+                    : "border-t-transparent text-text-muted hover:text-text-primary hover:bg-bg-surface/50"
+                }`}
               >
-                {filteredAssets.map((asset) => (
-                  <m.div
-                    key={asset.name}
-                    className={`group bg-bg-surface p-6 border border-bg-border rounded-[3px] border-t-2 border-t-transparent ${getHoverClasses(asset.group)} transition-all duration-200 ease-out flex flex-col justify-between`}
-                  >
-                    <div>
-                      {/* Category tag & Dot Accent */}
-                      <div className="flex items-center gap-2 mb-4">
-                        <span className={`w-1.5 h-1.5 rounded-full ${asset.dotColor}`} aria-hidden="true" />
-                        <span className="font-mono text-[9px] font-bold text-text-muted uppercase tracking-wider">
-                          {asset.category}
-                        </span>
-                      </div>
+                {isActive && <span className={`w-1.5 h-1.5 rounded-full ${activeDot} animate-pulse`} />}
+                <span>{group}</span>
+                <span className={`text-[9px] font-normal ${isActive ? "text-text-secondary" : "text-text-muted/60"}`}>
+                  [{String(count).padStart(2, "0")}]
+                </span>
+              </button>
+            );
+          })}
+        </div>
 
-                      {/* Icon */}
-                      <div className={`text-text-secondary ${getAccentTextHover(asset.group)} transition-colors duration-200 mb-4`}>
-                        {asset.icon}
-                      </div>
-
-                      {/* Asset Name */}
-                      <h4 className={`font-heading font-bold text-text-primary text-base mb-2 uppercase tracking-tight ${getAccentTextHover(asset.group)} transition-colors duration-200`}>
-                        {asset.name}
-                      </h4>
-                      
-                      {/* Benefit */}
-                      <p className="font-sans text-xs text-text-secondary leading-relaxed mb-3">
-                        {asset.benefit}
-                      </p>
-                    </div>
-
-                    {/* Telemetry Panel for Featured Bento Cards */}
-                    {asset.isFeatured && asset.metrics && (
-                      <div className="mt-4 border-t border-bg-border/60 pt-4">
-                        <div className="font-mono text-[9px] font-bold text-text-muted uppercase mb-2 tracking-wider flex items-center gap-1.5">
-                          <span className="w-1 h-1 bg-status-green rounded-full animate-pulse" />
-                          LIVE SCADA TELEMETRY
-                        </div>
-                        <ul className="grid grid-cols-2 gap-x-2 gap-y-1 font-mono text-[9px] text-text-secondary/90">
-                          {asset.metrics.map((metric, i) => (
-                            <li key={i} className="flex items-center gap-0.5 overflow-hidden text-ellipsis whitespace-nowrap">
-                              <span className="text-text-muted font-bold">›</span>
-                              <span>{metric}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </m.div>
-                ))}
-              </m.div>
-              </AnimatePresence>
-          </div>
+        {/* Compact, Highly Animated Bento Grid Dashboard */}
+        <div className="min-h-[380px]" style={{ perspective: "1200px" }}>
+          <AnimatePresence mode="wait">
+            <m.div
+              key={activeGroup}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              variants={{
+                hidden: {},
+                show: {
+                  transition: {
+                    staggerChildren: 0.05,
+                  }
+                },
+                exit: {
+                  transition: {
+                    staggerChildren: 0.03,
+                    staggerDirection: -1,
+                  }
+                }
+              }}
+              className="grid grid-cols-12 gap-5 w-full items-stretch"
+            >
+              {filteredAssets.map((asset, idx) => (
+                <BentoCard key={asset.name} asset={asset} index={idx} />
+              ))}
+            </m.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>
