@@ -47,7 +47,7 @@ export default function AboutSection() {
         {/* Top Row: Architecture (Left) + Ratan Tata Image with Quote (Right) */}
         <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
           
-          {/* Left: Architecture Layers — slide in from left */}
+          {/* Left: Architecture Layers */}
           <m.div
             variants={staggerContainer}
             initial="hidden"
@@ -134,21 +134,23 @@ export default function AboutSection() {
             className="relative group"
           >
             <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
-              {/* Wide Image Container */}
               <div className="relative w-full h-[320px] bg-gradient-to-r from-slate-900 to-slate-800">
-                <Image
-                  src="/images/ratan_tata.png?v=2"
+                {/* Replace with your actual image path */}
+                <div className="absolute inset-0 flex items-center justify-center text-white/20">
+                  <span className="text-4xl">📷</span>
+                </div>
+                {/* Uncomment below when you have the actual image */}
+                {/* <Image
+                  src="/images/ratan_tata.png"
                   alt="Sir Ratan Tata"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   style={{ objectPosition: "50% 20%" }}
-                />
-                {/* Dark overlay for text readability */}
+                /> */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
               </div>
               
-              {/* Quote positioned at right center of the image */}
               <div className="absolute right-8 top-1/2 -translate-y-1/2 max-w-[280px] text-right">
                 <div className="text-6xl text-accent-amber/30 font-serif mb-2">"</div>
                 <p className="font-serif text-white text-lg leading-relaxed font-medium">
@@ -161,7 +163,6 @@ export default function AboutSection() {
               </div>
             </div>
             
-            {/* Caption Bar */}
             <div className="mt-3 flex items-center justify-end gap-2">
               <div className="w-8 h-px bg-accent-amber/40" />
               <span className="font-mono text-[9px] text-text-muted uppercase tracking-wider">
@@ -200,11 +201,10 @@ export default function AboutSection() {
             </m.p>
           </m.div>
 
-          {/* Empty spacer for grid alignment */}
           <div />
         </div>
 
-        {/* Bottom Row: Nikola Tesla Image (Bottom Right) with Quote + Partners */}
+        {/* Bottom Row: Nikola Tesla Image + Partners */}
         <div className="grid lg:grid-cols-2 gap-16 items-end">
           
           {/* Left: Partners Section */}
@@ -229,7 +229,6 @@ export default function AboutSection() {
               ))}
             </div>
 
-            {/* Additional trust indicator */}
             <m.div variants={fadeUp} className="mt-8 pt-6 border-t border-bg-border/50">
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
@@ -246,7 +245,7 @@ export default function AboutSection() {
             </m.div>
           </m.div>
 
-          {/* Right: Nikola Tesla — Wide Image with Quote aligned left */}
+          {/* Right: Nikola Tesla — Wide Image with Quote */}
           <m.div
             variants={slideLeft}
             initial="hidden"
@@ -255,21 +254,23 @@ export default function AboutSection() {
             className="relative group"
           >
             <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
-              {/* Wide Image Container */}
               <div className="relative w-full h-[320px] bg-gradient-to-r from-slate-800 to-slate-900">
-                <Image
-                  src="/images/nikola_tesla.png?v=2"
+                {/* Replace with your actual image path */}
+                <div className="absolute inset-0 flex items-center justify-center text-white/20">
+                  <span className="text-4xl">📷</span>
+                </div>
+                {/* Uncomment below when you have the actual image */}
+                {/* <Image
+                  src="/images/nikola_tesla.png"
                   alt="Nikola Tesla"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   style={{ objectPosition: "50% 25%" }}
-                />
-                {/* Dark overlay for text readability */}
+                /> */}
                 <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/40 to-transparent" />
               </div>
               
-              {/* Quote positioned at left center of the image */}
               <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[300px] text-left">
                 <div className="text-6xl text-accent-blue/30 font-serif mb-2">"</div>
                 <p className="font-serif text-white text-lg leading-relaxed font-medium">
@@ -282,7 +283,6 @@ export default function AboutSection() {
               </div>
             </div>
             
-            {/* Caption Bar */}
             <div className="mt-3 flex items-center gap-2">
               <span className="font-mono text-[9px] text-text-muted uppercase tracking-wider">
                 AC Power Pioneer · Inventor of Modern Electricity
