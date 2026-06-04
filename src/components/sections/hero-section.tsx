@@ -25,8 +25,8 @@ const fadeUp: Variants = {
 
 const wordAnim: Variants = {
   hidden: { opacity: 0, y: 44, filter: "blur(6px)" },
-  show:   { opacity: 1, y: 0,  filter: "blur(0px)", transition: { duration: 0.7, ease: EASE } },
-  exit:   { opacity: 0, y: -44, filter: "blur(6px)", transition: { duration: 0.4, ease: [0.4, 0, 1, 1] } },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: EASE } },
+  exit: { opacity: 0, y: -44, filter: "blur(6px)", transition: { duration: 0.4, ease: [0.4, 0, 1, 1] } },
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -35,17 +35,17 @@ type Tab = { id: number; label: string; color: string; accent: string };
 // ─── Constants ────────────────────────────────────────────────────────────────
 const TABS: Tab[] = [
   { id: 0, label: "Transformer", color: "#2563eb", accent: "#eff6ff" },
-  { id: 1, label: "Solar PV",    color: "#d97706", accent: "#fefce8" },
-  { id: 2, label: "Wind",        color: "#7c3aed", accent: "#f5f3ff" },
-  { id: 3, label: "EV Network",  color: "#059669", accent: "#f0fdf4" },
+  { id: 1, label: "Solar PV", color: "#d97706", accent: "#fefce8" },
+  { id: 2, label: "Wind", color: "#7c3aed", accent: "#f5f3ff" },
+  { id: 3, label: "EV Network", color: "#059669", accent: "#f0fdf4" },
 ];
 
 // Dynamic headline words (rotates every 3 seconds)
 const DYNAMIC_WORDS = [
-  { word: "Energy",     suffix: "Grid" },
-  { word: "Solar",      suffix: "Intelligence" },
-  { word: "Wind",       suffix: "Analytics" },
-  { word: "EV",         suffix: "Infrastructure" },
+  { word: "Energy", suffix: "Grid" },
+  { word: "Solar", suffix: "Intelligence" },
+  { word: "Wind", suffix: "Analytics" },
+  { word: "EV", suffix: "Infrastructure" },
   { word: "Predictive", suffix: "Maintenance" },
 ];
 
@@ -61,36 +61,36 @@ const BG_IMAGES = [
 
 const METRICS = [
   [
-    { label: "Load Factor", unit: "%",   val: () => (84 + Math.random() * 0.6).toFixed(1) },
-    { label: "Grid Freq",   unit: "Hz",  val: () => (49.97 + Math.random() * 0.05).toFixed(2) },
-    { label: "Efficiency",  unit: "%",   val: () => (97.3 + Math.random() * 0.4).toFixed(1) },
-    { label: "Faults",      unit: "",    val: () => "0" },
+    { label: "Load Factor", unit: "%", val: () => (84 + Math.random() * 0.6).toFixed(1) },
+    { label: "Grid Freq", unit: "Hz", val: () => (49.97 + Math.random() * 0.05).toFixed(2) },
+    { label: "Efficiency", unit: "%", val: () => (97.3 + Math.random() * 0.4).toFixed(1) },
+    { label: "Faults", unit: "", val: () => "0" },
   ],
   [
-    { label: "Irradiance",  unit: "W/m²", val: () => (847 + Math.floor(Math.random() * 15)).toString() },
-    { label: "PV Yield",    unit: "kWh",  val: () => (48.5 + Math.random() * 0.6).toFixed(1) },
-    { label: "η Cell",      unit: "%",    val: () => (19.1 + Math.random() * 0.3).toFixed(1) },
-    { label: "MPPT",        unit: "",     val: () => "LOCK" },
+    { label: "Irradiance", unit: "W/m²", val: () => (847 + Math.floor(Math.random() * 15)).toString() },
+    { label: "PV Yield", unit: "kWh", val: () => (48.5 + Math.random() * 0.6).toFixed(1) },
+    { label: "η Cell", unit: "%", val: () => (19.1 + Math.random() * 0.3).toFixed(1) },
+    { label: "MPPT", unit: "", val: () => "LOCK" },
   ],
   [
-    { label: "Wind Speed",  unit: "m/s", val: () => (8.2 + Math.random() * 0.5).toFixed(1) },
-    { label: "RPM",         unit: "",    val: () => (16.1 + Math.random() * 0.4).toFixed(1) },
-    { label: "Output",      unit: "MW",  val: () => (2.38 + Math.random() * 0.05).toFixed(2) },
-    { label: "Betz η",      unit: "%",   val: () => (41.1 + Math.random() * 0.4).toFixed(1) },
+    { label: "Wind Speed", unit: "m/s", val: () => (8.2 + Math.random() * 0.5).toFixed(1) },
+    { label: "RPM", unit: "", val: () => (16.1 + Math.random() * 0.4).toFixed(1) },
+    { label: "Output", unit: "MW", val: () => (2.38 + Math.random() * 0.05).toFixed(2) },
+    { label: "Betz η", unit: "%", val: () => (41.1 + Math.random() * 0.4).toFixed(1) },
   ],
   [
-    { label: "Active Ports", unit: "",   val: () => (12 + Math.floor(Math.random() * 2)).toString() },
-    { label: "Grid Load",    unit: "kW", val: () => (347 + Math.floor(Math.random() * 10)).toString() },
-    { label: "Sessions",     unit: "",   val: () => (28 + Math.floor(Math.random() * 3)).toString() },
-    { label: "V2G",          unit: "",   val: () => "ON" },
+    { label: "Active Ports", unit: "", val: () => (12 + Math.floor(Math.random() * 2)).toString() },
+    { label: "Grid Load", unit: "kW", val: () => (347 + Math.floor(Math.random() * 10)).toString() },
+    { label: "Sessions", unit: "", val: () => (28 + Math.floor(Math.random() * 3)).toString() },
+    { label: "V2G", unit: "", val: () => "ON" },
   ],
 ];
 
 const STATS = [
   { value: "2,847", label: "Nodes Online", color: "#2563eb" },
-  { value: "99.7%", label: "Uptime SLA",   color: "#059669" },
-  { value: "<50ms", label: "AI Latency",   color: "#7c3aed" },
-  { value: "6 MW",  label: "Power Saved",  color: "#d97706" },
+  { value: "99.7%", label: "Uptime SLA", color: "#059669" },
+  { value: "<50ms", label: "AI Latency", color: "#7c3aed" },
+  { value: "6 MW", label: "Power Saved", color: "#d97706" },
 ];
 
 // ─── SVG Schematics ───────────────────────────────────────────────────────────
@@ -315,14 +315,14 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function HeroSection() {
-  const [activeTab, setActiveTab]   = useState(0);
-  const [metrics, setMetrics]       = useState(() => METRICS[0].map((m) => m.val()));
-  const [clock, setClock]           = useState("");
-  const [bgIndex, setBgIndex]       = useState(0);
-  const [bgOpacity, setBgOpacity]   = useState(0.75); // Higher base opacity for more visible background
-  const [dynIdx, setDynIdx]         = useState(0);
-  const autoRef                     = useRef(true);
-  const sectionRef                  = useRef<HTMLElement>(null);
+  const [activeTab, setActiveTab] = useState(0);
+  const [metrics, setMetrics] = useState(() => METRICS[0].map((m) => m.val()));
+  const [clock, setClock] = useState("");
+  const [bgIndex, setBgIndex] = useState(0);
+  const [bgOpacity, setBgOpacity] = useState(2.5); // Higher base opacity for more visible background
+  const [dynIdx, setDynIdx] = useState(0);
+  const autoRef = useRef(true);
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Clock
   useEffect(() => {
@@ -371,9 +371,9 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, []);
 
-  const tab      = TABS[activeTab];
+  const tab = TABS[activeTab];
   const Schematic = SCHEMATICS[activeTab];
-  const dynWord   = DYNAMIC_WORDS[dynIdx];
+  const dynWord = DYNAMIC_WORDS[dynIdx];
 
   return (
     <>
@@ -657,12 +657,12 @@ export default function HeroSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { color: "#2563eb", bg: "#eff6ff", icon: "⚡", name: "Power Transformers",   desc: "Real-time temperature, load, THD, and fault prediction for distribution and power transformers.", tag: "11kV – 220kV range" },
-            { color: "#d97706", bg: "#fefce8", icon: "☀️",  name: "Solar PV Systems",      desc: "Panel-level IV tracing, MPPT optimization, shade analysis, and inverter health monitoring.",      tag: "1kW – 100MW farms" },
-            { color: "#7c3aed", bg: "#f5f3ff", icon: "💨", name: "Wind Turbines",         desc: "Vibration analysis, gearbox health, pitch optimization, and predictive maintenance via SCADA.",   tag: "250kW – 5MW units" },
-            { color: "#059669", bg: "#f0fdf4", icon: "🔌", name: "EV Charging Networks", desc: "Smart load balancing across CCS2/CHAdeMO/AC chargers, V2G monitoring, fleet optimization.",       tag: "V2G + OCPP 2.0.1" },
-            { color: "#0ea5e9", bg: "#f0f9ff", icon: "📡", name: "Smart Metering (AMI)", desc: "Tamper detection, power quality analysis, and automated demand response integration.",             tag: "HAN + WAN + NAN" },
-            { color: "#e11d48", bg: "#fff1f2", icon: "🏗️", name: "Substations & Grid",   desc: "Protection relay coordination, busbar monitoring, and real-time fault location for substations.",  tag: "IEC 61850 / DNP3" },
+            { color: "#2563eb", bg: "#eff6ff", icon: "⚡", name: "Power Transformers", desc: "Real-time temperature, load, THD, and fault prediction for distribution and power transformers.", tag: "11kV – 220kV range" },
+            { color: "#d97706", bg: "#fefce8", icon: "☀️", name: "Solar PV Systems", desc: "Panel-level IV tracing, MPPT optimization, shade analysis, and inverter health monitoring.", tag: "1kW – 100MW farms" },
+            { color: "#7c3aed", bg: "#f5f3ff", icon: "💨", name: "Wind Turbines", desc: "Vibration analysis, gearbox health, pitch optimization, and predictive maintenance via SCADA.", tag: "250kW – 5MW units" },
+            { color: "#059669", bg: "#f0fdf4", icon: "🔌", name: "EV Charging Networks", desc: "Smart load balancing across CCS2/CHAdeMO/AC chargers, V2G monitoring, fleet optimization.", tag: "V2G + OCPP 2.0.1" },
+            { color: "#0ea5e9", bg: "#f0f9ff", icon: "📡", name: "Smart Metering (AMI)", desc: "Tamper detection, power quality analysis, and automated demand response integration.", tag: "HAN + WAN + NAN" },
+            { color: "#e11d48", bg: "#fff1f2", icon: "🏗️", name: "Substations & Grid", desc: "Protection relay coordination, busbar monitoring, and real-time fault location for substations.", tag: "IEC 61850 / DNP3" },
           ].map((s, i) => (
             <Reveal key={i} delay={i * 0.07}>
               <m.div whileHover={{ y: -4, boxShadow: "0 20px 50px rgba(0,0,0,0.08)" }}
@@ -701,10 +701,10 @@ export default function HeroSection() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", borderRadius: 16, overflow: "hidden", border: "1.5px solid #e2e8f0" }}>
           {[
-            { layer: "Layer 1", name: "Edge Sensors", detail: "CTs, PTs, vibration, temp, pH, gas sensors — hardened for field deployment",               version: "CYBO-EDGE v3",   color: "#2563eb" },
-            { layer: "Layer 2", name: "IoT Gateway",  detail: "Local processing, protocol translation (Modbus → MQTT/AMQP), edge inference",              version: "CYBO-GATE v2.1", color: "#0ea5e9" },
-            { layer: "Layer 3", name: "AI Engine",    detail: "Time-series anomaly detection, predictive maintenance models, load forecasting",            version: "VAJRA-AI v1.4",  color: "#7c3aed" },
-            { layer: "Layer 4", name: "Dashboard",    detail: "Real-time web/mobile dashboards, alerts, SCADA integration, audit trails",                  version: "CYBO-CTRL",      color: "#059669" },
+            { layer: "Layer 1", name: "Edge Sensors", detail: "CTs, PTs, vibration, temp, pH, gas sensors — hardened for field deployment", version: "CYBO-EDGE v3", color: "#2563eb" },
+            { layer: "Layer 2", name: "IoT Gateway", detail: "Local processing, protocol translation (Modbus → MQTT/AMQP), edge inference", version: "CYBO-GATE v2.1", color: "#0ea5e9" },
+            { layer: "Layer 3", name: "AI Engine", detail: "Time-series anomaly detection, predictive maintenance models, load forecasting", version: "VAJRA-AI v1.4", color: "#7c3aed" },
+            { layer: "Layer 4", name: "Dashboard", detail: "Real-time web/mobile dashboards, alerts, SCADA integration, audit trails", version: "CYBO-CTRL", color: "#059669" },
           ].map((layer, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <div style={{
