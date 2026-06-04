@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import type { Variants } from "framer-motion";
 
-// ─── Add these fonts to your layout.tsx <head> ────────────────────────────────
+// ─── Fonts (add to your layout.tsx <head> if not already) ────────────────────
 // <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 // ─── Motion Variants ──────────────────────────────────────────────────────────
@@ -26,7 +26,7 @@ const fadeUp: Variants = {
 const wordAnim: Variants = {
   hidden: { opacity: 0, y: 44, filter: "blur(6px)" },
   show:   { opacity: 1, y: 0,  filter: "blur(0px)", transition: { duration: 0.7, ease: EASE } },
-  exit:   { opacity: 0, y: -44, filter: "blur(6px)", transition: { duration: 0.35, ease: [0.4, 0, 1, 1] } },
+  exit:   { opacity: 0, y: -44, filter: "blur(6px)", transition: { duration: 0.4, ease: [0.4, 0, 1, 1] } },
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -40,6 +40,7 @@ const TABS: Tab[] = [
   { id: 3, label: "EV Network",  color: "#059669", accent: "#f0fdf4" },
 ];
 
+// Dynamic headline words (rotates every 3 seconds)
 const DYNAMIC_WORDS = [
   { word: "Energy",     suffix: "Grid" },
   { word: "Solar",      suffix: "Intelligence" },
@@ -48,13 +49,14 @@ const DYNAMIC_WORDS = [
   { word: "Predictive", suffix: "Maintenance" },
 ];
 
-// Real energy-sector photography (Unsplash, no auth required)
+// High-quality energy sector photography (Unsplash)
 const BG_IMAGES = [
-  "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600&h=900&fit=crop",
-  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1600&h=900&fit=crop",
-  "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=1600&h=900&fit=crop",
-  "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1600&h=900&fit=crop",
-  "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&h=900&fit=crop",
+  "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop",      // Power lines / transformers
+  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&h=1080&fit=crop",      // Solar farm
+  "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=1920&h=1080&fit=crop",         // Wind turbines
+  "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1920&h=1080&fit=crop",      // EV charging station
+  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&h=1080&fit=crop",      // Power plant / grid infrastructure
+  "https://images.unsplash.com/photo-1566908827455-9f8d724a4701?w=1920&h=1080&fit=crop",      // Transformer substation
 ];
 
 const METRICS = [
@@ -317,8 +319,7 @@ export default function HeroSection() {
   const [metrics, setMetrics]       = useState(() => METRICS[0].map((m) => m.val()));
   const [clock, setClock]           = useState("");
   const [bgIndex, setBgIndex]       = useState(0);
-  // bgOpacity drives how much the hero bg image shows (fades on scroll)
-  const [bgOpacity, setBgOpacity]   = useState(1);
+  const [bgOpacity, setBgOpacity]   = useState(0.45); // Higher base opacity for more visible background
   const [dynIdx, setDynIdx]         = useState(0);
   const autoRef                     = useRef(true);
   const sectionRef                  = useRef<HTMLElement>(null);
@@ -331,18 +332,18 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, []);
 
-  // BG image rotation — every 2.8 s
+  // BG image rotation — SLOWER: every 5 seconds for more visible transitions
   useEffect(() => {
-    const id = setInterval(() => setBgIndex((p) => (p + 1) % BG_IMAGES.length), 2800);
+    const id = setInterval(() => setBgIndex((p) => (p + 1) % BG_IMAGES.length), 5000);
     return () => clearInterval(id);
   }, []);
 
-  // Scroll → fade bg opacity from 1 → ~0.1 as user scrolls past hero
+  // Scroll → fade bg opacity slightly but keep it visible (starts at 0.45, goes to 0.15)
   useEffect(() => {
     const onScroll = () => {
       const heroH = sectionRef.current?.offsetHeight ?? window.innerHeight;
-      const ratio = Math.min(window.scrollY / (heroH * 0.65), 1);
-      setBgOpacity(1 - ratio * 0.9);
+      const ratio = Math.min(window.scrollY / (heroH * 0.8), 1);
+      setBgOpacity(0.45 - ratio * 0.3);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -356,7 +357,7 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, [activeTab]);
 
-  // Auto-rotate tabs every 5 s
+  // Auto-rotate tabs every 5 seconds
   useEffect(() => {
     const id = setInterval(() => {
       if (autoRef.current) setActiveTab((p) => (p + 1) % 4);
@@ -364,9 +365,9 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, []);
 
-  // Dynamic headline rotation every 2.5 s
+  // Dynamic headline rotation every 3 seconds
   useEffect(() => {
-    const id = setInterval(() => setDynIdx((p) => (p + 1) % DYNAMIC_WORDS.length), 2500);
+    const id = setInterval(() => setDynIdx((p) => (p + 1) % DYNAMIC_WORDS.length), 3000);
     return () => clearInterval(id);
   }, []);
 
@@ -379,33 +380,39 @@ export default function HeroSection() {
       {/* ── Fonts ── */}
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');`}</style>
 
-      {/* ── BG slideshow — fixed, behind everything, fades with scroll ── */}
-      {/*    NOTE: positioned behind the page; the schematic panel has its own
-              opaque white background so the photo never bleeds into the widget. */}
+      {/* ── BACKGROUND SLIDESHOW ── */}
+      {/* Higher base opacity (0.45) for more visible imagery, smoother crossfade (2.5s) */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{ zIndex: 0, opacity: bgOpacity, transition: "opacity 0.3s" }}>
+        style={{ zIndex: 0, opacity: bgOpacity, transition: "opacity 0.4s ease-out" }}>
         <AnimatePresence mode="wait">
           <m.div key={bgIndex}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 1.6, ease: "easeInOut" }}
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 2.2, ease: "easeInOut" }}
             className="absolute inset-0"
-            style={{ backgroundImage: `url(${BG_IMAGES[bgIndex]})`, backgroundSize: "cover", backgroundPosition: "center" }}
+            style={{
+              backgroundImage: `url(${BG_IMAGES[bgIndex]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
           />
         </AnimatePresence>
-        {/* Light overlay so text stays readable on white-ish theme */}
+        {/* Soft gradient overlay to maintain text readability while keeping background visible */}
         <div className="absolute inset-0" style={{
-          background: "linear-gradient(to bottom, rgba(248,250,252,0.72) 0%, rgba(248,250,252,0.55) 45%, rgba(248,250,252,0.88) 80%, rgba(248,250,252,1) 100%)",
+          background: "linear-gradient(to bottom, rgba(248,250,252,0.65) 0%, rgba(248,250,252,0.5) 40%, rgba(248,250,252,0.75) 80%, rgba(248,250,252,0.95) 100%)",
         }} />
         {/* Subtle dot-grid texture */}
         <div className="absolute inset-0" style={{
-          backgroundImage: "radial-gradient(circle, rgba(37,99,235,0.07) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, rgba(37,99,235,0.06) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
         }} />
       </div>
 
       {/* ══════════════════════════════════════════════════════════════
-          HERO
+          HERO SECTION
       ══════════════════════════════════════════════════════════════ */}
       <section
         ref={sectionRef}
@@ -427,9 +434,9 @@ export default function HeroSection() {
           </span>
         </m.div>
 
-        {/* ── Headline ── */}
+        {/* ── DYNAMIC HEADLINE ── */}
         <m.div variants={fadeUp} custom={0.12} initial="hidden" animate="show" className="mb-8">
-          {/* Line 1 — static */}
+          {/* Line 1 - Static */}
           <div className="flex flex-wrap justify-center gap-x-4 leading-none mb-1">
             {["India's", "Intelligent"].map((w, i) => (
               <span key={i} style={{
@@ -440,27 +447,31 @@ export default function HeroSection() {
             ))}
           </div>
 
-          {/* Line 2 — dynamic */}
+          {/* Line 2 - DYNAMIC (changes every 3 seconds) */}
           <div className="flex flex-wrap justify-center gap-x-4 overflow-hidden" style={{ minHeight: "1.06em" }}>
             <AnimatePresence mode="wait">
-              <m.span key={dynIdx + "w"} variants={wordAnim} initial="hidden" animate="show" exit="exit"
+              <m.span key={`word-${dynIdx}`} variants={wordAnim} initial="hidden" animate="show" exit="exit"
                 style={{
                   fontFamily: "'Outfit', sans-serif", fontWeight: 900,
                   fontSize: "clamp(42px, 7vw, 92px)", letterSpacing: "-0.03em", lineHeight: 1.03,
                   color: "#2563eb", display: "inline-block",
-                }}>{dynWord.word}</m.span>
+                }}>
+                {dynWord.word}
+              </m.span>
             </AnimatePresence>
             <AnimatePresence mode="wait">
-              <m.span key={dynIdx + "s"} variants={wordAnim} initial="hidden" animate="show" exit="exit"
+              <m.span key={`suffix-${dynIdx}`} variants={wordAnim} initial="hidden" animate="show" exit="exit"
                 style={{
                   fontFamily: "'Outfit', sans-serif", fontWeight: 900,
                   fontSize: "clamp(42px, 7vw, 92px)", letterSpacing: "-0.03em", lineHeight: 1.03,
                   color: "#0f172a", display: "inline-block",
-                }}>{dynWord.suffix}</m.span>
+                }}>
+                {dynWord.suffix}
+              </m.span>
             </AnimatePresence>
           </div>
 
-          {/* Line 3 — static */}
+          {/* Line 3 - Static */}
           <div className="flex flex-wrap justify-center gap-x-4 leading-none">
             {["AI", "Platform"].map((w, i) => (
               <span key={i} style={{
@@ -478,7 +489,7 @@ export default function HeroSection() {
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: "clamp(15px, 1.8vw, 18px)",
-            color: "#475569", lineHeight: 1.7,
+            color: "#334155", lineHeight: 1.7,
           }}>
           AI-powered IoT monitoring for transformers, solar farms, EV networks, and wind turbines — built in India, for India's grid future.
         </m.p>
@@ -526,8 +537,6 @@ export default function HeroSection() {
         <m.div variants={fadeUp} custom={0.6} initial="hidden" animate="show"
           className="w-full max-w-4xl mx-auto">
 
-          {/* The panel itself has an opaque white bg so the background photo
-              never shows through the schematic area */}
           <div style={{
             borderRadius: 20, overflow: "hidden",
             background: "white",
@@ -568,7 +577,7 @@ export default function HeroSection() {
               ))}
             </div>
 
-            {/* Schematic canvas — opaque white so photo never shows here */}
+            {/* Schematic canvas */}
             <div style={{ position: "relative", minHeight: 240, padding: "16px 12px 8px", background: "white" }}>
               <AnimatePresence mode="wait">
                 <m.div key={activeTab}
@@ -629,7 +638,7 @@ export default function HeroSection() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          SECTORS
+          SECTORS SECTION
       ══════════════════════════════════════════════════════════════ */}
       <section
         className="relative px-6 lg:px-12 pb-28"
