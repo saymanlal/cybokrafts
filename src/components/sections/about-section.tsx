@@ -146,7 +146,7 @@ export default function AboutSection() {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
               </div>
               
-              <div className="absolute right-8 top-1/2 -translate-y-1/2 max-w-[280px] text-right">
+              <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[280px] text-left">
                 <div className="text-6xl text-accent-amber/30 font-serif mb-2">"</div>
                 <p className="font-serif text-white text-lg leading-relaxed font-medium">
                   Indian enterprise can and must lead global innovation.
