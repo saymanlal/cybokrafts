@@ -182,21 +182,27 @@ export default function AboutSection() {
             <m.h2
               id="about-heading"
               variants={slideRight}
-              className="font-heading font-bold text-4xl md:text-[2.5rem] leading-[1.05] text-text-primary mb-6 uppercase tracking-tight"
+              className="font-heading font-bold text-4xl md:text-[2.5rem] leading-[1.05] text-text-primary uppercase tracking-tight"
             >
               Bridging Industrial Assets with Modern Intelligence
             </m.h2>
+          </m.div>
 
-            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed mb-5">
+          <m.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={VIEWPORT}
+            className="flex flex-col gap-6 lg:mt-9"
+          >
+            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed">
               Cybokrafts Universal Innovations is an Indian infrastructure technology company building AI-powered monitoring systems for critical energy assets. We operate at the intersection of hardware engineering and intelligent software.
             </m.p>
 
-            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed mb-8">
+            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed">
               Our mission is anchored in the Atmanirbhar Bharat vision — delivering indigenous, world-class technology solutions that strengthen India's energy infrastructure and reduce dependence on imported systems.
             </m.p>
           </m.div>
-
-          <div />
         </div>
 
         {/* Bottom Row: Nikola Tesla Image + Partners */}
