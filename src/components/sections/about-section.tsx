@@ -135,19 +135,14 @@ export default function AboutSection() {
           >
             <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
               <div className="relative w-full h-[320px] bg-gradient-to-r from-slate-900 to-slate-800">
-                {/* Replace with your actual image path */}
-                <div className="absolute inset-0 flex items-center justify-center text-white/20">
-                  <span className="text-4xl">📷</span>
-                </div>
-                {/* Uncomment below when you have the actual image */}
-                {/* <Image
+                <Image
                   src="/images/ratan_tata.png"
                   alt="Sir Ratan Tata"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   style={{ objectPosition: "50% 20%" }}
-                /> */}
+                />
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
               </div>
               
@@ -255,19 +250,14 @@ export default function AboutSection() {
           >
             <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
               <div className="relative w-full h-[320px] bg-gradient-to-r from-slate-800 to-slate-900">
-                {/* Replace with your actual image path */}
-                <div className="absolute inset-0 flex items-center justify-center text-white/20">
-                  <span className="text-4xl">📷</span>
-                </div>
-                {/* Uncomment below when you have the actual image */}
-                {/* <Image
+                <Image
                   src="/images/nikola_tesla.png"
                   alt="Nikola Tesla"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
                   style={{ objectPosition: "50% 25%" }}
-                /> */}
+                />
                 <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/40 to-transparent" />
               </div>
               
