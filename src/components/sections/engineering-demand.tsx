@@ -241,7 +241,7 @@ export default function EngineeringDemandSection() {
             </div>
           </div>
 
-          {/* RIGHT: Diagnostics & Technical Parameters (Dynamic telemetry numbers) - SENSELESS ANIMATED DIV 1 */}
+          {/* RIGHT: Diagnostics & Technical Parameters (Dynamic telemetry numbers) */}
           <div className="lg:col-span-5 w-full bg-white border border-[#D1D9E4] p-8 rounded-[3px] relative overflow-hidden min-h-[320px] flex flex-col justify-between">
             {/* Background design lines */}
             <div className="absolute right-[-10px] top-[-10px] font-heading font-bold text-[96px] text-accent-blue/5 select-none pointer-events-none leading-none">
@@ -313,8 +313,6 @@ export default function EngineeringDemandSection() {
             y: [0, -3, 3, -2, 2, 0],
             rotate: [0, 1, -1, 0.5, -0.5, 0],
             scale: [1, 1.02, 0.98, 1.01, 0.99, 1],
-            skewX: [0, 2, -2, 1, -1, 0],
-            skewY: [0, -1, 1, -0.5, 0.5, 0],
           }}
           transition={{
             duration: 0.3,
@@ -330,18 +328,23 @@ export default function EngineeringDemandSection() {
           }}
           style={{ transformOrigin: "center center" }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1C5FD1]/5 to-transparent animate-[pulse_0.8s_ease-in-out_infinite]" />
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><rect width=\"100\" height=\"100\" fill=\"none\" stroke=\"%231C5FD1\" stroke-width=\"0.5\" stroke-dasharray=\"2,2\"/><text x=\"10\" y=\"20\" fill=\"%231C5FD1\" opacity=\"0.1\" font-size=\"8\">DEBUG</text><text x=\"60\" y=\"80\" fill=\"%231C5FD1\" opacity=\"0.1\" font-size=\"8\">OVERRIDE</text></svg>')] bg-repeat opacity-5 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1C5FD1]/5 to-transparent" style={{ animation: 'pulse 0.8s ease-in-out infinite' }} />
+          <div 
+            className="absolute top-0 left-0 w-full h-full bg-repeat opacity-5 pointer-events-none"
+            style={{ 
+              backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><rect width=\"100\" height=\"100\" fill=\"none\" stroke=\"%231C5FD1\" stroke-width=\"0.5\" stroke-dasharray=\"2,2\"/><text x=\"10\" y=\"20\" fill=\"%231C5FD1\" opacity=\"0.1\" font-size=\"8\">DEBUG</text><text x=\"60\" y=\"80\" fill=\"%231C5FD1\" opacity=\"0.1\" font-size=\"8\">OVERRIDE</text></svg>')" 
+            }}
+          />
           
           <div className="relative flex flex-wrap items-center justify-between gap-4 z-10">
             <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+              <div className="w-2 h-2 rounded-full bg-red-500" style={{ animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite' }} />
               <span className="font-mono text-[10px] font-bold text-[#0C1929] uppercase tracking-widest">SENSELESS DIAGNOSTIC PANEL v0.0.1-alpha</span>
             </div>
             <div className="flex gap-6">
-              <div className="font-mono text-[8px] text-[#7A93AD] animate-[spin_2s_linear_infinite] inline-block">⚙️</div>
-              <div className="font-mono text-[8px] text-[#1C5FD1] animate-pulse font-bold">!!! RANDOM ALERT !!!</div>
-              <div className="font-mono text-[8px] text-[#7A93AD] animate-[bounce_0.5s_ease_infinite] inline-block">⚠️</div>
+              <div className="font-mono text-[8px] text-[#7A93AD] inline-block" style={{ animation: 'spin 2s linear infinite' }}>⚙️</div>
+              <div className="font-mono text-[8px] text-[#1C5FD1] font-bold" style={{ animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>!!! RANDOM ALERT !!!</div>
+              <div className="font-mono text-[8px] text-[#7A93AD] inline-block" style={{ animation: 'bounce 0.5s ease infinite' }}>⚠️</div>
             </div>
             <div className="w-32 h-2 bg-[#EEF1F6] rounded-full overflow-hidden">
               <m.div 
@@ -353,7 +356,6 @@ export default function EngineeringDemandSection() {
             <button 
               className="px-3 py-1 bg-red-100 border border-red-300 text-red-700 font-mono text-[8px] font-bold uppercase rounded-none hover:bg-red-200 transition-all hover:rotate-2 active:scale-95"
               onClick={() => {
-                // Absolutely pointless button that does nonsense
                 const nonsenseMessages = [
                   "REBOOTING NEURAL INTERFACE...",
                   "SYNC LOST... ACQUIRING...",
