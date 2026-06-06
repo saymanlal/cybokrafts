@@ -251,7 +251,7 @@ const features: Feature[] = [
         </div>
         {/* Header */}
         <div className="flex items-center justify-between font-mono text-[7.5px] text-[#1C5FD1] z-10">
-          <span>// SOVEREIGN INDIAN DATA RESIDENCY</span>
+          <span>SOVEREIGN INDIAN DATA RESIDENCY</span>
           <span className="font-bold text-[#059669] flex items-center gap-1">
             <span className="w-1 h-1 bg-[#059669] rounded-full animate-ping" />
             DATA DOMAIN: LOCAL LOCK
@@ -373,7 +373,7 @@ const features: Feature[] = [
         </div>
         {/* Header */}
         <div className="flex items-center justify-between font-mono text-[7.5px] text-[#1C5FD1] z-10">
-          <span>// EXTERNAL SENSOR CLAMP RETROFIT</span>
+          <span>EXTERNAL SENSOR CLAMP RETROFIT</span>
           <span className="flex items-center gap-1 text-[#059669] font-bold">
             <span className="w-1 h-1 bg-[#059669] rounded-full animate-pulse" />
             TELEMETRY LINK: ESTABLISHED
@@ -511,7 +511,7 @@ export default function FeaturesSection() {
 
                 {/* Subsystem tags */}
                 <div className="font-mono text-[9px] font-bold text-[#1C5FD1] tracking-wider uppercase mb-1">
-                  // {feature.tagline}
+                  {feature.tagline}
                 </div>
 
                 {/* Title */}
@@ -591,7 +591,7 @@ export default function FeaturesSection() {
                   {/* Top tags */}
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-mono text-[9px] font-bold text-[#1C5FD1] tracking-wider uppercase">
-                      // {activeFeature.tagline}
+                      {activeFeature.tagline}
                     </span>
                     <span className="font-mono text-[9px] font-bold text-text-muted">
                       [{activeFeature.num}]

@@ -293,7 +293,7 @@ export default function ValuesSection() {
                     {values[activeIndex].telemetry.map((t, idx) => (
                       <div key={idx} className="bg-bg-muted/40 border border-bg-border/40 p-3.5 rounded-sm flex flex-col justify-between min-h-[62px]">
                         <span className="font-mono text-[8px] text-text-muted uppercase tracking-wider block">
-                          // {t.label}
+                          {t.label}
                         </span>
                         {t.type === "progress" ? (
                           <div className="mt-2">
@@ -333,7 +333,7 @@ export default function ValuesSection() {
                     className="mt-6 border-l-2 border-accent-blue pl-4 py-2 bg-accent-blue-light/30 rounded-sm"
                   >
                     <span className="font-mono text-[8px] text-accent-blue font-bold tracking-widest uppercase block mb-1">
-                      // CORE MANIFESTO
+                      CORE MANIFESTO
                     </span>
                     <blockquote className="font-heading font-semibold text-text-primary text-[12px] leading-snug italic uppercase">
                       "{values[activeIndex].manifesto}"
@@ -552,7 +552,7 @@ export default function ValuesSection() {
                       : "bg-white border-bg-border text-text-muted hover:text-text-secondary"
                   }`}
                 >
-                  {val.number} // {val.name.split(" ")[0]}
+                  {val.number} {val.name.split(" ")[0]}
                 </button>
               );
             })}
