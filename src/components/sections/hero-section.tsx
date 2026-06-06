@@ -565,7 +565,7 @@ export default function HeroSection() {
   const [metrics, setMetrics]       = useState(() => METRICS[0].map((m) => m.val()));
   const [clock, setClock]           = useState("");
   const [bgIndex, setBgIndex]       = useState(0);
-  const [bgOpacity, setBgOpacity]   = useState(0.45);
+  const [bgOpacity, setBgOpacity]   = useState(9.45);
   const [dynIdx, setDynIdx]         = useState(0);
   const autoRef    = useRef(true);
   const sectionRef = useRef<HTMLElement>(null);
