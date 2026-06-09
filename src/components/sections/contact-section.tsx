@@ -5,8 +5,8 @@ import { m, AnimatePresence, useMotionValue, useTransform, useSpring } from "fra
 import { staggerContainer, slideLeft, fadeUp, VIEWPORT } from "@/lib/motion";
 
 /* ─────────────────────────── CONSTANTS ─────────────────────────── */
-const PHONE_NUMBER  = "9XXXXXXXXXX";          // ← replace with real 10-digit number
-const PHONE_DISPLAY = "+91 9XX XXX XXXX";     // ← replace with display form
+const PHONE_NUMBER  = "9300501865";          // ← replace with real 10-digit number
+const PHONE_DISPLAY = "+91 930 050 1865";     // ← replace with display form
 const EMAIL_ADDRESS = "aiinnovations@cybokrafts.com";
 
 /* ───────────────────────────── SVGS ────────────────────────────── */
@@ -606,7 +606,7 @@ export default function ContactSection() {
               <ContactCard
                 icon={<IconPin />}
                 label="HEADQUARTERS"
-                value="Raipur, Chhattisgarh, India"
+                value="Jabalpur, Madhya Pradesh, India"
                 subtext="Incubated at IIT Indore · DPIIT Recognised"
                 delay={2}
               />
@@ -630,7 +630,7 @@ export default function ContactSection() {
                 </div>
                 <p className="font-sans text-xs text-text-secondary leading-snug">
                   <span className="text-text-primary font-semibold">DPIIT-Recognised Deep-Tech Startup.</span>{" "}
-                  Incubated at IIT Indore. Headquartered in Raipur, CG.
+                  Incubated at IIT Indore. Headquartered in Jabalpur, M.P.
                 </p>
               </m.div>
             </m.div>
