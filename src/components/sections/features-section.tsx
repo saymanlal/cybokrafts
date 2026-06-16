@@ -41,7 +41,7 @@ const features: Feature[] = [
         </div>
         {/* Header */}
         <div className="flex items-center justify-between font-mono text-[7.5px] text-[#7A93AD] z-10">
-          <span>// DUAL-CHANNEL REAL-TIME TELEMETRY</span>
+          <span>DUAL-CHANNEL REAL-TIME TELEMETRY</span>
           <span className="flex items-center gap-1 text-[#1C5FD1] font-bold">
             <span className="w-1 h-1 rounded-full bg-[#1C5FD1] animate-pulse" />
             SAMPLING: 100Hz

@@ -876,11 +876,11 @@ export default function HeroSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { color: "#2563eb", bg: "#eff6ff", icon: "⚡", name: "Power Transformers",    desc: "Real-time temperature, load, THD, and fault prediction for distribution and power transformers.", tag: "11kV – 220kV range" },
+            { color: "#2563eb", bg: "#eff6ff", icon: "⚡", name: "Power Transformers with IOT",    desc: "Real-time temperature, load, THD, and fault prediction for distribution and power transformers.", tag: "11kV – 220kV range" },
             { color: "#d97706", bg: "#fefce8", icon: "☀️", name: "Solar PV Systems",       desc: "Panel-level IV tracing, MPPT optimization, shade analysis, and inverter health monitoring.", tag: "1kW – 100MW farms" },
-            { color: "#7c3aed", bg: "#f5f3ff", icon: "💨", name: "Wind Turbines",          desc: "Vibration analysis, gearbox health, pitch optimization, and predictive maintenance via SCADA.", tag: "250kW – 5MW units" },
-            { color: "#059669", bg: "#f0fdf4", icon: "🔌", name: "EV Charging Networks",   desc: "Smart load balancing across CCS2/CHAdeMO/AC chargers, V2G monitoring, fleet optimization.", tag: "V2G + OCPP 2.0.1" },
-            { color: "#0ea5e9", bg: "#f0f9ff", icon: "📡", name: "Smart Metering (AMI)",   desc: "Tamper detection, power quality analysis, and automated demand response integration.", tag: "HAN + WAN + NAN" },
+            { color: "#7c3aed", bg: "#f5f3ff", icon: "💨", name: "Wind Turbine Analysis",          desc: "Vibration analysis, gearbox health, pitch optimization, and predictive maintenance via SCADA.", tag: "250kW – 5MW units" },
+            { color: "#059669", bg: "#f0fdf4", icon: "🔌", name: "EV Battery Monitoring",   desc: "Smart load balancing across CCS2/CHAdeMO/AC chargers, V2G monitoring, fleet optimization.", tag: "V2G + OCPP 2.0.1" },
+            { color: "#0ea5e9", bg: "#f0f9ff", icon: "📡", name: "Smart AI Dashboards",   desc: "Tamper detection, power quality analysis, and automated demand response integration.", tag: "HAN + WAN + NAN" },
             { color: "#e11d48", bg: "#fff1f2", icon: "🏗️", name: "Substations & Grid",    desc: "Protection relay coordination, busbar monitoring, and real-time fault location for substations.", tag: "IEC 61850 / DNP3" },
           ].map((s, i) => (
             <Reveal key={i} delay={i * 0.07}>
