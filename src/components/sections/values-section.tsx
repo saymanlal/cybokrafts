@@ -576,7 +576,7 @@ export default function ValuesSection() {
                 style={{
                   top: "50%", left: "50%",
                   width: "148px", height: "148px",
-                  transform: "translate(-50%,-50%)",
+                  marginTop: "-74px", marginLeft: "-74px",
                   border: `1px dashed ${theme.light}99`,
                 }}
               />
@@ -587,7 +587,7 @@ export default function ValuesSection() {
                 style={{
                   top: "50%", left: "50%",
                   width: "124px", height: "124px",
-                  transform: "translate(-50%,-50%)",
+                  marginTop: "-62px", marginLeft: "-62px",
                   border: `1px dotted ${theme.ac}55`,
                 }}
               />
@@ -598,7 +598,7 @@ export default function ValuesSection() {
                 style={{
                   top: "50%", left: "50%",
                   width: "102px", height: "102px",
-                  transform: "translate(-50%,-50%)",
+                  marginTop: "-51px", marginLeft: "-51px",
                   borderTop: `2px solid ${theme.ac}`,
                   borderRight: "2px solid transparent",
                   borderBottom: "2px solid transparent",
@@ -642,34 +642,40 @@ export default function ValuesSection() {
                 const isActive = idx === activeIndex;
                 const { x, y } = getNodePos(idx, VALUES.length, ORB_R);
                 return (
-                  <m.button
+                  <div
                     key={val.name}
-                    onClick={() => setActiveIndex(idx)}
-                    whileHover={{ scale: 1.06 }}
-                    whileTap={{ scale: 0.96 }}
-                    className="absolute flex items-center gap-2 px-4 py-2 rounded-full font-mono text-[10px] tracking-wider cursor-pointer outline-none transition-all duration-300"
+                    className="absolute"
                     style={{
                       left: `${x}px`,
                       top: `${y}px`,
                       transform: "translate(-50%, -50%)",
                       zIndex: isActive ? 30 : 20,
-                      background: isActive ? theme.soft : "rgba(255,255,255,0.88)",
-                      border: `1px solid ${isActive ? theme.ac : "#e2e8f0"}`,
-                      color: isActive ? theme.textOnSoft : "#64748b",
-                      fontWeight: isActive ? 700 : 400,
-                      boxShadow: isActive ? `0 0 18px ${theme.glow}` : undefined,
-                      backdropFilter: "blur(6px)",
                     }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
+                    <m.button
+                      onClick={() => setActiveIndex(idx)}
+                      whileHover={{ scale: 1.06 }}
+                      whileTap={{ scale: 0.96 }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-full font-mono text-[10px] tracking-wider cursor-pointer outline-none transition-all duration-300"
                       style={{
-                        background: isActive ? theme.ac : "#cbd5e1",
-                        animation: isActive ? "pulse 2s infinite" : undefined,
+                        background: isActive ? theme.soft : "rgba(255,255,255,0.88)",
+                        border: `1px solid ${isActive ? theme.ac : "#e2e8f0"}`,
+                        color: isActive ? theme.textOnSoft : "#64748b",
+                        fontWeight: isActive ? 700 : 400,
+                        boxShadow: isActive ? `0 0 18px ${theme.glow}` : undefined,
+                        backdropFilter: "blur(6px)",
                       }}
-                    />
-                    <span>{val.number} {val.name.toUpperCase()}</span>
-                  </m.button>
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{
+                          background: isActive ? theme.ac : "#cbd5e1",
+                          animation: isActive ? "pulse 2s infinite" : undefined,
+                        }}
+                      />
+                      <span>{val.number} {val.name.toUpperCase()}</span>
+                    </m.button>
+                  </div>
                 );
               })}
             </div>
