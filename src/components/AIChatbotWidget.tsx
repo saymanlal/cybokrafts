@@ -22,7 +22,7 @@ Our flagship product, CYBO-VAJRA, is a patented industrial IoT device — patent
 
 Complementing CYBO-VAJRA is AIpowerOS — our cloud-based smart grid intelligence platform. AIpowerOS provides live monitoring dashboards, automated reporting, and AI-driven analytics accessible from any browser.
 
-Cybokrafts is headquartered in Raipur, Chhattisgarh, and was founded by Mr. Akhil Chawla. We are strategic partners with Tata Tele Business Services and IIT Indore.
+Cybokrafts is headquartered at IIT Indore, Madhya Pradesh, and was founded by Mr. Akhil Chawla. We are strategic partners with Tata Tele Business Services.
 
 Our vision is to eliminate preventable transformer failures, reduce distribution losses, and accelerate India's transition to an intelligent, resilient power grid.`;
 
@@ -54,7 +54,7 @@ const FAQS = [
   },
   {
     q: "Where is Cybokrafts headquartered?",
-    a: "Our registered office is in Raipur, Chhattisgarh, India (492001). We operate nationally and are expanding to global markets.",
+    a: "Our registered office is at IIT Indore, Madhya Pradesh, India (453552). We operate nationally and are expanding to global markets.",
   },
   {
     q: "What business problems do you solve?",
@@ -78,7 +78,7 @@ function autoReply(text: string): string {
   if (/service|offer|product|solution/.test(t))
     return "Cybokrafts offers two core products: CYBO-VAJRA, our patented transformer monitoring device, and AIpowerOS, our cloud-based grid intelligence platform. Together they deliver real-time analytics and predictive maintenance for energy infrastructure.";
   if (/founder|ceo|akhil|chawla/.test(t))
-    return "Cybokrafts was founded by Mr. Akhil Chawla. The company is headquartered in Raipur, Chhattisgarh, and incubated at IIT Indore.";
+    return "Cybokrafts was founded by Mr. Akhil Chawla. The company is headquartered at IIT Indore, Madhya Pradesh.";
   if (/dpiit|startup india|recognition|award/.test(t))
     return "Cybokrafts holds DPIIT Startup India recognition and is incubated at the IIT Indore Incubation Center — two of the most prestigious validations for deep-tech startups in India.";
   return "Thank you for your query. For detailed information, please browse our FAQ section or navigate through the site. You may also write to us at contact@cybokrafts.com and our team will respond promptly.";

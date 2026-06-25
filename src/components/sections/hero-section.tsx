@@ -562,7 +562,7 @@ function TrustMarquee() {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function HeroSection() {
   const [activeTab, setActiveTab]   = useState(0);
-  const [metrics, setMetrics]       = useState(() => METRICS[0].map((m) => m.val()));
+  const [metrics, setMetrics]       = useState<string[]>(["84.0", "49.97", "97.3", "0"]);
   const [clock, setClock]           = useState("");
   const [bgIndex, setBgIndex]       = useState(0);
   const [bgOpacity, setBgOpacity]   = useState(9.45);

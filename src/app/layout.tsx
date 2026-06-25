@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     "industrial energy solutions",
     "energy monitoring India",
     "smart grid solutions India",
-    "transformer monitoring Chhattisgarh",
+    "transformer monitoring Madhya Pradesh",
     "Atmanirbhar Bharat energy",
     "B2B energy solutions",
     "enterprise transformer monitoring",
@@ -191,9 +191,9 @@ export default function RootLayout({
     founders: [{ "@type": "Person", name: "Mr. Akhil Chawla" }],
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Raipur",
-      addressRegion: "Chhattisgarh",
-      postalCode: "492001",
+      addressLocality: "IIT Indore",
+      addressRegion: "Madhya Pradesh",
+      postalCode: "453552",
       addressCountry: "IN",
     },
     contactPoint: {

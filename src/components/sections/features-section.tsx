@@ -232,10 +232,10 @@ const features: Feature[] = [
     title: "Indigenous Platform",
     tagline: "SOVEREIGN BLUEPRINT & DATA RESIDENCY",
     description:
-      "Designed, engineered, and assembled locally in Raipur, Chhattisgarh. Data pipelines reside securely within domestic Indian cloud boundaries, complying with sovereign grid safety benchmarks.",
+      "Designed, engineered, and assembled locally at IIT Indore, Madhya Pradesh. Data pipelines reside securely within domestic Indian cloud boundaries, complying with sovereign grid safety benchmarks.",
     gridSpan: "col-span-12 lg:col-span-5",
     borderHoverClass: "hover:border-t-accent-blue hover:bg-accent-blue-light/30",
-    metrics: ["ASSEMBLY: Raipur, IN", "CLOUD BOUNDS: Domestic", "COMPLIANCE: DPIIT Cert", "OWNERS: 100% India"],
+    metrics: ["ASSEMBLY: IIT Indore, IN", "CLOUD BOUNDS: Domestic", "COMPLIANCE: DPIIT Cert", "OWNERS: 100% India"],
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="w-5 h-5">
         <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
@@ -334,11 +334,11 @@ const features: Feature[] = [
               <text x="5" y="2" fill="#7A93AD" className="font-mono text-[4.5px] font-semibold">CHENNAI_DC</text>
             </g>
 
-            {/* Central Secure Hub - Raipur */}
+            {/* Central Secure Hub - IIT Indore */}
             <g transform="translate(160, 56)">
               <circle cx="0" cy="0" r="3.5" fill="#059669" />
               <circle cx="0" cy="0" r="9" fill="none" stroke="#059669" strokeWidth="0.75" className="animate-ping" />
-              <text x="7" y="-2" fill="#059669" className="font-mono text-[5px] font-bold">RAIPUR HQ</text>
+              <text x="7" y="-2" fill="#059669" className="font-mono text-[5px] font-bold">IIT INDORE</text>
             </g>
           </svg>
         </div>
