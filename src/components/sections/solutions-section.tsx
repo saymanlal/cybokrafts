@@ -519,10 +519,10 @@ function BentoCard({ asset, index }: BentoCardProps) {
               </div>
 
               <h4 className="font-heading font-bold text-text-primary text-[15px] uppercase tracking-wide leading-snug mb-1.5">
-                {asset.name}
+                {asset.name.replace(" Monitoring", " Predictive Intelligence")}
               </h4>
               <p className="font-sans text-xs text-text-secondary leading-relaxed">
-                {asset.benefit}
+                {asset.benefit.replace(/monitoring/i, "predictive intelligence")}
               </p>
             </div>
 
@@ -593,7 +593,7 @@ function BentoCard({ asset, index }: BentoCardProps) {
               {asset.name.replace(" Monitoring", "")}
             </h4>
             <p className="font-sans text-xs text-text-secondary leading-relaxed">
-              {asset.benefit}
+              {asset.benefit.replace(/monitoring/i, "predictive intelligence")}
             </p>
           </div>
 
@@ -631,7 +631,7 @@ export default function SolutionsSection() {
           className="max-w-3xl mb-16"
         >
           <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-4">
-            MONITORED ASSETS
+            PREDICTIVE INTELLIGENCE
           </m.p>
           <m.h2
             id="solutions-heading"

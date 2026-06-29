@@ -5,8 +5,8 @@ import Image from "next/image";
 import { staggerContainer, slideLeft, slideRight, fadeUp, cellFadeUp, VIEWPORT } from "@/lib/motion";
 
 const parentLayer = {
-  label: "CYBO-VAJRA",
-  desc: "Patented Edge Hardware Node",
+  label: "AIpowerOS",
+  desc: "Patented Cloud Intelligence Platform",
   border: "border-l-[3px] border-l-status-green hover:border-l-[5px] hover:border-l-status-green",
   patent: "Patent 202521117118",
 };
@@ -23,8 +23,8 @@ const subLayers = [
     border: "border-l-[2px] border-l-accent-blue hover:border-l-[4px] hover:border-l-accent-blue",
   },
   {
-    label: "AIpowerOS",
-    desc: "Analytics & Intelligence Layer",
+    label: "CYBO-VAJRA",
+    desc: "Edge Hardware Node",
     border: "border-l-[2px] border-l-accent-amber hover:border-l-[4px] hover:border-l-accent-amber",
   },
 ];
@@ -69,7 +69,7 @@ export default function AboutSection() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-mono text-[9px] font-bold text-status-green uppercase tracking-wider bg-status-green-bg px-2 py-0.5 rounded-sm border border-status-green/10">
-                      PATENTED CORE HARDWARE
+                      PATENTED CORE SOFTWARE
                     </span>
                     <span className="font-mono text-[9px] font-bold text-text-muted">
                       {parentLayer.patent}
@@ -85,7 +85,7 @@ export default function AboutSection() {
 
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 font-mono text-[8px] text-status-green font-bold uppercase tracking-widest bg-status-green-bg px-2 py-1 rounded-sm border border-status-green/20">
                     <span className="w-1.5 h-1.5 bg-status-green rounded-full animate-ping" />
-                    <span>CORE NODE</span>
+                    <span>CORE PLATFORM</span>
                   </div>
                 </m.div>
 
@@ -98,7 +98,7 @@ export default function AboutSection() {
                       <div className="absolute left-[-24px] top-1/2 -translate-y-1/2 w-[24px] h-[2px] bg-bg-border-strong/45" />
                       <div className="absolute left-[-27px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full border border-bg-border-strong bg-white z-10 flex items-center justify-center">
                         <div className={`w-1 h-1 rounded-full ${
-                          layer.label === "AIpowerOS" ? "bg-accent-amber" : "bg-accent-blue"
+                          layer.label === "CYBO-VAJRA" ? "bg-accent-amber" : "bg-accent-blue"
                         }`} />
                       </div>
 
