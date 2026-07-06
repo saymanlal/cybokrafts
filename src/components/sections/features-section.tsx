@@ -34,38 +34,84 @@ const features: Feature[] = [
     diagram: (
       <div className="relative w-full aspect-[2/1] bg-white border border-[#D1D9E4] rounded-[3px] p-4 overflow-hidden flex flex-col justify-between select-none">
         {/* Grid Overlay */}
-        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-20">
+        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-10">
           {Array.from({ length: 50 }).map((_, i) => (
             <div key={i} className="border-b border-r border-[#0C1929]/5 w-full h-full" />
           ))}
         </div>
         {/* Header */}
-        <div className="flex items-center justify-between font-mono text-[7px] text-[#7A93AD] z-10">
-          <span>// INGRESS WAVEFORM</span>
-          <span className="flex items-center gap-1">
-            <span className="w-1 h-1 rounded-full bg-[#1C5FD1] animate-ping" />
-            SWEEP: ACTIVE
+        <div className="flex items-center justify-between font-mono text-[7.5px] text-[#7A93AD] z-10">
+          <span>DUAL-CHANNEL REAL-TIME TELEMETRY</span>
+          <span className="flex items-center gap-1 text-[#1C5FD1] font-bold">
+            <span className="w-1 h-1 rounded-full bg-[#1C5FD1] animate-pulse" />
+            SAMPLING: 100Hz
           </span>
         </div>
         {/* SVG Canvas */}
         <div className="flex-1 flex items-center justify-center relative min-h-[90px] z-10">
           <svg className="w-full h-full overflow-visible" viewBox="0 0 320 120">
-            <line x1="10" y1="30" x2="310" y2="30" stroke="#A8B5C8" strokeWidth="1" strokeDasharray="3,3" opacity="0.5" />
+            {/* Grid Baselines */}
+            <line x1="10" y1="60" x2="310" y2="60" stroke="#A8B5C8" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.3" />
+            <line x1="10" y1="25" x2="310" y2="25" stroke="#A8B5C8" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.15" />
+            <line x1="10" y1="95" x2="310" y2="95" stroke="#A8B5C8" strokeWidth="0.5" strokeDasharray="3,3" opacity="0.15" />
+
+            {/* Channel B: Green Waveform */}
             <m.path
-              d="M 10,90 Q 60,10 110,100 T 210,20 T 310,70"
+              d="M 10,80 C 60,120 100,20 160,80 C 220,140 260,30 310,50"
               fill="none"
-              stroke="#1C5FD1"
-              strokeWidth="2.25"
+              stroke="#059669"
+              strokeWidth="1.25"
+              strokeDasharray="3,2"
+              opacity="0.75"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1, ease: "easeOut" as const }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
             />
-            <circle cx="310" cy="70" r="3.5" fill="#1C5FD1" className="animate-pulse" />
+
+            {/* Channel A: Blue Waveform */}
+            <m.path
+              d="M 10,65 C 50,15 90,95 160,45 C 230,-5 270,75 310,65"
+              fill="none"
+              stroke="#1C5FD1"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+            />
+
+            {/* Time Axis Scale Ticks */}
+            <line x1="10" y1="105" x2="310" y2="105" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="10" y1="105" x2="10" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="85" y1="105" x2="85" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="160" y1="105" x2="160" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="235" y1="105" x2="235" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="310" y1="105" x2="310" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+
+            <text x="7" y="117" fill="#7A93AD" className="font-mono text-[5px]">-10.0s</text>
+            <text x="81" y="117" fill="#7A93AD" className="font-mono text-[5px]">-7.5s</text>
+            <text x="156" y="117" fill="#7A93AD" className="font-mono text-[5px]">-5.0s</text>
+            <text x="231" y="117" fill="#7A93AD" className="font-mono text-[5px]">-2.5s</text>
+            <text x="307" y="117" fill="#7A93AD" className="font-mono text-[5px]">0.0s</text>
+
+            {/* Active Tracing Marker */}
+            <m.circle
+              cx="10"
+              cy="65"
+              r="2.5"
+              fill="#1C5FD1"
+              animate={{ 
+                x: [0, 150, 300, 150, 0],
+                y: [0, -20, 0, -20, 0]
+              }}
+              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+              style={{ transformBox: "fill-box" }}
+            />
           </svg>
         </div>
         <div className="flex items-center justify-between font-mono text-[7px] text-[#7A93AD] border-t border-[#D1D9E4]/40 pt-1.5 z-10">
-          <span>FREQ: 50.02 Hz</span>
-          <span>SPEED: &lt; 80ms</span>
+          <span className="text-[#1C5FD1] font-bold">CH A: VOLTAGE (229.8V RMS)</span>
+          <span className="text-[#059669] font-bold">CH B: CURRENT (341.2A)</span>
         </div>
       </div>
     ),
@@ -87,40 +133,96 @@ const features: Feature[] = [
     diagram: (
       <div className="relative w-full aspect-[2/1] bg-white border border-[#D1D9E4] rounded-[3px] p-4 overflow-hidden flex flex-col justify-between select-none">
         {/* Grid Overlay */}
-        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-20">
+        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-10">
           {Array.from({ length: 50 }).map((_, i) => (
             <div key={i} className="border-b border-r border-[#0C1929]/5 w-full h-full" />
           ))}
         </div>
         {/* Header */}
-        <div className="flex items-center justify-between font-mono text-[7px] text-status-green z-10">
-          <span>// TRANSIENT SPIKE ALERT</span>
-          <span className="flex items-center gap-1 font-bold">
-            <span className="w-1 h-1 rounded-full bg-status-green animate-ping" />
-            SENSING: HOT
+        <div className="flex items-center justify-between font-mono text-[7.5px] text-[#3D5470] z-10">
+          <span>// PREDICTIVE THERMAL FORECASTING</span>
+          <span className="flex items-center gap-1 text-[#DC2626] font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#DC2626] animate-pulse" />
+            72H RUNAWAY RISK: HIGH
           </span>
         </div>
         {/* SVG Canvas */}
         <div className="flex-1 flex items-center justify-center relative min-h-[90px] z-10">
           <svg className="w-full h-full overflow-visible" viewBox="0 0 320 120">
-            <line x1="10" y1="80" x2="310" y2="80" stroke="#DC2626" strokeWidth="1.25" strokeDasharray="3,3" opacity="0.6" />
+            {/* Split boundary vertical line (Time: NOW) */}
+            <line x1="130" y1="15" x2="130" y2="105" stroke="#7A93AD" strokeWidth="0.75" strokeDasharray="2,2" opacity="0.5" />
+            <text x="133" y="22" fill="#7A93AD" className="font-mono text-[5px] font-bold">NOW (t = 0)</text>
+
+            {/* Historical Path (solid blue) */}
             <m.path
-              d="M 10,100 H 110 C 130,100 145,20 160,20 C 175,20 190,100 310,100"
+              d="M 10,75 L 50,70 L 90,73 L 130,70"
               fill="none"
-              stroke="#DC2626"
-              strokeWidth="2.25"
+              stroke="#1C5FD1"
+              strokeWidth="2"
+              strokeLinecap="round"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" as const }}
+              transition={{ duration: 0.6 }}
             />
-            <circle cx="160" cy="20" r="3.5" fill="#DC2626" />
-            <circle cx="160" cy="20" r="7" fill="none" stroke="#DC2626" strokeWidth="1" className="animate-ping" />
-            <text x="175" y="24" fill="#DC2626" className="font-mono text-[7px] font-bold">PREVENTATIVE_TRIP_OK</text>
+
+            {/* Confidence Interval Shading (future forecasting envelop) */}
+            <path
+              d="M 130,70 L 190,55 L 250,35 L 310,20 L 310,100 L 250,90 L 190,85 L 130,70 Z"
+              fill="rgba(12, 25, 41, 0.03)"
+              stroke="rgba(12, 25, 41, 0.05)"
+              strokeWidth="0.5"
+            />
+            <text x="210" y="93" fill="#7A93AD" className="font-mono text-[4.5px]">FORECAST ENVELOPE</text>
+
+            {/* Normal Future Path (Green dotted) */}
+            <m.path
+              d="M 130,70 L 190,72 L 250,70 L 310,73"
+              fill="none"
+              stroke="#059669"
+              strokeWidth="1.25"
+              strokeDasharray="3,3"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+            />
+            <text x="255" y="79" fill="#059669" className="font-mono text-[4.5px] font-bold">NORMAL BASELINE</text>
+
+            {/* Predicted Fault Path (Red solid) */}
+            <m.path
+              d="M 130,70 Q 170,70 200,45 T 250,25 Q 280,25 310,95"
+              fill="none"
+              stroke="#DC2626"
+              strokeWidth="2"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.6, duration: 1 }}
+            />
+            <text x="202" y="38" fill="#DC2626" className="font-mono text-[5px] font-bold">PREDICTED THERMAL TRIP</text>
+
+            {/* Fault Prediction Peak target crosshair */}
+            <g transform="translate(250, 25)">
+              <circle cx="0" cy="0" r="3.5" fill="#DC2626" />
+              <circle cx="0" cy="0" r="8" fill="none" stroke="#DC2626" strokeWidth="1" className="animate-ping" />
+            </g>
+
+            {/* X-Axis Scale */}
+            <line x1="10" y1="105" x2="310" y2="105" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="10" y1="105" x2="10" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="130" y1="105" x2="130" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="190" y1="105" x2="190" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="250" y1="105" x2="250" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+            <line x1="310" y1="105" x2="310" y2="109" stroke="#7A93AD" strokeWidth="0.75" opacity="0.4" />
+
+            <text x="5" y="117" fill="#7A93AD" className="font-mono text-[5px]">-24h (PAST)</text>
+            <text x="123" y="117" fill="#7A93AD" className="font-mono text-[5px] font-bold">t = 0 (NOW)</text>
+            <text x="183" y="117" fill="#7A93AD" className="font-mono text-[5px]">+24h</text>
+            <text x="243" y="117" fill="#7A93AD" className="font-mono text-[5px]">+48h</text>
+            <text x="303" y="117" fill="#7A93AD" className="font-mono text-[5px]">+72h (EST)</text>
           </svg>
         </div>
         <div className="flex items-center justify-between font-mono text-[7px] text-[#7A93AD] border-t border-[#D1D9E4]/40 pt-1.5 z-10">
-          <span>SENSITIVITY: 94.2%</span>
-          <span>RISK INDEX: LOW</span>
+          <span>MODEL: THERMAL DEV FORECAST</span>
+          <span className="text-[#DC2626] font-bold">PREDICTION CONFIDENCE: 94.2%</span>
         </div>
       </div>
     ),
@@ -130,10 +232,10 @@ const features: Feature[] = [
     title: "Indigenous Platform",
     tagline: "SOVEREIGN BLUEPRINT & DATA RESIDENCY",
     description:
-      "Designed, engineered, and assembled locally in Raipur, Chhattisgarh. Data pipelines reside securely within domestic Indian cloud boundaries, complying with sovereign grid safety benchmarks.",
+      "Designed, engineered, and assembled locally at IIT Indore, Madhya Pradesh. Data pipelines reside securely within domestic Indian cloud boundaries, complying with sovereign grid safety benchmarks.",
     gridSpan: "col-span-12 lg:col-span-5",
     borderHoverClass: "hover:border-t-accent-blue hover:bg-accent-blue-light/30",
-    metrics: ["ASSEMBLY: Raipur, IN", "CLOUD BOUNDS: Domestic", "COMPLIANCE: DPIIT Cert", "OWNERS: 100% India"],
+    metrics: ["ASSEMBLY: IIT Indore, IN", "CLOUD BOUNDS: Domestic", "COMPLIANCE: DPIIT Cert", "OWNERS: 100% India"],
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="w-5 h-5">
         <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
@@ -142,49 +244,107 @@ const features: Feature[] = [
     diagram: (
       <div className="relative w-full aspect-[2/1] bg-white border border-[#D1D9E4] rounded-[3px] p-4 overflow-hidden flex flex-col justify-between select-none">
         {/* Grid Overlay */}
-        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-20">
+        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-10">
           {Array.from({ length: 50 }).map((_, i) => (
             <div key={i} className="border-b border-r border-[#0C1929]/5 w-full h-full" />
           ))}
         </div>
         {/* Header */}
-        <div className="flex items-center justify-between font-mono text-[7px] text-[#1C5FD1] z-10">
-          <span>// SOVEREIGN SECURITY RADAR</span>
-          <span className="font-bold">CORE: SOVEREIGN</span>
+        <div className="flex items-center justify-between font-mono text-[7.5px] text-[#1C5FD1] z-10">
+          <span>SOVEREIGN INDIAN DATA RESIDENCY</span>
+          <span className="font-bold text-[#059669] flex items-center gap-1">
+            <span className="w-1 h-1 bg-[#059669] rounded-full animate-ping" />
+            DATA DOMAIN: LOCAL LOCK
+          </span>
         </div>
         {/* SVG Canvas */}
         <div className="flex-1 flex items-center justify-center relative min-h-[90px] z-10">
           <svg className="w-full h-full overflow-visible" viewBox="0 0 320 120">
-            <circle cx="160" cy="60" r="45" fill="none" stroke="#D1D9E4" strokeWidth="1" />
-            <circle cx="160" cy="60" r="25" fill="none" stroke="#D1D9E4" strokeWidth="1" strokeDasharray="3,3" />
-            
-            <m.path
-              d="M 160,40 L 175,50 L 175,70 L 160,80 L 145,70 L 145,50 Z"
-              fill="none"
-              stroke="#1C5FD1"
-              strokeWidth="1.75"
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-            />
-            <m.line
-              x1="160"
-              y1="60"
-              x2="205"
-              y2="60"
+            <defs>
+              <radialGradient id="indiaSovereignGlow" cx="50%" cy="50%" r="40%">
+                <stop offset="0%" stopColor="#1C5FD1" stopOpacity="0.08" />
+                <stop offset="100%" stopColor="#1C5FD1" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            {/* India Geometric Boundary Outline */}
+            <path
+              d="M 160,10 L 175,18 L 205,25 L 220,50 L 180,82 L 158,105 L 130,85 L 95,60 L 105,35 L 125,20 Z"
+              fill="url(#indiaSovereignGlow)"
               stroke="#1C5FD1"
               strokeWidth="1.25"
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-              style={{ transformOrigin: "160px 60px" }}
+              strokeDasharray="4,4"
+              opacity="0.3"
             />
-            <circle cx="145" cy="50" r="2.5" fill="#1C5FD1" />
-            <circle cx="175" cy="70" r="2.5" fill="#1C5FD1" />
-            <circle cx="160" cy="40" r="2.5" fill="#1C5FD1" />
+            <text x="105" y="100" fill="#7A93AD" className="font-mono text-[5px] font-bold opacity-60">DOMESTIC BOUNDARY SHIELD</text>
+
+            {/* Encrypted Data Pipes within India */}
+            <m.path
+              d="M 145,28 L 160,56"
+              fill="none"
+              stroke="#1C5FD1"
+              strokeWidth="0.75"
+              strokeDasharray="3,3"
+              animate={{ strokeDashoffset: [0, -15] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+            />
+            <m.path
+              d="M 115,65 L 160,56"
+              fill="none"
+              stroke="#1C5FD1"
+              strokeWidth="0.75"
+              strokeDasharray="3,3"
+              animate={{ strokeDashoffset: [0, -15] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+            />
+            <m.path
+              d="M 195,52 L 160,56"
+              fill="none"
+              stroke="#1C5FD1"
+              strokeWidth="0.75"
+              strokeDasharray="3,3"
+              animate={{ strokeDashoffset: [0, -15] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+            />
+            <m.path
+              d="M 155,88 L 160,56"
+              fill="none"
+              stroke="#1C5FD1"
+              strokeWidth="0.75"
+              strokeDasharray="3,3"
+              animate={{ strokeDashoffset: [0, -15] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+            />
+
+            {/* Regional Nodes */}
+            <g transform="translate(145, 28)">
+              <circle cx="0" cy="0" r="1.5" fill="#1C5FD1" />
+              <text x="-25" y="2" fill="#7A93AD" className="font-mono text-[4.5px] font-semibold">DELHI_DC</text>
+            </g>
+            <g transform="translate(115, 65)">
+              <circle cx="0" cy="0" r="1.5" fill="#1C5FD1" />
+              <text x="-32" y="2" fill="#7A93AD" className="font-mono text-[4.5px] font-semibold">MUMBAI_CLOUD</text>
+            </g>
+            <g transform="translate(195, 52)">
+              <circle cx="0" cy="0" r="1.5" fill="#1C5FD1" />
+              <text x="5" y="2" fill="#7A93AD" className="font-mono text-[4.5px] font-semibold">KOLKATA_NODE</text>
+            </g>
+            <g transform="translate(155, 88)">
+              <circle cx="0" cy="0" r="1.5" fill="#1C5FD1" />
+              <text x="5" y="2" fill="#7A93AD" className="font-mono text-[4.5px] font-semibold">CHENNAI_DC</text>
+            </g>
+
+            {/* Central Secure Hub - IIT Indore */}
+            <g transform="translate(160, 56)">
+              <circle cx="0" cy="0" r="3.5" fill="#059669" />
+              <circle cx="0" cy="0" r="9" fill="none" stroke="#059669" strokeWidth="0.75" className="animate-ping" />
+              <text x="7" y="-2" fill="#059669" className="font-mono text-[5px] font-bold">IIT INDORE</text>
+            </g>
           </svg>
         </div>
         <div className="flex items-center justify-between font-mono text-[7px] text-[#7A93AD] border-t border-[#D1D9E4]/40 pt-1.5 z-10">
-          <span>IP RESIDENCY: Chhattisgarh</span>
-          <span>BENCHMARK: PASS</span>
+          <span>PIPELINES: 100% INTERNAL IN</span>
+          <span>DPIIT REGISTRATION: VERIFIED SECURE</span>
         </div>
       </div>
     ),
@@ -206,49 +366,87 @@ const features: Feature[] = [
     diagram: (
       <div className="relative w-full aspect-[2/1] bg-white border border-[#D1D9E4] rounded-[3px] p-4 overflow-hidden flex flex-col justify-between select-none">
         {/* Grid Overlay */}
-        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-20">
+        <div className="absolute inset-0 grid grid-cols-10 grid-rows-5 pointer-events-none opacity-10">
           {Array.from({ length: 50 }).map((_, i) => (
             <div key={i} className="border-b border-r border-[#0C1929]/5 w-full h-full" />
           ))}
         </div>
         {/* Header */}
-        <div className="flex items-center justify-between font-mono text-[7px] text-[#1C5FD1] z-10">
-          <span>// CYBO-VAJRA CLAMP LINK</span>
-          <span className="flex items-center gap-1">
+        <div className="flex items-center justify-between font-mono text-[7.5px] text-[#1C5FD1] z-10">
+          <span>EXTERNAL SENSOR CLAMP RETROFIT</span>
+          <span className="flex items-center gap-1 text-[#059669] font-bold">
             <span className="w-1 h-1 bg-[#059669] rounded-full animate-pulse" />
-            CLAMP: CONNECTED
+            TELEMETRY LINK: ESTABLISHED
           </span>
         </div>
         {/* SVG Canvas */}
         <div className="flex-1 flex items-center justify-center relative min-h-[90px] z-10">
           <svg className="w-full h-full overflow-visible" viewBox="0 0 320 120">
-            {/* Legacy transformer */}
-            <rect x="30" y="35" width="55" height="55" fill="none" stroke="#A8B5C8" strokeWidth="1.25" rx="3" />
-            <line x1="58" y1="35" x2="58" y2="20" stroke="#A8B5C8" strokeWidth="1.25" />
-            <circle cx="58" cy="16" r="3" fill="none" stroke="#A8B5C8" strokeWidth="1.25" />
-            <text x="35" y="65" fill="#7A93AD" className="font-mono text-[6px] font-bold">LEGACY_TX</text>
+            {/* Legacy Transformer Outline */}
+            <g transform="translate(20, 45)">
+              <rect x="0" y="0" width="50" height="45" fill="none" stroke="#A8B5C8" strokeWidth="1.25" rx="2" />
+              {/* Cooling fin slots */}
+              <line x1="10" y1="8" x2="10" y2="38" stroke="#A8B5C8" strokeWidth="0.75" />
+              <line x1="20" y1="8" x2="20" y2="38" stroke="#A8B5C8" strokeWidth="0.75" />
+              <line x1="30" y1="8" x2="30" y2="38" stroke="#A8B5C8" strokeWidth="0.75" />
+              <line x1="40" y1="8" x2="40" y2="38" stroke="#A8B5C8" strokeWidth="0.75" />
+              {/* Insulator Bushing */}
+              <rect x="18" y="-12" width="14" height="12" fill="none" stroke="#A8B5C8" strokeWidth="1" />
+              <line x1="25" y1="-12" x2="25" y2="-22" stroke="#D97706" strokeWidth="1.5" />
+              <text x="5" y="24" fill="#7A93AD" className="font-mono text-[5.5px] font-bold">LEGACY TX</text>
+            </g>
 
-            {/* Clamp linkage */}
+            {/* Copper Busbar Conductor Line */}
+            <path d="M 45,23 C 65,23 90,23 90,45 L 90,80" fill="none" stroke="#D97706" strokeWidth="1.5" />
+            <text x="58" y="18" fill="#D97706" className="font-mono text-[4.5px] font-bold">LIVE BUSBAR (230V)</text>
+
+            {/* Split-Core CT Clamp Clamped around the Busbar */}
+            <g transform="translate(90, 40)">
+              {/* Clamping Rings */}
+              <path d="M -5,-5 A 6,6 0 0,1 5,-5" fill="none" stroke="#059669" strokeWidth="2.25" strokeLinecap="round" />
+              <path d="M 5,5 A 6,6 0 0,1 -5,5" fill="none" stroke="#059669" strokeWidth="2.25" strokeLinecap="round" />
+              <circle cx="0" cy="0" r="1.5" fill="#059669" className="animate-ping" />
+              <text x="8" y="2" fill="#059669" className="font-mono text-[4.5px] font-bold">SPLIT-CORE CT SENSOR</text>
+            </g>
+
+            {/* Signal Route from clamp to CYBO-VAJRA */}
             <m.path
-              d="M 85,62 H 210"
+              d="M 90,45 C 90,68 150,68 200,68"
               fill="none"
               stroke="#1C5FD1"
               strokeWidth="1.25"
-              strokeDasharray="4,4"
+              strokeDasharray="4,3"
               animate={{ strokeDashoffset: [0, -20] }}
               transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
             />
 
-            {/* CYBO-VAJRA Node */}
-            <rect x="210" y="42" width="60" height="40" fill="none" stroke="#1C5FD1" strokeWidth="1.75" rx="2" />
-            <circle cx="240" cy="62" r="3" fill="#059669" className="animate-pulse" />
-            <text x="215" y="55" fill="#1C5FD1" className="font-mono text-[6px] font-bold">CYBO-VAJRA</text>
-            <text x="215" y="74" fill="#059669" className="font-mono text-[5px] font-bold">RETROFIT: OK</text>
+            {/* Cybernetic telemetry packets moving along route */}
+            <m.circle
+              cx="90"
+              cy="45"
+              r="2"
+              fill="#1C5FD1"
+              animate={{ 
+                x: [0, 110],
+                y: [0, 23]
+              }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              style={{ transformBox: "fill-box" }}
+            />
+
+            {/* CYBO-VAJRA Edge Receiver box */}
+            <g transform="translate(200, 42)">
+              <rect x="0" y="0" width="85" height="48" fill="white" stroke="#1C5FD1" strokeWidth="1.5" rx="3" className="shadow-sm" />
+              <circle cx="10" cy="12" r="1.5" fill="#059669" className="animate-pulse" />
+              <text x="16" y="14" fill="#1C5FD1" className="font-mono text-[5.5px] font-bold">CYBO-VAJRA</text>
+              <text x="10" y="28" fill="#059669" className="font-mono text-[5px] font-bold">RETROFIT: COMPLETED</text>
+              <text x="10" y="38" fill="#7A93AD" className="font-mono text-[4.5px]">INSTALL TIME: 42 MIN</text>
+            </g>
           </svg>
         </div>
         <div className="flex items-center justify-between font-mono text-[7px] text-[#7A93AD] border-t border-[#D1D9E4]/40 pt-1.5 z-10">
-          <span>INSTALL TIME: &lt; 45m</span>
-          <span>ASSET STATUS: LIVE</span>
+          <span>INSTALLATION STATUS: HOT Retrofit PASS</span>
+          <span>GRID SHUTDOWN REQ: 0% (NONE)</span>
         </div>
       </div>
     ),
@@ -313,7 +511,7 @@ export default function FeaturesSection() {
 
                 {/* Subsystem tags */}
                 <div className="font-mono text-[9px] font-bold text-[#1C5FD1] tracking-wider uppercase mb-1">
-                  // {feature.tagline}
+                  {feature.tagline}
                 </div>
 
                 {/* Title */}
@@ -393,7 +591,7 @@ export default function FeaturesSection() {
                   {/* Top tags */}
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-mono text-[9px] font-bold text-[#1C5FD1] tracking-wider uppercase">
-                      // {activeFeature.tagline}
+                      {activeFeature.tagline}
                     </span>
                     <span className="font-mono text-[9px] font-bold text-text-muted">
                       [{activeFeature.num}]

@@ -9,7 +9,8 @@ import {
 } from "framer-motion";
 import type { Variants } from "framer-motion";
 
-// ─── Fonts (add to your layout.tsx <head> if not already) ────────────────────
+// ─── Fonts ────────────────────────────────────────────────────────────────────
+// Add to layout.tsx <head>:
 // <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 // ─── Motion Variants ──────────────────────────────────────────────────────────
@@ -35,63 +36,210 @@ type Tab = { id: number; label: string; color: string; accent: string };
 // ─── Constants ────────────────────────────────────────────────────────────────
 const TABS: Tab[] = [
   { id: 0, label: "Transformer", color: "#2563eb", accent: "#eff6ff" },
-  { id: 1, label: "Solar PV", color: "#d97706", accent: "#fefce8" },
-  { id: 2, label: "Wind", color: "#7c3aed", accent: "#f5f3ff" },
-  { id: 3, label: "EV Network", color: "#059669", accent: "#f0fdf4" },
+  { id: 1, label: "Solar PV",    color: "#d97706", accent: "#fefce8" },
+  { id: 2, label: "Wind",        color: "#7c3aed", accent: "#f5f3ff" },
+  { id: 3, label: "EV Network",  color: "#059669", accent: "#f0fdf4" },
 ];
 
-// Dynamic headline words (rotates every 3 seconds)
 const DYNAMIC_WORDS = [
-  { word: "Energy", suffix: "Grid" },
-  { word: "Solar", suffix: "Intelligence" },
-  { word: "Wind", suffix: "Analytics" },
-  { word: "EV", suffix: "Infrastructure" },
+  { word: "Energy",     suffix: "Grid" },
+  { word: "Solar",      suffix: "Intelligence" },
+  { word: "Wind",       suffix: "Analytics" },
+  { word: "EV",         suffix: "Infrastructure" },
   { word: "Predictive", suffix: "Maintenance" },
 ];
 
-// High-quality energy sector photography (Unsplash)
 const BG_IMAGES = [
-  "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop",      // Power lines / transformers
-  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&h=1080&fit=crop",      // Solar farm
-  "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=1920&h=1080&fit=crop",         // Wind turbines
-  "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1920&h=1080&fit=crop",      // EV charging station
-  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&h=1080&fit=crop",      // Power plant / grid infrastructure
-  "https://images.unsplash.com/photo-1566908827455-9f8d724a4701?w=1920&h=1080&fit=crop",      // Transformer substation
+  "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&h=1080&fit=crop",
+  "https://images.unsplash.com/photo-1566908827455-9f8d724a4701?w=1920&h=1080&fit=crop",
 ];
 
 const METRICS = [
   [
-    { label: "Load Factor", unit: "%", val: () => (84 + Math.random() * 0.6).toFixed(1) },
-    { label: "Grid Freq", unit: "Hz", val: () => (49.97 + Math.random() * 0.05).toFixed(2) },
-    { label: "Efficiency", unit: "%", val: () => (97.3 + Math.random() * 0.4).toFixed(1) },
-    { label: "Faults", unit: "", val: () => "0" },
+    { label: "Load Factor", unit: "%",  val: () => (84 + Math.random() * 0.6).toFixed(1) },
+    { label: "Grid Freq",   unit: "Hz", val: () => (49.97 + Math.random() * 0.05).toFixed(2) },
+    { label: "Efficiency",  unit: "%",  val: () => (97.3 + Math.random() * 0.4).toFixed(1) },
+    { label: "Faults",      unit: "",   val: () => "0" },
   ],
   [
     { label: "Irradiance", unit: "W/m²", val: () => (847 + Math.floor(Math.random() * 15)).toString() },
-    { label: "PV Yield", unit: "kWh", val: () => (48.5 + Math.random() * 0.6).toFixed(1) },
-    { label: "η Cell", unit: "%", val: () => (19.1 + Math.random() * 0.3).toFixed(1) },
-    { label: "MPPT", unit: "", val: () => "LOCK" },
+    { label: "PV Yield",   unit: "kWh",  val: () => (48.5 + Math.random() * 0.6).toFixed(1) },
+    { label: "η Cell",     unit: "%",    val: () => (19.1 + Math.random() * 0.3).toFixed(1) },
+    { label: "MPPT",       unit: "",     val: () => "LOCK" },
   ],
   [
     { label: "Wind Speed", unit: "m/s", val: () => (8.2 + Math.random() * 0.5).toFixed(1) },
-    { label: "RPM", unit: "", val: () => (16.1 + Math.random() * 0.4).toFixed(1) },
-    { label: "Output", unit: "MW", val: () => (2.38 + Math.random() * 0.05).toFixed(2) },
-    { label: "Betz η", unit: "%", val: () => (41.1 + Math.random() * 0.4).toFixed(1) },
+    { label: "RPM",        unit: "",    val: () => (16.1 + Math.random() * 0.4).toFixed(1) },
+    { label: "Output",     unit: "MW",  val: () => (2.38 + Math.random() * 0.05).toFixed(2) },
+    { label: "Betz η",     unit: "%",   val: () => (41.1 + Math.random() * 0.4).toFixed(1) },
   ],
   [
-    { label: "Active Ports", unit: "", val: () => (12 + Math.floor(Math.random() * 2)).toString() },
-    { label: "Grid Load", unit: "kW", val: () => (347 + Math.floor(Math.random() * 10)).toString() },
-    { label: "Sessions", unit: "", val: () => (28 + Math.floor(Math.random() * 3)).toString() },
-    { label: "V2G", unit: "", val: () => "ON" },
+    { label: "Active Ports", unit: "",   val: () => (12 + Math.floor(Math.random() * 2)).toString() },
+    { label: "Grid Load",    unit: "kW", val: () => (347 + Math.floor(Math.random() * 10)).toString() },
+    { label: "Sessions",     unit: "",   val: () => (28 + Math.floor(Math.random() * 3)).toString() },
+    { label: "V2G",          unit: "",   val: () => "ON" },
   ],
 ];
 
 const STATS = [
-  { value: "2,847", label: "Nodes Online", color: "#2563eb" },
-  { value: "99.7%", label: "Uptime SLA", color: "#059669" },
-  { value: "<50ms", label: "AI Latency", color: "#7c3aed" },
-  { value: "6 MW", label: "Power Saved", color: "#d97706" },
+  { value: "2,847", label: "Nodes Online",  color: "#2563eb" },
+  { value: "99.7%", label: "Uptime SLA",    color: "#059669" },
+  { value: "<50ms", label: "AI Latency",    color: "#7c3aed" },
+  { value: "6 MW",  label: "Power Saved",   color: "#d97706" },
 ];
+
+// ─── Trust Badges for marquee ─────────────────────────────────────────────────
+// Each badge has a name, optional subtitle, and an SVG logo rendered inline
+const TRUST_BADGES = [
+  {
+    id: "dpiit",
+    name: "DPIIT Recognized",
+    subtitle: "Startup India",
+    logo: (
+      <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
+        {/* Ashoka Chakra simplified */}
+        <circle cx="20" cy="20" r="14" fill="none" stroke="#FF9933" strokeWidth="1.5"/>
+        <circle cx="20" cy="20" r="3" fill="#000080"/>
+        {[0,30,60,90,120,150,180,210,240,270,300,330].map((deg, i) => {
+          const r = (deg * Math.PI) / 180;
+          return (
+            <line key={i}
+              x1={20 + Math.cos(r) * 4} y1={20 + Math.sin(r) * 4}
+              x2={20 + Math.cos(r) * 11} y2={20 + Math.sin(r) * 11}
+              stroke="#000080" strokeWidth="1.2"/>
+          );
+        })}
+        {/* India tricolor stripe hint */}
+        <rect x="38" y="8"  width="22" height="7" rx="1" fill="#FF9933"/>
+        <rect x="38" y="15" width="22" height="7" rx="1" fill="white" stroke="#e2e8f0" strokeWidth="0.5"/>
+        <rect x="38" y="22" width="22" height="7" rx="1" fill="#138808"/>
+        <text x="49" y="35" fill="#64748b" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="700">DPIIT</text>
+      </svg>
+    ),
+  },
+  {
+    id: "iit-indore",
+    name: "IIT Indore",
+    subtitle: "Incubated",
+    logo: (
+      <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
+        {/* IIT Indore — stylised torch/gyan symbol */}
+        <rect x="10" y="6" width="22" height="28" rx="3" fill="#003087"/>
+        {/* Torch flame */}
+        <path d="M21 10 Q25 4 21 8 Q26 5 21 9" fill="#FFD700" opacity="0.9"/>
+        <rect x="19" y="9" width="4" height="16" rx="1" fill="#FFD700"/>
+        <rect x="16" y="25" width="10" height="3" rx="1" fill="#FFD700"/>
+        <text x="21" y="34" fill="#003087" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="800">IIT</text>
+        {/* Right panel */}
+        <text x="46" y="17" fill="#003087" fontSize="6.5" fontFamily="monospace" textAnchor="middle" fontWeight="800">IIT</text>
+        <text x="46" y="25" fill="#003087" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="600">INDORE</text>
+        <line x1="35" y1="8" x2="35" y2="32" stroke="#e2e8f0" strokeWidth="0.8"/>
+      </svg>
+    ),
+  },
+  {
+    id: "patent",
+    name: "Patent Filed",
+    subtitle: "No. 202521117118",
+    logo: (
+      <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
+        {/* Patent ribbon/seal */}
+        <circle cx="20" cy="20" r="14" fill="#fef9c3" stroke="#d97706" strokeWidth="1.5"/>
+        <circle cx="20" cy="20" r="9"  fill="none"     stroke="#d97706" strokeWidth="0.8" strokeDasharray="2.5 2"/>
+        <text x="20" y="17" fill="#92400e" fontSize="7"  fontFamily="monospace" textAnchor="middle" fontWeight="800">PAT</text>
+        <text x="20" y="26" fill="#92400e" fontSize="5.5" fontFamily="monospace" textAnchor="middle">FILED</text>
+        {/* Stars */}
+        {[0,72,144,216,288].map((deg, i) => {
+          const r = (deg * Math.PI) / 180;
+          return <circle key={i} cx={20 + Math.cos(r) * 12} cy={20 + Math.sin(r) * 12} r="1.4" fill="#d97706" opacity="0.7"/>;
+        })}
+        {/* Right info */}
+        <text x="46" y="16" fill="#92400e" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="700">202521</text>
+        <text x="46" y="23" fill="#92400e" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="700">117118</text>
+        <rect x="36" y="27" width="20" height="5" rx="1.5" fill="#fef3c7" stroke="#d97706" strokeWidth="0.6"/>
+        <text x="46" y="31" fill="#92400e" fontSize="4.5" fontFamily="monospace" textAnchor="middle">IN PATENT</text>
+      </svg>
+    ),
+  },
+  {
+    id: "msme",
+    name: "MSME Certified",
+    subtitle: "Govt. of India",
+    logo: (
+      <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="6" width="26" height="28" rx="3" fill="#138808"/>
+        {/* Gear symbol */}
+        <circle cx="21" cy="20" r="7" fill="none" stroke="white" strokeWidth="1.2"/>
+        <circle cx="21" cy="20" r="3" fill="white"/>
+        {[0,45,90,135,180,225,270,315].map((deg, i) => {
+          const r = (deg * Math.PI) / 180;
+          return (
+            <rect key={i}
+              x={21 + Math.cos(r) * 7.5 - 1.5} y={20 + Math.sin(r) * 7.5 - 1.5}
+              width="3" height="3" rx="0.5" fill="white"
+              transform={`rotate(${deg}, ${21 + Math.cos(r) * 7.5}, ${20 + Math.sin(r) * 7.5})`}/>
+          );
+        })}
+        <text x="46" y="17" fill="#138808" fontSize="7"   fontFamily="monospace" textAnchor="middle" fontWeight="800">MSME</text>
+        <text x="46" y="25" fill="#64748b" fontSize="5.5" fontFamily="monospace" textAnchor="middle">CERTIFIED</text>
+        <line x1="36" y1="8" x2="36" y2="32" stroke="#e2e8f0" strokeWidth="0.8"/>
+      </svg>
+    ),
+  },
+  {
+    id: "make-in-india",
+    name: "Make in India",
+    subtitle: "Proudly Indian",
+    logo: (
+      <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
+        {/* Lion silhouette simplified */}
+        <path d="M14 28 Q12 22 15 18 Q18 14 22 16 Q26 14 29 18 Q32 22 30 28 Z" fill="#FF9933" opacity="0.9"/>
+        <circle cx="22" cy="14" r="4" fill="#FF9933"/>
+        {/* Mane lines */}
+        {[-30,-15,0,15,30].map((deg, i) => {
+          const r = ((deg - 90) * Math.PI) / 180;
+          return <line key={i} x1={22 + Math.cos(r)*4} y1={14 + Math.sin(r)*4} x2={22 + Math.cos(r)*7} y2={14 + Math.sin(r)*7} stroke="#d97706" strokeWidth="1.2"/>;
+        })}
+        {/* Paws */}
+        <ellipse cx="17" cy="29" rx="3" ry="2" fill="#FF9933"/>
+        <ellipse cx="27" cy="29" rx="3" ry="2" fill="#FF9933"/>
+        {/* Text */}
+        <text x="46" y="17" fill="#FF9933" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="800">MAKE IN</text>
+        <text x="46" y="25" fill="#138808" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="800">INDIA</text>
+        <line x1="36" y1="8" x2="36" y2="32" stroke="#e2e8f0" strokeWidth="0.8"/>
+      </svg>
+    ),
+  },
+  {
+    id: "startup-india",
+    name: "Startup India",
+    subtitle: "Recognized",
+    logo: (
+      <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
+        {/* Rocket */}
+        <path d="M22 8 Q26 4 30 8 L32 20 Q28 24 22 24 Q16 24 12 20 Z" fill="#2563eb"/>
+        <path d="M12 20 Q10 24 12 28 L16 24 Z" fill="#FF9933"/>
+        <path d="M32 20 Q34 24 32 28 L28 24 Z" fill="#FF9933"/>
+        <circle cx="22" cy="15" r="3" fill="white" opacity="0.9"/>
+        {/* Stars */}
+        <circle cx="10" cy="10" r="1.5" fill="#d97706"/>
+        <circle cx="34" cy="8"  r="1"   fill="#d97706"/>
+        <circle cx="8"  cy="18" r="1"   fill="#d97706" opacity="0.6"/>
+        {/* Text */}
+        <text x="49" y="17" fill="#2563eb" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="800">STARTUP</text>
+        <text x="49" y="25" fill="#2563eb" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="800">INDIA</text>
+        <line x1="40" y1="8" x2="40" y2="32" stroke="#e2e8f0" strokeWidth="0.8"/>
+      </svg>
+    ),
+  },
+];
+
+// Duplicate for seamless loop
+const MARQUEE_ITEMS = [...TRUST_BADGES, ...TRUST_BADGES];
 
 // ─── SVG Schematics ───────────────────────────────────────────────────────────
 
@@ -246,9 +394,9 @@ function EVSchematic() {
         <path d="M0,60 L8,60 L12,38 L22,22 L58,18 L94,22 L104,38 L118,60 L126,60 L126,75 L0,75 Z" fill="white" stroke="#e2e8f0" strokeWidth="1.2" />
         <path d="M20,40 L25,24 L58,21 L91,24 L96,40 Z" fill="#dbeafe" stroke="#bfdbfe" strokeWidth="0.6" />
         <circle cx="28" cy="78" r="13" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1.2" />
-        <circle cx="28" cy="78" r="7" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.8" />
+        <circle cx="28" cy="78" r="7"  fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.8" />
         <circle cx="98" cy="78" r="13" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1.2" />
-        <circle cx="98" cy="78" r="7" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.8" />
+        <circle cx="98" cy="78" r="7"  fill="#e2e8f0" stroke="#94a3b8" strokeWidth="0.8" />
         <rect x="42" y="53" width="42" height="10" rx="1.5" fill="#f0fdf4" stroke="#059669" strokeWidth="0.8" />
         <rect x="43" y="54" width="32" height="8" rx="1" fill="#059669" opacity="0.8">
           <animate attributeName="width" values="32;36;32" dur="3s" repeatCount="indefinite" />
@@ -258,7 +406,7 @@ function EVSchematic() {
       <rect x="368" y="55" width="84" height="125" rx="4" fill="white" stroke="#e2e8f0" strokeWidth="1.2" />
       <text x="410" y="72" fill="#059669" fontSize="7" fontFamily="monospace" textAnchor="middle" fontWeight="600">NETWORK</text>
       <line x1="373" y1="78" x2="443" y2="78" stroke="#e2e8f0" strokeWidth="0.8" />
-      <text x="377" y="93" fill="#475569" fontSize="8.5" fontFamily="monospace">Ports: 12</text>
+      <text x="377" y="93"  fill="#475569" fontSize="8.5" fontFamily="monospace">Ports: 12</text>
       <text x="377" y="108" fill="#475569" fontSize="8.5" fontFamily="monospace">Load: 347kW</text>
       <text x="377" y="123" fill="#475569" fontSize="8.5" fontFamily="monospace">Sessions: 28</text>
       <text x="377" y="140" fill="#059669" fontSize="8.5" fontFamily="monospace">Queue: 3</text>
@@ -313,15 +461,113 @@ function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
+// ─── Trust Marquee ────────────────────────────────────────────────────────────
+function TrustMarquee() {
+  const [paused, setPaused] = useState(false);
+
+  return (
+    <>
+      <style>{`
+        @keyframes marquee-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+          display: flex;
+          width: max-content;
+          animation: marquee-scroll 28s linear infinite;
+        }
+        .marquee-track.paused {
+          animation-play-state: paused;
+        }
+        .marquee-fade-left {
+          background: linear-gradient(to right, #f8fafc 0%, transparent 15%);
+        }
+        .marquee-fade-right {
+          background: linear-gradient(to left, #f8fafc 0%, transparent 15%);
+        }
+      `}</style>
+
+      <div
+        className="relative w-full overflow-hidden mt-6"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        style={{ userSelect: "none" }}>
+
+        {/* Left fade */}
+        <div className="marquee-fade-left pointer-events-none absolute left-0 top-0 h-full w-24 z-10" />
+        {/* Right fade */}
+        <div className="marquee-fade-right pointer-events-none absolute right-0 top-0 h-full w-24 z-10" />
+
+        <div className={`marquee-track${paused ? " paused" : ""}`}>
+          {MARQUEE_ITEMS.map((badge, idx) => (
+            <div
+              key={`${badge.id}-${idx}`}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "10px 20px",
+                marginRight: 12,
+                borderRadius: 12,
+                background: "white",
+                border: "1px solid #e2e8f0",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                whiteSpace: "nowrap",
+                cursor: "default",
+                flexShrink: 0,
+                transition: "box-shadow 0.2s, transform 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 16px rgba(37,99,235,0.10)";
+                (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+                (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+              }}>
+              {/* Logo */}
+              <div style={{ flexShrink: 0 }}>
+                {badge.logo}
+              </div>
+              {/* Text */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <span style={{
+                  fontFamily: "'Outfit', sans-serif",
+                  fontWeight: 700,
+                  fontSize: 12,
+                  color: "#0f172a",
+                  lineHeight: 1.2,
+                }}>
+                  {badge.name}
+                </span>
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 9,
+                  color: "#94a3b8",
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                }}>
+                  {badge.subtitle}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function HeroSection() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [metrics, setMetrics] = useState(() => METRICS[0].map((m) => m.val()));
-  const [clock, setClock] = useState("");
-  const [bgIndex, setBgIndex] = useState(0);
-  const [bgOpacity, setBgOpacity] = useState(5.75); // Higher base opacity for more visible background
-  const [dynIdx, setDynIdx] = useState(0);
-  const autoRef = useRef(true);
+  const [activeTab, setActiveTab]   = useState(0);
+  const [metrics, setMetrics]       = useState<string[]>(["84.0", "49.97", "97.3", "0"]);
+  const [clock, setClock]           = useState("");
+  const [bgIndex, setBgIndex]       = useState(0);
+  const [bgOpacity, setBgOpacity]   = useState(9.45);
+  const [dynIdx, setDynIdx]         = useState(0);
+  const autoRef    = useRef(true);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Clock
@@ -332,13 +578,13 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, []);
 
-  // BG image rotation — SLOWER: every 5 seconds for more visible transitions
+  // BG image rotation
   useEffect(() => {
     const id = setInterval(() => setBgIndex((p) => (p + 1) % BG_IMAGES.length), 5000);
     return () => clearInterval(id);
   }, []);
 
-  // Scroll → fade bg opacity slightly but keep it visible (starts at 0.45, goes to 0.15)
+  // Scroll → fade bg
   useEffect(() => {
     const onScroll = () => {
       const heroH = sectionRef.current?.offsetHeight ?? window.innerHeight;
@@ -357,7 +603,7 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, [activeTab]);
 
-  // Auto-rotate tabs every 5 seconds
+  // Auto-rotate tabs
   useEffect(() => {
     const id = setInterval(() => {
       if (autoRef.current) setActiveTab((p) => (p + 1) % 4);
@@ -365,15 +611,15 @@ export default function HeroSection() {
     return () => clearInterval(id);
   }, []);
 
-  // Dynamic headline rotation every 3 seconds
+  // Dynamic headline rotation
   useEffect(() => {
     const id = setInterval(() => setDynIdx((p) => (p + 1) % DYNAMIC_WORDS.length), 3000);
     return () => clearInterval(id);
   }, []);
 
-  const tab = TABS[activeTab];
+  const tab      = TABS[activeTab];
   const Schematic = SCHEMATICS[activeTab];
-  const dynWord = DYNAMIC_WORDS[dynIdx];
+  const dynWord  = DYNAMIC_WORDS[dynIdx];
 
   return (
     <>
@@ -381,7 +627,6 @@ export default function HeroSection() {
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');`}</style>
 
       {/* ── BACKGROUND SLIDESHOW ── */}
-      {/* Higher base opacity (0.45) for more visible imagery, smoother crossfade (2.5s) */}
       <div
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: 0, opacity: bgOpacity, transition: "opacity 0.4s ease-out" }}>
@@ -400,11 +645,9 @@ export default function HeroSection() {
             }}
           />
         </AnimatePresence>
-        {/* Soft gradient overlay to maintain text readability while keeping background visible */}
         <div className="absolute inset-0" style={{
           background: "linear-gradient(to bottom, rgba(248,250,252,0.65) 0%, rgba(248,250,252,0.5) 40%, rgba(248,250,252,0.75) 80%, rgba(248,250,252,0.95) 100%)",
         }} />
-        {/* Subtle dot-grid texture */}
         <div className="absolute inset-0" style={{
           backgroundImage: "radial-gradient(circle, rgba(37,99,235,0.06) 1px, transparent 1px)",
           backgroundSize: "28px 28px",
@@ -419,24 +662,8 @@ export default function HeroSection() {
         className="relative flex flex-col items-center text-center px-6 lg:px-12 pt-24 pb-28"
         style={{ minHeight: "100vh", background: "transparent", zIndex: 1 }}>
 
-        {/* Badge */}
-        <m.div variants={fadeUp} custom={0} initial="hidden" animate="show" className="mb-10">
-          <span className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full text-xs font-semibold tracking-widest uppercase"
-            style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              background: "white",
-              border: "1px solid #e2e8f0",
-              color: "#2563eb",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-            }}>
-            <PulseDot color="#2563eb" />
-            DPIIT Recognized · IIT Indore Incubated · Patent Filed
-          </span>
-        </m.div>
-
         {/* ── DYNAMIC HEADLINE ── */}
         <m.div variants={fadeUp} custom={0.12} initial="hidden" animate="show" className="mb-8">
-          {/* Line 1 - Static */}
           <div className="flex flex-wrap justify-center gap-x-4 leading-none mb-1">
             {["India's", "Intelligent"].map((w, i) => (
               <span key={i} style={{
@@ -447,7 +674,6 @@ export default function HeroSection() {
             ))}
           </div>
 
-          {/* Line 2 - DYNAMIC (changes every 3 seconds) */}
           <div className="flex flex-wrap justify-center gap-x-4 overflow-hidden" style={{ minHeight: "1.06em" }}>
             <AnimatePresence mode="wait">
               <m.span key={`word-${dynIdx}`} variants={wordAnim} initial="hidden" animate="show" exit="exit"
@@ -471,7 +697,6 @@ export default function HeroSection() {
             </AnimatePresence>
           </div>
 
-          {/* Line 3 - Static */}
           <div className="flex flex-wrap justify-center gap-x-4 leading-none">
             {["AI", "Platform"].map((w, i) => (
               <span key={i} style={{
@@ -624,16 +849,10 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
-            {["Make in India", "Patent No. 202521117118", "MSME Certified"].map((item) => (
-              <span key={item} style={{
-                fontFamily: "'JetBrains Mono', monospace", fontSize: 9,
-                color: "#94a3b8", padding: "4px 14px", borderRadius: 999,
-                border: "1px solid #e2e8f0", background: "white",
-              }}>{item}</span>
-            ))}
-          </div>
+          {/* ── TRUST MARQUEE (replaces old static badges) ── */}
+          <m.div variants={fadeUp} custom={0.72} initial="hidden" animate="show">
+            <TrustMarquee />
+          </m.div>
         </m.div>
       </section>
 
@@ -657,12 +876,12 @@ export default function HeroSection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { color: "#2563eb", bg: "#eff6ff", icon: "⚡", name: "Power Transformers", desc: "Real-time temperature, load, THD, and fault prediction for distribution and power transformers.", tag: "11kV – 220kV range" },
-            { color: "#d97706", bg: "#fefce8", icon: "☀️", name: "Solar PV Systems", desc: "Panel-level IV tracing, MPPT optimization, shade analysis, and inverter health monitoring.", tag: "1kW – 100MW farms" },
-            { color: "#7c3aed", bg: "#f5f3ff", icon: "💨", name: "Wind Turbines", desc: "Vibration analysis, gearbox health, pitch optimization, and predictive maintenance via SCADA.", tag: "250kW – 5MW units" },
-            { color: "#059669", bg: "#f0fdf4", icon: "🔌", name: "EV Charging Networks", desc: "Smart load balancing across CCS2/CHAdeMO/AC chargers, V2G monitoring, fleet optimization.", tag: "V2G + OCPP 2.0.1" },
-            { color: "#0ea5e9", bg: "#f0f9ff", icon: "📡", name: "Smart Metering (AMI)", desc: "Tamper detection, power quality analysis, and automated demand response integration.", tag: "HAN + WAN + NAN" },
-            { color: "#e11d48", bg: "#fff1f2", icon: "🏗️", name: "Substations & Grid", desc: "Protection relay coordination, busbar monitoring, and real-time fault location for substations.", tag: "IEC 61850 / DNP3" },
+            { color: "#2563eb", bg: "#eff6ff", icon: "⚡", name: "Power Transformers with IOT",    desc: "Real-time temperature, load, THD, and fault prediction for distribution and power transformers.", tag: "11kV – 220kV range" },
+            { color: "#d97706", bg: "#fefce8", icon: "☀️", name: "Solar PV Systems",       desc: "Panel-level IV tracing, MPPT optimization, shade analysis, and inverter health monitoring.", tag: "1kW – 100MW farms" },
+            { color: "#7c3aed", bg: "#f5f3ff", icon: "💨", name: "Wind Turbine Analysis",          desc: "Vibration analysis, gearbox health, pitch optimization, and predictive maintenance via SCADA.", tag: "250kW – 5MW units" },
+            { color: "#059669", bg: "#f0fdf4", icon: "🔌", name: "EV Battery Monitoring",   desc: "Smart load balancing across CCS2/CHAdeMO/AC chargers, V2G monitoring, fleet optimization.", tag: "V2G + OCPP 2.0.1" },
+            { color: "#0ea5e9", bg: "#f0f9ff", icon: "📡", name: "Smart AI Dashboards",   desc: "Tamper detection, power quality analysis, and automated demand response integration.", tag: "HAN + WAN + NAN" },
+            { color: "#e11d48", bg: "#fff1f2", icon: "🏗️", name: "Substations & Grid",    desc: "Protection relay coordination, busbar monitoring, and real-time fault location for substations.", tag: "IEC 61850 / DNP3" },
           ].map((s, i) => (
             <Reveal key={i} delay={i * 0.07}>
               <m.div whileHover={{ y: -4, boxShadow: "0 20px 50px rgba(0,0,0,0.08)" }}
@@ -702,9 +921,9 @@ export default function HeroSection() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", borderRadius: 16, overflow: "hidden", border: "1.5px solid #e2e8f0" }}>
           {[
             { layer: "Layer 1", name: "Edge Sensors", detail: "CTs, PTs, vibration, temp, pH, gas sensors — hardened for field deployment", version: "CYBO-EDGE v3", color: "#2563eb" },
-            { layer: "Layer 2", name: "IoT Gateway", detail: "Local processing, protocol translation (Modbus → MQTT/AMQP), edge inference", version: "CYBO-GATE v2.1", color: "#0ea5e9" },
-            { layer: "Layer 3", name: "AI Engine", detail: "Time-series anomaly detection, predictive maintenance models, load forecasting", version: "VAJRA-AI v1.4", color: "#7c3aed" },
-            { layer: "Layer 4", name: "Dashboard", detail: "Real-time web/mobile dashboards, alerts, SCADA integration, audit trails", version: "CYBO-CTRL", color: "#059669" },
+            { layer: "Layer 2", name: "IoT Gateway",  detail: "Local processing, protocol translation (Modbus → MQTT/AMQP), edge inference", version: "CYBO-GATE v2.1", color: "#0ea5e9" },
+            { layer: "Layer 3", name: "AI Engine",    detail: "Time-series anomaly detection, predictive maintenance models, load forecasting", version: "VAJRA-AI v1.4", color: "#7c3aed" },
+            { layer: "Layer 4", name: "Dashboard",    detail: "Real-time web/mobile dashboards, alerts, SCADA integration, audit trails", version: "CYBO-CTRL", color: "#059669" },
           ].map((layer, i) => (
             <Reveal key={i} delay={i * 0.1}>
               <div style={{

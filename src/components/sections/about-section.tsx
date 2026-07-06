@@ -5,8 +5,8 @@ import Image from "next/image";
 import { staggerContainer, slideLeft, slideRight, fadeUp, cellFadeUp, VIEWPORT } from "@/lib/motion";
 
 const parentLayer = {
-  label: "CYBO-VAJRA",
-  desc: "Patented Edge Hardware Node",
+  label: "AIpowerOS",
+  desc: "Patented Cloud Intelligence Platform",
   border: "border-l-[3px] border-l-status-green hover:border-l-[5px] hover:border-l-status-green",
   patent: "Patent 202521117118",
 };
@@ -23,8 +23,8 @@ const subLayers = [
     border: "border-l-[2px] border-l-accent-blue hover:border-l-[4px] hover:border-l-accent-blue",
   },
   {
-    label: "AIpowerOS",
-    desc: "Analytics & Intelligence Layer",
+    label: "CYBO-VAJRA",
+    desc: "Edge Hardware Node",
     border: "border-l-[2px] border-l-accent-amber hover:border-l-[4px] hover:border-l-accent-amber",
   },
 ];
@@ -69,7 +69,7 @@ export default function AboutSection() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-mono text-[9px] font-bold text-status-green uppercase tracking-wider bg-status-green-bg px-2 py-0.5 rounded-sm border border-status-green/10">
-                      PATENTED CORE HARDWARE
+                      PATENTED CORE SOFTWARE
                     </span>
                     <span className="font-mono text-[9px] font-bold text-text-muted">
                       {parentLayer.patent}
@@ -85,7 +85,7 @@ export default function AboutSection() {
 
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 font-mono text-[8px] text-status-green font-bold uppercase tracking-widest bg-status-green-bg px-2 py-1 rounded-sm border border-status-green/20">
                     <span className="w-1.5 h-1.5 bg-status-green rounded-full animate-ping" />
-                    <span>CORE NODE</span>
+                    <span>CORE PLATFORM</span>
                   </div>
                 </m.div>
 
@@ -98,7 +98,7 @@ export default function AboutSection() {
                       <div className="absolute left-[-24px] top-1/2 -translate-y-1/2 w-[24px] h-[2px] bg-bg-border-strong/45" />
                       <div className="absolute left-[-27px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full border border-bg-border-strong bg-white z-10 flex items-center justify-center">
                         <div className={`w-1 h-1 rounded-full ${
-                          layer.label === "AIpowerOS" ? "bg-accent-amber" : "bg-accent-blue"
+                          layer.label === "CYBO-VAJRA" ? "bg-accent-amber" : "bg-accent-blue"
                         }`} />
                       </div>
 
@@ -146,7 +146,7 @@ export default function AboutSection() {
                 <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent" />
               </div>
               
-              <div className="absolute right-8 top-1/2 -translate-y-1/2 max-w-[280px] text-right">
+              <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[280px] text-left">
                 <div className="text-6xl text-accent-amber/30 font-serif mb-2">"</div>
                 <p className="font-serif text-white text-lg leading-relaxed font-medium">
                   Indian enterprise can and must lead global innovation.
@@ -182,21 +182,27 @@ export default function AboutSection() {
             <m.h2
               id="about-heading"
               variants={slideRight}
-              className="font-heading font-bold text-4xl md:text-[2.5rem] leading-[1.05] text-text-primary mb-6 uppercase tracking-tight"
+              className="font-heading font-bold text-4xl md:text-[2.5rem] leading-[1.05] text-text-primary uppercase tracking-tight"
             >
               Bridging Industrial Assets with Modern Intelligence
             </m.h2>
+          </m.div>
 
-            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed mb-5">
+          <m.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={VIEWPORT}
+            className="flex flex-col gap-6 lg:mt-9"
+          >
+            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed">
               Cybokrafts Universal Innovations is an Indian infrastructure technology company building AI-powered monitoring systems for critical energy assets. We operate at the intersection of hardware engineering and intelligent software.
             </m.p>
 
-            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed mb-8">
+            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed">
               Our mission is anchored in the Atmanirbhar Bharat vision — delivering indigenous, world-class technology solutions that strengthen India's energy infrastructure and reduce dependence on imported systems.
             </m.p>
           </m.div>
-
-          <div />
         </div>
 
         {/* Bottom Row: Nikola Tesla Image + Partners */}

@@ -304,6 +304,83 @@ export default function EngineeringDemandSection() {
           </div>
 
         </div>
+
+        {/* SENSELESS ANIMATED DIV 2 - The chaotic footer that bounces, spins, shakes and glitches */}
+        <m.div
+          className="mt-12 p-6 bg-white border border-[#D1D9E4] rounded-[3px] relative overflow-hidden"
+          animate={{
+            x: [0, -4, 4, -4, 4, 0],
+            y: [0, -3, 3, -2, 2, 0],
+            rotate: [0, 1, -1, 0.5, -0.5, 0],
+            scale: [1, 1.02, 0.98, 1.01, 0.99, 1],
+          }}
+          transition={{
+            duration: 0.3,
+            repeat: Infinity,
+            repeatType: "mirror",
+            ease: "linear"
+          }}
+          whileHover={{
+            scale: 1.05,
+            rotate: 2,
+            backgroundColor: "#FFFFFF",
+            transition: { duration: 0.1 }
+          }}
+          style={{ transformOrigin: "center center" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1C5FD1]/5 to-transparent" style={{ animation: 'pulse 0.8s ease-in-out infinite' }} />
+          <div 
+            className="absolute top-0 left-0 w-full h-full bg-repeat opacity-5 pointer-events-none"
+            style={{ 
+              backgroundImage: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" width=\"100\" height=\"100\"><rect width=\"100\" height=\"100\" fill=\"none\" stroke=\"%231C5FD1\" stroke-width=\"0.5\" stroke-dasharray=\"2,2\"/><text x=\"10\" y=\"20\" fill=\"%231C5FD1\" opacity=\"0.1\" font-size=\"8\">DEBUG</text><text x=\"60\" y=\"80\" fill=\"%231C5FD1\" opacity=\"0.1\" font-size=\"8\">OVERRIDE</text></svg>')" 
+            }}
+          />
+          
+          <div className="relative flex flex-wrap items-center justify-between gap-4 z-10">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-red-500" style={{ animation: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite' }} />
+              <span className="font-mono text-[10px] font-bold text-[#0C1929] uppercase tracking-widest">SENSELESS DIAGNOSTIC PANEL v0.0.1-alpha</span>
+            </div>
+            <div className="flex gap-6">
+              <div className="font-mono text-[8px] text-[#7A93AD] inline-block" style={{ animation: 'spin 2s linear infinite' }}>⚙️</div>
+              <div className="font-mono text-[8px] text-[#1C5FD1] font-bold" style={{ animation: 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>!!! RANDOM ALERT !!!</div>
+              <div className="font-mono text-[8px] text-[#7A93AD] inline-block" style={{ animation: 'bounce 0.5s ease infinite' }}>⚠️</div>
+            </div>
+            <div className="w-32 h-2 bg-[#EEF1F6] rounded-full overflow-hidden">
+              <m.div 
+                className="h-full w-full bg-[#1C5FD1]"
+                animate={{ x: ["-100%", "100%"] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+              />
+            </div>
+            <button 
+              className="px-3 py-1 bg-red-100 border border-red-300 text-red-700 font-mono text-[8px] font-bold uppercase rounded-none hover:bg-red-200 transition-all hover:rotate-2 active:scale-95"
+              onClick={() => {
+                const nonsenseMessages = [
+                  "REBOOTING NEURAL INTERFACE...",
+                  "SYNC LOST... ACQUIRING...",
+                  "POTATO MODE ACTIVATED",
+                  "404: SENSELESS NOT FOUND",
+                  "CRITICAL: TOO MANY EMOTIONS",
+                  "CALCULATING THE MEANING OF 42"
+                ];
+                const randomMsg = nonsenseMessages[Math.floor(Math.random() * nonsenseMessages.length)];
+                const toastDiv = document.createElement("div");
+                toastDiv.className = "fixed bottom-4 right-4 bg-black text-white font-mono text-[10px] p-2 z-50";
+                toastDiv.innerText = randomMsg;
+                document.body.appendChild(toastDiv);
+                setTimeout(() => toastDiv.remove(), 1500);
+              }}
+            >
+              PRESS FOR SENSELESS
+            </button>
+          </div>
+          
+          <div className="mt-3 font-mono text-[6px] text-[#7A93AD] text-center tracking-widest border-t border-[#D1D9E4] pt-2">
+            THIS DIV HAS NO PROFESSIONAL PURPOSE | IT EXISTS ONLY TO CONFUSE AND DISTRACT | ALL BOUNDARIES ARE ARTIFICIAL
+          </div>
+        </m.div>
+
       </div>
     </section>
   );
