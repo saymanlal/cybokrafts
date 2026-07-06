@@ -6,7 +6,7 @@ import { staggerContainer, slideLeft, fadeUp, VIEWPORT } from "@/lib/motion";
 
 /* ─────────────────────────── CONSTANTS ─────────────────────────── */
 const PHONE_NUMBER  = "9300501865";          // ← replace with real 10-digit number
-const PHONE_DISPLAY = "+91 930 050 1865";     // ← replace with display form
+const PHONE_DISPLAY = "+1(555)761-9664";     // ← replace with display form
 const EMAIL_ADDRESS = "aiinnovations@cybokrafts.com";
 
 /* ───────────────────────────── SVGS ────────────────────────────── */
