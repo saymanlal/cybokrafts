@@ -140,10 +140,10 @@ export default function AboutSection() {
                   alt="Sir Ratan Tata"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                  style={{ objectPosition: "50% 20%" }}
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  style={{ objectPosition: "50% 30%" }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent" />
               </div>
               
               <div className="absolute right-8 top-1/2 -translate-y-1/2 max-w-[280px] text-right">
@@ -255,10 +255,10 @@ export default function AboutSection() {
                   alt="Nikola Tesla"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                   style={{ objectPosition: "50% 25%" }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
               </div>
               
               <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[300px] text-left">
