@@ -79,11 +79,11 @@ export default function AboutSection() {
                   <h4 className="font-heading font-bold text-lg group-hover:text-status-green transition-colors text-text-primary uppercase tracking-wide leading-tight mb-1">
                     {parentLayer.label}
                   </h4>
-                  <p className="font-sans text-[13px] text-text-secondary leading-relaxed pr-24">
+                  <p className="font-sans text-[13px] text-text-secondary leading-relaxed pr-0 sm:pr-24">
                     {parentLayer.desc}
                   </p>
 
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 font-mono text-[8px] text-status-green font-bold uppercase tracking-widest bg-status-green-bg px-2 py-1 rounded-sm border border-status-green/20">
+                  <div className="sm:absolute sm:right-4 sm:top-1/2 sm:-translate-y-1/2 relative right-auto top-auto translate-y-0 mt-3 self-start flex items-center gap-1.5 font-mono text-[8px] text-status-green font-bold uppercase tracking-widest bg-status-green-bg px-2 py-1 rounded-sm border border-status-green/20">
                     <span className="w-1.5 h-1.5 bg-status-green rounded-full animate-ping" />
                     <span>CORE PLATFORM</span>
                   </div>
@@ -110,11 +110,11 @@ export default function AboutSection() {
                           <h5 className="font-heading font-bold text-[15px] group-hover:text-accent-blue transition-colors text-text-primary uppercase tracking-wide leading-tight mb-1">
                             {layer.label}
                           </h5>
-                          <p className="font-sans text-[12px] text-text-secondary leading-relaxed">
+                          <p className="font-sans text-[12px] text-text-secondary leading-relaxed pr-0 sm:pr-20">
                             {layer.desc}
                           </p>
                         </div>
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-[8px] text-text-muted font-bold tracking-widest uppercase">
+                        <div className="sm:absolute sm:right-4 sm:top-1/2 sm:-translate-y-1/2 relative right-auto top-auto translate-y-0 mt-2 block font-mono text-[8px] text-text-muted font-bold tracking-widest uppercase">
                           // {layer.label.split(" ")[0]}
                         </div>
                       </m.div>
@@ -146,7 +146,7 @@ export default function AboutSection() {
                 <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent" />
               </div>
               
-              <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[280px] text-left">
+              <div className="absolute left-6 xs:left-8 top-1/2 -translate-y-1/2 max-w-[75%] sm:max-w-[280px] text-left">
                 <div className="text-6xl text-accent-amber/30 font-serif mb-2">"</div>
                 <p className="font-serif text-white text-lg leading-relaxed font-medium">
                   Indian enterprise can and must lead global innovation.
@@ -267,7 +267,7 @@ export default function AboutSection() {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
               </div>
               
-              <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[300px] text-left">
+              <div className="absolute left-6 xs:left-8 top-1/2 -translate-y-1/2 max-w-[75%] sm:max-w-[300px] text-left">
                 <div className="text-6xl text-accent-blue/30 font-serif mb-2">"</div>
                 <p className="font-serif text-white text-lg leading-relaxed font-medium">
                   Think in terms of energy, frequency and vibration.

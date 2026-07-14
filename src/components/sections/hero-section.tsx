@@ -668,7 +668,7 @@ export default function HeroSection() {
             {["India's", "Intelligent"].map((w, i) => (
               <span key={i} style={{
                 fontFamily: "'Outfit', sans-serif", fontWeight: 900,
-                fontSize: "clamp(42px, 7vw, 92px)", letterSpacing: "-0.03em", lineHeight: 1.03,
+                fontSize: "clamp(28px, 7vw, 84px)", letterSpacing: "-0.03em", lineHeight: 1.03,
                 color: i === 1 ? "#2563eb" : "#0f172a",
               }}>{w}</span>
             ))}
@@ -679,7 +679,7 @@ export default function HeroSection() {
               <m.span key={`word-${dynIdx}`} variants={wordAnim} initial="hidden" animate="show" exit="exit"
                 style={{
                   fontFamily: "'Outfit', sans-serif", fontWeight: 900,
-                  fontSize: "clamp(42px, 7vw, 92px)", letterSpacing: "-0.03em", lineHeight: 1.03,
+                  fontSize: "clamp(28px, 7vw, 84px)", letterSpacing: "-0.03em", lineHeight: 1.03,
                   color: "#2563eb", display: "inline-block",
                 }}>
                 {dynWord.word}
@@ -689,7 +689,7 @@ export default function HeroSection() {
               <m.span key={`suffix-${dynIdx}`} variants={wordAnim} initial="hidden" animate="show" exit="exit"
                 style={{
                   fontFamily: "'Outfit', sans-serif", fontWeight: 900,
-                  fontSize: "clamp(42px, 7vw, 92px)", letterSpacing: "-0.03em", lineHeight: 1.03,
+                  fontSize: "clamp(28px, 7vw, 84px)", letterSpacing: "-0.03em", lineHeight: 1.03,
                   color: "#0f172a", display: "inline-block",
                 }}>
                 {dynWord.suffix}
@@ -701,7 +701,7 @@ export default function HeroSection() {
             {["AI", "Platform"].map((w, i) => (
               <span key={i} style={{
                 fontFamily: "'Outfit', sans-serif", fontWeight: 900,
-                fontSize: "clamp(42px, 7vw, 92px)", letterSpacing: "-0.03em", lineHeight: 1.03,
+                fontSize: "clamp(28px, 7vw, 84px)", letterSpacing: "-0.03em", lineHeight: 1.03,
                 color: i === 0 ? "#2563eb" : "#0f172a",
               }}>{w}</span>
             ))}
@@ -815,13 +815,17 @@ export default function HeroSection() {
             </div>
 
             {/* Telemetry strip */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", borderTop: "1px solid #f1f5f9" }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-[#f1f5f9]">
               {METRICS[activeTab].map(({ label, unit }, i) => (
-                <div key={i} style={{
-                  padding: 12, textAlign: "center",
-                  borderRight: i < 3 ? "1px solid #f1f5f9" : "none",
-                  background: "white",
-                }}>
+                <div key={i} className={`p-3 text-center bg-white ${
+                  i === 0
+                    ? "border-b sm:border-b-0 border-[#f1f5f9] border-r"
+                    : i === 1
+                    ? "border-b sm:border-b-0 border-[#f1f5f9] sm:border-r"
+                    : i === 2
+                    ? "border-r border-[#f1f5f9]"
+                    : ""
+                }`}>
                   <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: "#94a3b8", textTransform: "uppercase", marginBottom: 4 }}>{label}</div>
                   <AnimatePresence mode="wait">
                     <m.div key={metrics[i]}
@@ -918,7 +922,7 @@ export default function HeroSection() {
           </p>
         </Reveal>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", borderRadius: 16, overflow: "hidden", border: "1.5px solid #e2e8f0" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 rounded-2xl overflow-hidden border border-[#e2e8f0]">
           {[
             { layer: "Layer 1", name: "Edge Sensors", detail: "CTs, PTs, vibration, temp, pH, gas sensors — hardened for field deployment", version: "CYBO-EDGE v3", color: "#2563eb" },
             { layer: "Layer 2", name: "IoT Gateway",  detail: "Local processing, protocol translation (Modbus → MQTT/AMQP), edge inference", version: "CYBO-GATE v2.1", color: "#0ea5e9" },
@@ -926,10 +930,15 @@ export default function HeroSection() {
             { layer: "Layer 4", name: "Dashboard",    detail: "Real-time web/mobile dashboards, alerts, SCADA integration, audit trails", version: "CYBO-CTRL", color: "#059669" },
           ].map((layer, i) => (
             <Reveal key={i} delay={i * 0.1}>
-              <div style={{
-                padding: "28px 22px", background: "white", height: "100%",
-                borderRight: i < 3 ? "1px solid #e2e8f0" : "none",
-              }}>
+              <div className={`p-7 bg-white h-full ${
+                i === 0
+                  ? "border-b lg:border-b-0 border-[#e2e8f0] sm:border-r"
+                  : i === 1
+                  ? "border-b lg:border-b-0 border-[#e2e8f0] lg:border-r"
+                  : i === 2
+                  ? "border-b sm:border-b-0 border-[#e2e8f0] sm:border-r"
+                  : ""
+              }`}>
                 <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: "#94a3b8", marginBottom: 8 }}>{layer.layer}</div>
                 <div style={{ fontFamily: "'Outfit', sans-serif", fontWeight: 700, fontSize: 18, color: "#0f172a", marginBottom: 8 }}>{layer.name}</div>
                 <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, color: "#64748b", lineHeight: 1.65, marginBottom: 12 }}>{layer.detail}</div>

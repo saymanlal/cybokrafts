@@ -39,6 +39,10 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: #D1D9E4 transparent;
+  /* Never allow sideways scroll from a stray overflowing element.
+     `clip` (unlike `hidden`) creates no scroll container and doesn't
+     interfere with anchor scrolling or sticky positioning. */
+  overflow-x: clip;
 }
 
 body {
@@ -47,7 +51,48 @@ body {
   font-family: var(--font-sans);
   -ms-overflow-style: auto;
   line-height: 1.6;
+  overflow-x: clip;
+  max-width: 100%;
 }
+
+/* ── Responsive hardening ─────────────────────────────────────────────
+   Keep media and embedded content inside their box on every viewport so
+   nothing spills out or forces a horizontal scrollbar. Purely defensive —
+   does not alter the intended layout of any section. */
+img,
+video,
+canvas,
+picture,
+iframe {
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+/* Long unbroken strings (URLs, IDs) wrap instead of stretching a container. */
+p,
+h1,
+h2,
+h3,
+h4,
+li,
+blockquote,
+figcaption {
+  overflow-wrap: break-word;
+}
+
+/* Utility: clamp text to N lines (used by the blog cards). */
+.line-clamp-2,
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 { -webkit-line-clamp: 2; }
+.line-clamp-3 { -webkit-line-clamp: 3; }
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
