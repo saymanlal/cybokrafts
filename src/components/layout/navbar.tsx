@@ -54,12 +54,12 @@ export default function Navbar() {
         >
           <div className="flex-shrink-0">
             <Image
-              src="/images/cybokrafts_newlogo.PNG"
+              src="/images/cybokrafts_logomark.png"
               alt="Cybokrafts Logo"
-              width={42}
-              height={42}
+              width={44}
+              height={44}
               priority
-              className="object-cover rounded-full"
+              className="object-contain"
             />
           </div>
 
