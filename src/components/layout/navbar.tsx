@@ -54,7 +54,7 @@ export default function Navbar() {
         >
           <div className="flex-shrink-0">
             <Image
-              src="/images/cybokrafts_logo.png"
+              src="/images/cybokrafts_newlogo.PNG"
               alt="Cybokrafts Logo"
               width={42}
               height={42}
