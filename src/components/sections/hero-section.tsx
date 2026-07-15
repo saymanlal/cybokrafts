@@ -49,15 +49,6 @@ const DYNAMIC_WORDS = [
   { word: "Predictive", suffix: "Maintenance" },
 ];
 
-const BG_IMAGES = [
-  "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&h=1080&fit=crop",
-  "https://images.unsplash.com/photo-1566908827455-9f8d724a4701?w=1920&h=1080&fit=crop",
-];
-
 const METRICS = [
   [
     { label: "Load Factor", unit: "%",  val: () => (84 + Math.random() * 0.6).toFixed(1) },
@@ -564,7 +555,6 @@ export default function HeroSection() {
   const [activeTab, setActiveTab]   = useState(0);
   const [metrics, setMetrics]       = useState<string[]>(["84.0", "49.97", "97.3", "0"]);
   const [clock, setClock]           = useState("");
-  const [bgIndex, setBgIndex]       = useState(0);
   const [bgOpacity, setBgOpacity]   = useState(9.45);
   const [dynIdx, setDynIdx]         = useState(0);
   const autoRef    = useRef(true);
@@ -575,12 +565,6 @@ export default function HeroSection() {
     const tick = () => setClock(new Date().toTimeString().slice(0, 8));
     tick();
     const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  // BG image rotation
-  useEffect(() => {
-    const id = setInterval(() => setBgIndex((p) => (p + 1) % BG_IMAGES.length), 5000);
     return () => clearInterval(id);
   }, []);
 
@@ -630,21 +614,15 @@ export default function HeroSection() {
       <div
         className="fixed inset-0 pointer-events-none"
         style={{ zIndex: 0, opacity: bgOpacity, transition: "opacity 0.4s ease-out" }}>
-        <AnimatePresence mode="wait">
-          <m.div key={bgIndex}
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.02 }}
-            transition={{ duration: 2.2, ease: "easeInOut" }}
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${BG_IMAGES[bgIndex]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}
-          />
-        </AnimatePresence>
+        <video
+          className="absolute inset-0 h-full w-full object-cover"
+          src="/cybokraft_video.MP4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+        />
         <div className="absolute inset-0" style={{
           background: "linear-gradient(to bottom, rgba(248,250,252,0.65) 0%, rgba(248,250,252,0.5) 40%, rgba(248,250,252,0.75) 80%, rgba(248,250,252,0.95) 100%)",
         }} />
