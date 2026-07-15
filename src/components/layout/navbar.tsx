@@ -59,7 +59,7 @@ export default function Navbar() {
               width={42}
               height={42}
               priority
-              className="object-contain"
+              className="object-cover rounded-full"
             />
           </div>
 
