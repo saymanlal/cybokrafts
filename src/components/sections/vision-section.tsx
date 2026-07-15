@@ -90,14 +90,14 @@ export default function VisionSection() {
             </p>
 
             <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
-              <div className="relative w-full h-[420px] bg-gradient-to-r from-slate-900 to-slate-800">
+              <div className="relative w-full aspect-[7/4] bg-gradient-to-r from-slate-900 to-slate-800">
                 <Image
                   src="/images/ratan_tata.png"
                   alt="Sir Ratan Tata"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  style={{ objectPosition: "50% 25%" }}
+                  style={{ objectPosition: "50% 50%" }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               </div>
