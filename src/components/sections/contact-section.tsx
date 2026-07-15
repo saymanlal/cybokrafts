@@ -6,8 +6,10 @@ import { staggerContainer, slideLeft, fadeUp, VIEWPORT } from "@/lib/motion";
 
 /* ─────────────────────────── CONSTANTS ─────────────────────────── */
 const PHONE_NUMBER  = "9300501865";          // ← replace with real 10-digit number
-const PHONE_DISPLAY = "+1(555)761-9664";     // ← replace with display form
+const PHONE_DISPLAY = "+91 93005 01865";     // ← replace with display form
 const EMAIL_ADDRESS = "aiinnovations@cybokrafts.com";
+const WHATSAPP_MESSAGE = "Hello Cybokrafts, I'd like to know more about your energy intelligence platform.";
+const WHATSAPP_LINK = `https://wa.me/91${PHONE_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 /* ───────────────────────────── SVGS ────────────────────────────── */
 const IconMail = () => (
@@ -21,6 +23,11 @@ const IconPhone = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.55 1.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.7A16 16 0 0 0 16 16.79l.88-.88a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </svg>
+);
+const IconWhatsApp = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.359.101 11.945c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.96 11.96 0 0 0 5.71 1.454h.006c6.585 0 11.946-5.36 11.949-11.945a11.9 11.9 0 0 0-3.48-8.408"/>
   </svg>
 );
 const IconPin = () => (
@@ -262,9 +269,9 @@ function EmailModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ──────────────────── CALL CONFIRMATION MODAL ───────────────────── */
-function CallModal({ onClose }: { onClose: () => void }) {
-  const [calling, setCalling] = useState(false);
+/* ──────────────────── WHATSAPP CONFIRMATION MODAL ───────────────────── */
+function WhatsAppModal({ onClose }: { onClose: () => void }) {
+  const [opening, setOpening] = useState(false);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -272,9 +279,9 @@ function CallModal({ onClose }: { onClose: () => void }) {
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
 
-  function handleCall() {
-    setCalling(true);
-    window.location.href = `tel:+91${PHONE_NUMBER}`;
+  function handleOpen() {
+    setOpening(true);
+    window.open(WHATSAPP_LINK, "_blank", "noopener,noreferrer");
     setTimeout(onClose, 1500);
   }
 
@@ -289,7 +296,7 @@ function CallModal({ onClose }: { onClose: () => void }) {
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
       role="dialog"
       aria-modal="true"
-      aria-label="Confirm call"
+      aria-label="Open WhatsApp chat"
     >
       <m.div
         initial={{ opacity: 0, y: 32, scale: 0.96 }}
@@ -300,33 +307,32 @@ function CallModal({ onClose }: { onClose: () => void }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-8 flex flex-col items-center text-center gap-5">
-          {/* Animated phone icon */}
+          {/* Animated WhatsApp icon */}
           <m.div
-            animate={calling ? { scale: [1, 1.15, 1], rotate: [0, 12, -12, 0] } : { scale: [1, 1.04, 1] }}
-            transition={{ duration: calling ? 0.6 : 2, repeat: calling ? 0 : Infinity, ease: "easeInOut" }}
-            className="w-16 h-16 rounded-full bg-accent-blue/10 border border-accent-blue/30 flex items-center justify-center text-accent-blue"
+            animate={opening ? { scale: [1, 1.15, 1], rotate: [0, 12, -12, 0] } : { scale: [1, 1.04, 1] }}
+            transition={{ duration: opening ? 0.6 : 2, repeat: opening ? 0 : Infinity, ease: "easeInOut" }}
+            className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-500"
           >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.55 1.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.7A16 16 0 0 0 16 16.79l.88-.88a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.359.101 11.945c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.96 11.96 0 0 0 5.71 1.454h.006c6.585 0 11.946-5.36 11.949-11.945a11.9 11.9 0 0 0-3.48-8.408"/>
             </svg>
           </m.div>
 
           <div>
-            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-1">DIRECT LINE</p>
+            <p className="font-mono text-[10px] text-text-muted uppercase tracking-wider mb-1">WHATSAPP</p>
             <p className="font-heading font-bold text-2xl text-text-primary tracking-wide">{PHONE_DISPLAY}</p>
             <p className="font-sans text-sm text-text-secondary mt-1">Cybokrafts — Energy Telemetry Team</p>
           </div>
 
           <div className="w-full flex flex-col gap-3">
             <button
-              onClick={handleCall}
-              disabled={calling}
+              onClick={handleOpen}
+              disabled={opening}
               className="group relative w-full py-3.5 bg-green-600 hover:bg-green-500 disabled:bg-green-600/60 text-white font-heading font-bold text-base tracking-[0.06em] uppercase rounded-[3px] transition-all duration-200 cursor-pointer overflow-hidden"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                {calling ? "Connecting..." : "Call Now"}
-                {!calling && <IconArrow />}
+                {opening ? "Opening..." : "Message on WhatsApp"}
+                {!opening && <IconArrow />}
               </span>
               <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-white/10 skew-x-12" aria-hidden="true"/>
             </button>
@@ -352,11 +358,12 @@ interface ContactCardProps {
   badge?: string;
   actionLabel?: string;
   actionVariant?: "blue" | "green";
+  actionIcon?: React.ReactNode;
   onAction?: () => void;
   delay?: number;
 }
 
-function ContactCard({ icon, label, value, subtext, badge, actionLabel, actionVariant = "blue", onAction, delay = 0 }: ContactCardProps) {
+function ContactCard({ icon, label, value, subtext, badge, actionLabel, actionVariant = "blue", actionIcon, onAction, delay = 0 }: ContactCardProps) {
   return (
     <m.div
       variants={fadeUp}
@@ -391,7 +398,7 @@ function ContactCard({ icon, label, value, subtext, badge, actionLabel, actionVa
             }
           >
             <span className="relative z-10 flex items-center gap-1.5">
-              {actionVariant === "green" ? <IconPhone /> : <IconMail />}
+              {actionIcon ?? (actionVariant === "green" ? <IconPhone /> : <IconMail />)}
               {actionLabel}
             </span>
           </button>
@@ -405,7 +412,7 @@ function ContactCard({ icon, label, value, subtext, badge, actionLabel, actionVa
 export default function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-  const [showCall, setShowCall] = useState(false);
+  const [showWhatsApp, setShowWhatsApp] = useState(false);
 
   // Field state lifted up for controlled inputs
   const [fname, setFname] = useState("");
@@ -426,7 +433,7 @@ export default function ContactSection() {
         {showEmail && <EmailModal onClose={() => setShowEmail(false)} />}
       </AnimatePresence>
       <AnimatePresence>
-        {showCall && <CallModal onClose={() => setShowCall(false)} />}
+        {showWhatsApp && <WhatsAppModal onClose={() => setShowWhatsApp(false)} />}
       </AnimatePresence>
 
       <section
@@ -590,15 +597,16 @@ export default function ContactSection() {
                 delay={0}
               />
 
-              {/* Phone card */}
+              {/* WhatsApp card */}
               <ContactCard
-                icon={<IconPhone />}
-                label="DIRECT LINE"
+                icon={<IconWhatsApp />}
+                label="WHATSAPP"
                 value={PHONE_DISPLAY}
-                subtext="Connects directly with +91 prefix"
-                actionLabel="Call Now"
+                subtext="Chat with us instantly on WhatsApp"
+                actionLabel="Message Now"
                 actionVariant="green"
-                onAction={() => setShowCall(true)}
+                actionIcon={<IconWhatsApp />}
+                onAction={() => setShowWhatsApp(true)}
                 delay={1}
               />
 
