@@ -5,11 +5,11 @@ import { m, AnimatePresence, useMotionValue, useTransform, useSpring } from "fra
 import { staggerContainer, slideLeft, fadeUp, VIEWPORT } from "@/lib/motion";
 
 /* ─────────────────────────── CONSTANTS ─────────────────────────── */
-const PHONE_NUMBER  = "9300501865";          // ← replace with real 10-digit number
-const PHONE_DISPLAY = "+91 93005 01865";     // ← replace with display form
-const EMAIL_ADDRESS = "aiinnovations@cybokrafts.com";
+const WHATSAPP_NUMBER = "15557619664";        // international format, no "+" (US +1)
+const PHONE_DISPLAY   = "+1(555)761-9664";    // main company contact number
+const EMAIL_ADDRESS   = "aiinnovations@cybokrafts.com";
 const WHATSAPP_MESSAGE = "Hello Cybokrafts, I'd like to know more about your energy intelligence platform.";
-const WHATSAPP_LINK = `https://wa.me/91${PHONE_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 /* ───────────────────────────── SVGS ────────────────────────────── */
 const IconMail = () => (
