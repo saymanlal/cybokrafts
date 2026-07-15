@@ -6,7 +6,7 @@ import { staggerContainer, slideLeft, slideRight, fadeUp, cellFadeUp, VIEWPORT }
 
 const parentLayer = {
   label: "AIpowerOS",
-  desc: "Patented Cloud Intelligence Platform",
+  desc: "Patent Filed Cloud Intelligence Platform",
   border: "border-l-[3px] border-l-status-green hover:border-l-[5px] hover:border-l-status-green",
   patent: "Patent 202521117118",
 };
@@ -69,7 +69,7 @@ export default function AboutSection() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-mono text-[9px] font-bold text-status-green uppercase tracking-wider bg-status-green-bg px-2 py-0.5 rounded-sm border border-status-green/10">
-                      PATENTED CORE SOFTWARE
+                      PATENT FILED CORE SOFTWARE
                     </span>
                     <span className="font-mono text-[9px] font-bold text-text-muted">
                       {parentLayer.patent}
