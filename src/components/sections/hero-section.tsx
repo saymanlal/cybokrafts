@@ -92,23 +92,23 @@ const TRUST_BADGES = [
     subtitle: "Startup India",
     logo: (
       <svg viewBox="0 0 64 40" width="64" height="40" xmlns="http://www.w3.org/2000/svg">
-        {/* Ashoka Chakra simplified */}
-        <circle cx="20" cy="20" r="14" fill="none" stroke="#FF9933" strokeWidth="1.5"/>
-        <circle cx="20" cy="20" r="3" fill="#000080"/>
-        {[0,30,60,90,120,150,180,210,240,270,300,330].map((deg, i) => {
-          const r = (deg * Math.PI) / 180;
+        {/* Indian flag — horizontal tricolor with centered Ashoka Chakra */}
+        <rect x="16" y="6"  width="32" height="7" fill="#FF9933"/>
+        <rect x="16" y="13" width="32" height="7" fill="#ffffff" stroke="#e2e8f0" strokeWidth="0.4"/>
+        <rect x="16" y="20" width="32" height="7" fill="#138808"/>
+        {/* Ashoka Chakra centered in the white band */}
+        <circle cx="32" cy="16.5" r="3" fill="none" stroke="#000080" strokeWidth="0.5"/>
+        <circle cx="32" cy="16.5" r="0.7" fill="#000080"/>
+        {Array.from({ length: 24 }).map((_, i) => {
+          const r = (i * 15 * Math.PI) / 180;
           return (
             <line key={i}
-              x1={20 + Math.cos(r) * 4} y1={20 + Math.sin(r) * 4}
-              x2={20 + Math.cos(r) * 11} y2={20 + Math.sin(r) * 11}
-              stroke="#000080" strokeWidth="1.2"/>
+              x1={32 + Math.cos(r) * 0.7} y1={16.5 + Math.sin(r) * 0.7}
+              x2={32 + Math.cos(r) * 3}   y2={16.5 + Math.sin(r) * 3}
+              stroke="#000080" strokeWidth="0.35"/>
           );
         })}
-        {/* India tricolor stripe hint */}
-        <rect x="38" y="8"  width="22" height="7" rx="1" fill="#FF9933"/>
-        <rect x="38" y="15" width="22" height="7" rx="1" fill="white" stroke="#e2e8f0" strokeWidth="0.5"/>
-        <rect x="38" y="22" width="22" height="7" rx="1" fill="#138808"/>
-        <text x="49" y="35" fill="#64748b" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="700">DPIIT</text>
+        <text x="32" y="35" fill="#64748b" fontSize="5.5" fontFamily="monospace" textAnchor="middle" fontWeight="700">DPIIT</text>
       </svg>
     ),
   },
