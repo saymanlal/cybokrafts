@@ -8,7 +8,7 @@ import { m, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motio
 const navLinks = [
   { label: "Solutions", href: "#solutions" },
   { label: "Platform", href: "#platform" },
-  { label: "About", href: "#about" },
+  { label: "About", href: "/about" },
   { label: "Values", href: "#values" },
   { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },

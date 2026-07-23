@@ -1,53 +1,103 @@
 "use client";
 
+import { useState } from "react";
 import { m } from "framer-motion";
 import Image from "next/image";
 import { staggerContainer, slideLeft, slideRight, fadeUp, cellFadeUp, VIEWPORT } from "@/lib/motion";
 
 const parentLayer = {
   label: "AIpowerOS",
-  desc: "Patent Filed Cloud Intelligence Platform",
-  border: "border-l-[3px] border-l-status-green hover:border-l-[5px] hover:border-l-status-green",
-  patent: "Patent 202521117118",
+  desc: "Patent Filed Cloud Intelligence Platform for Real-time Infrastructure Monitoring",
+  border: "border-l-4 border-l-status-green",
+  patent: "Patent #202521117118",
 };
 
 const subLayers = [
   {
+    id: "edge",
     label: "Edge Gateway",
-    desc: "Secure Data Aggregation",
-    border: "border-l-[2px] border-l-accent-blue hover:border-l-[4px] hover:border-l-accent-blue",
+    desc: "Secure Multi-protocol Data Aggregation & Local Edge Analytics",
+    border: "border-l-4 border-l-accent-blue",
+    color: "accent-blue",
+    tag: "Edge Node",
   },
   {
+    id: "cloud",
     label: "Cloud Platform",
-    desc: "Real-time Data Processing",
-    border: "border-l-[2px] border-l-accent-blue hover:border-l-[4px] hover:border-l-accent-blue",
+    desc: "Scalable Telemetry Processing & Predictive Anomaly Engine",
+    border: "border-l-4 border-l-accent-blue",
+    color: "accent-blue",
+    tag: "Cloud Core",
   },
   {
+    id: "hardware",
     label: "CYBO-VAJRA",
-    desc: "Edge Hardware Node",
-    border: "border-l-[2px] border-l-accent-amber hover:border-l-[4px] hover:border-l-accent-amber",
+    desc: "Hardware Edge Computing Unit with Patented Sensors",
+    border: "border-l-4 border-l-accent-amber",
+    color: "accent-amber",
+    tag: "Hardware IP",
   },
 ];
 
+const PARTNERS = [
+  { name: "DPIIT Startup India", tag: "Government Recognized" },
+  { name: "IIT Indore Incubation", tag: "Academic Partner" },
+  { name: "Tata Tele Business", tag: "Enterprise Connectivity" },
+];
+
 export default function AboutSection() {
+  const [activeLayer, setActiveLayer] = useState<string | null>(null);
+
   return (
     <section
-      id="about"
-      className="py-28 bg-bg-muted border-t border-bg-border relative overflow-hidden"
-      aria-labelledby="about-heading"
+      id="about-architecture"
+      className="py-24 lg:py-32 bg-bg-base border-t border-bg-border/60 relative overflow-hidden"
+      aria-labelledby="about-architecture-heading"
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-blue/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent-amber/5 rounded-full blur-3xl" />
+      {/* Background Decorative Ambient Mesh */}
+      <div className="absolute inset-0 pointer-events-none opacity-40" aria-hidden="true">
+        <div className="absolute top-1/4 -right-20 w-[550px] h-[550px] bg-accent-blue/10 rounded-full blur-[140px]" />
+        <div className="absolute bottom-10 -left-20 w-[550px] h-[550px] bg-accent-amber/10 rounded-full blur-[140px]" />
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="arch-grid" width="44" height="44" patternUnits="userSpaceOnUse">
+              <path d="M 44 0 L 0 0 0 44" fill="none" stroke="var(--color-grid-line)" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#arch-grid)" />
+        </svg>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         
-        {/* Top Row: Architecture (Left) + Ratan Tata Image with Quote (Right) */}
-        <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
+        {/* Section Header */}
+        <m.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={VIEWPORT}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
+          <p className="font-mono text-xs text-accent-blue uppercase tracking-[0.25em] mb-3 flex items-center justify-center gap-2">
+            <span className="w-8 h-px bg-accent-blue/40" />
+            SYSTEM ARCHITECTURE & INNOVATION
+            <span className="w-8 h-px bg-accent-blue/40" />
+          </p>
+          <h2
+            id="about-architecture-heading"
+            className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-text-primary uppercase tracking-tight leading-tight"
+          >
+            Engineering Indigenous Technology
+          </h2>
+          <p className="font-sans text-base sm:text-lg text-text-secondary leading-relaxed mt-4">
+            Our multi-tier tech stack combines hardware edge processing with cloud intelligence to deliver zero-downtime asset protection.
+          </p>
+        </m.div>
+
+        {/* Top Row: System Architecture (Left) + Sir Ratan Tata Quote (Right) */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-24">
           
-          {/* Left: Architecture Layers */}
+          {/* Left: Architecture Interactive Stack */}
           <m.div
             variants={staggerContainer}
             initial="hidden"
@@ -55,77 +105,107 @@ export default function AboutSection() {
             viewport={VIEWPORT}
             className="relative"
           >
-            <m.div variants={slideLeft} className="bg-bg-surface border border-bg-border rounded-[3px] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.01)]">
-              <p className="font-mono text-xs text-text-muted uppercase tracking-wider mb-6">
-                SYSTEM ARCHITECTURE
-              </p>
+            <m.div variants={slideLeft} className="bg-bg-surface/80 backdrop-blur-md border border-bg-border/60 rounded-2xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+              <div className="flex items-center justify-between mb-6 pb-4 border-b border-bg-border/50">
+                <p className="font-mono text-xs text-accent-blue uppercase tracking-wider font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent-blue animate-pulse" />
+                  TECHNOLOGY STACK HIERARCHY
+                </p>
+                <span className="font-mono text-[10px] text-text-muted uppercase">
+                  Patent Protected
+                </span>
+              </div>
               
-              <div className="flex flex-col relative">
+              <div className="flex flex-col relative gap-4">
                 
-                {/* Parent Core Hardware Node */}
+                {/* Core Software Platform Node */}
                 <m.div
                   variants={cellFadeUp}
-                  className={`bg-bg-surface border border-bg-border rounded-[4px] p-5 flex flex-col justify-between hover:border-status-green/50 hover:shadow-md transition-all duration-200 group relative ${parentLayer.border}`}
+                  onMouseEnter={() => setActiveLayer(parentLayer.label)}
+                  onMouseLeave={() => setActiveLayer(null)}
+                  className={`bg-bg-surface border rounded-xl p-5 sm:p-6 transition-all duration-300 group cursor-pointer ${
+                    parentLayer.border
+                  } ${
+                    activeLayer === parentLayer.label
+                      ? "border-status-green shadow-[0_10px_25px_-5px_rgba(5,150,105,0.15)] -translate-y-1"
+                      : "border-bg-border/60 shadow-sm hover:border-status-green/50"
+                  }`}
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-[9px] font-bold text-status-green uppercase tracking-wider bg-status-green-bg px-2 py-0.5 rounded-sm border border-status-green/10">
-                      PATENT FILED CORE SOFTWARE
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <span className="font-mono text-[9px] font-bold text-status-green uppercase tracking-wider bg-status-green-bg px-2.5 py-0.5 rounded-full border border-status-green/20">
+                      CORE OS PLATFORM
                     </span>
-                    <span className="font-mono text-[9px] font-bold text-text-muted">
+                    <span className="font-mono text-[10px] font-bold text-text-muted bg-bg-muted px-2 py-0.5 rounded">
                       {parentLayer.patent}
                     </span>
                   </div>
                   
-                  <h4 className="font-heading font-bold text-lg group-hover:text-status-green transition-colors text-text-primary uppercase tracking-wide leading-tight mb-1">
+                  <h4 className="font-heading font-bold text-xl sm:text-2xl group-hover:text-status-green transition-colors text-text-primary uppercase tracking-wide leading-tight mb-1">
                     {parentLayer.label}
                   </h4>
-                  <p className="font-sans text-[13px] text-text-secondary leading-relaxed pr-0 sm:pr-24">
+                  <p className="font-sans text-xs sm:text-sm text-text-secondary leading-relaxed">
                     {parentLayer.desc}
                   </p>
 
-                  <div className="sm:absolute sm:right-4 sm:top-1/2 sm:-translate-y-1/2 relative right-auto top-auto translate-y-0 mt-3 self-start flex items-center gap-1.5 font-mono text-[8px] text-status-green font-bold uppercase tracking-widest bg-status-green-bg px-2 py-1 rounded-sm border border-status-green/20">
-                    <span className="w-1.5 h-1.5 bg-status-green rounded-full animate-ping" />
-                    <span>CORE PLATFORM</span>
+                  <div className="mt-3 flex items-center gap-2 font-mono text-[9px] text-status-green font-semibold uppercase tracking-widest">
+                    <span className="w-2 h-2 bg-status-green rounded-full animate-ping" />
+                    <span>Real-time Active Engine</span>
                   </div>
                 </m.div>
 
-                {/* Tree Connection Line */}
-                <div className="relative pl-10 mt-4 flex flex-col gap-4">
-                  <div className="absolute left-[16px] top-[-16px] bottom-[30px] w-[2px] bg-bg-border-strong/45" />
+                {/* Connected Sub-Layers */}
+                <div className="relative pl-6 sm:pl-8 flex flex-col gap-3 mt-1">
+                  {/* Vertical Spine Line */}
+                  <div className="absolute left-[12px] sm:left-[16px] top-[-8px] bottom-[28px] w-[2px] bg-accent-blue/30" />
 
-                  {subLayers.map((layer, i) => (
-                    <div key={i} className="relative">
-                      <div className="absolute left-[-24px] top-1/2 -translate-y-1/2 w-[24px] h-[2px] bg-bg-border-strong/45" />
-                      <div className="absolute left-[-27px] top-1/2 -translate-y-1/2 w-2 h-2 rounded-full border border-bg-border-strong bg-white z-10 flex items-center justify-center">
-                        <div className={`w-1 h-1 rounded-full ${
-                          layer.label === "CYBO-VAJRA" ? "bg-accent-amber" : "bg-accent-blue"
-                        }`} />
+                  {subLayers.map((layer) => {
+                    const isHovered = activeLayer === layer.id;
+                    const accentColorClass = layer.id === "hardware" ? "text-accent-amber" : "text-accent-blue";
+                    const hoverBorder = layer.id === "hardware" ? "hover:border-accent-amber/60" : "hover:border-accent-blue/60";
+
+                    return (
+                      <div key={layer.id} className="relative">
+                        {/* Horizontal Connector Arm */}
+                        <div className="absolute left-[-16px] sm:left-[-20px] top-1/2 -translate-y-1/2 w-[16px] sm:w-[20px] h-[2px] bg-accent-blue/30" />
+                        <div className="absolute left-[-19px] sm:left-[-23px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full border-2 border-bg-surface bg-accent-blue z-10" />
+
+                        <m.div
+                          variants={cellFadeUp}
+                          onMouseEnter={() => setActiveLayer(layer.id)}
+                          onMouseLeave={() => setActiveLayer(null)}
+                          className={`bg-bg-surface/90 border rounded-xl p-4 sm:p-5 transition-all duration-300 group cursor-pointer ${
+                            layer.border
+                          } ${hoverBorder} ${
+                            isHovered
+                              ? "shadow-md -translate-y-0.5 border-accent-blue"
+                              : "border-bg-border/60 shadow-sm"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className={`font-mono text-[9px] font-bold uppercase tracking-wider ${accentColorClass}`}>
+                                  {layer.tag}
+                                </span>
+                              </div>
+                              <h5 className={`font-heading font-bold text-lg group-hover:${accentColorClass} transition-colors text-text-primary uppercase tracking-wide leading-tight`}>
+                                {layer.label}
+                              </h5>
+                              <p className="font-sans text-xs text-text-secondary leading-relaxed mt-1">
+                                {layer.desc}
+                              </p>
+                            </div>
+                          </div>
+                        </m.div>
                       </div>
-
-                      <m.div
-                        variants={cellFadeUp}
-                        className={`bg-bg-surface border border-bg-border rounded-[4px] p-4 flex flex-col justify-between hover:border-text-muted hover:shadow-md transition-all duration-200 group relative ${layer.border}`}
-                      >
-                        <div>
-                          <h5 className="font-heading font-bold text-[15px] group-hover:text-accent-blue transition-colors text-text-primary uppercase tracking-wide leading-tight mb-1">
-                            {layer.label}
-                          </h5>
-                          <p className="font-sans text-[12px] text-text-secondary leading-relaxed pr-0 sm:pr-20">
-                            {layer.desc}
-                          </p>
-                        </div>
-                        <div className="sm:absolute sm:right-4 sm:top-1/2 sm:-translate-y-1/2 relative right-auto top-auto translate-y-0 mt-2 block font-mono text-[8px] text-text-muted font-bold tracking-widest uppercase">
-                          // {layer.label.split(" ")[0]}
-                        </div>
-                      </m.div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </m.div>
           </m.div>
 
-          {/* Right: Ratan Tata — Wide Image with Quote */}
+          {/* Right: Sir Ratan Tata Banner */}
           <m.div
             variants={slideRight}
             initial="hidden"
@@ -133,120 +213,98 @@ export default function AboutSection() {
             viewport={VIEWPORT}
             className="relative group"
           >
-            <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
-              <div className="relative w-full h-[320px] bg-gradient-to-r from-slate-900 to-slate-800">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-bg-border/60 bg-bg-surface">
+              <div className="relative w-full h-[360px] sm:h-[400px]">
                 <Image
                   src="/images/ratan_tata.png"
                   alt="Sir Ratan Tata"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  style={{ objectPosition: "50% 30%" }}
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  style={{ objectPosition: "50% 25%" }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent" />
+                {/* Gradient Backdrop */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
               </div>
               
-              <div className="absolute left-6 xs:left-8 top-1/2 -translate-y-1/2 max-w-[75%] sm:max-w-[280px] text-left">
-                <div className="text-6xl text-accent-amber/30 font-serif mb-2">"</div>
-                <p className="font-serif text-white text-lg leading-relaxed font-medium">
+              <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8 text-left">
+                <div className="text-5xl text-accent-amber/40 font-serif leading-none mb-2">“</div>
+                <p className="font-serif text-white text-lg sm:text-xl leading-relaxed font-medium">
                   Indian enterprise can and must lead global innovation.
                 </p>
-                <p className="font-mono text-[10px] text-accent-amber uppercase tracking-wider mt-3">
-                  — Sir Ratan Tata
-                </p>
-                <div className="w-12 h-px bg-accent-amber/50 ml-auto mt-3" />
+                <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/15">
+                  <div>
+                    <p className="font-mono text-xs text-accent-amber font-semibold uppercase tracking-wider">
+                      Sir Ratan Tata
+                    </p>
+                    <p className="font-sans text-[11px] text-white/70">
+                      Industrial Visionary · Tata Group Chairman Emeritus
+                    </p>
+                  </div>
+                  <div className="w-8 h-px bg-accent-amber/60" />
+                </div>
               </div>
             </div>
-            
-            <div className="mt-3 flex items-center justify-end gap-2">
-              <div className="w-8 h-px bg-accent-amber/40" />
-              <span className="font-mono text-[9px] text-text-muted uppercase tracking-wider">
-                Industrial Visionary · Tata Group Chairman Emeritus
-              </span>
-            </div>
           </m.div>
         </div>
 
-        {/* Middle Row: Company Story Content */}
-        <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
-          <m.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={VIEWPORT}
-          >
-            <m.p variants={fadeUp} className="font-mono text-xs text-text-muted uppercase tracking-wider mb-5">
-              WHO WE ARE
-            </m.p>
-
-            <m.h2
-              id="about-heading"
-              variants={slideRight}
-              className="font-heading font-bold text-4xl md:text-[2.5rem] leading-[1.05] text-text-primary uppercase tracking-tight"
-            >
-              Bridging Industrial Assets with Modern Intelligence
-            </m.h2>
-          </m.div>
-
-          <m.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={VIEWPORT}
-            className="flex flex-col gap-6 lg:mt-9"
-          >
-            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed">
-              Cybokrafts Universal Innovations is an Indian infrastructure technology company building AI-powered monitoring systems for critical energy assets. We operate at the intersection of hardware engineering and intelligent software.
-            </m.p>
-
-            <m.p variants={fadeUp} className="font-sans text-text-secondary text-[16px] leading-relaxed">
-              Our mission is anchored in the Atmanirbhar Bharat vision — delivering indigenous, world-class technology solutions that strengthen India's energy infrastructure and reduce dependence on imported systems.
-            </m.p>
-          </m.div>
-        </div>
-
-        {/* Bottom Row: Nikola Tesla Image + Partners */}
-        <div className="grid lg:grid-cols-2 gap-16 items-end">
+        {/* Bottom Row: Accreditations (Left) + Nikola Tesla Banner (Right) */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
-          {/* Left: Partners Section */}
-          <m.div variants={fadeUp} initial="hidden" whileInView="show" viewport={VIEWPORT}>
-            <div className="mb-6">
-              <p className="font-mono text-[9px] text-text-muted font-bold tracking-widest uppercase mb-4 flex items-center gap-2">
-                <span className="w-8 h-px bg-accent-blue/40" />
+          {/* Left: Accreditations & Partners */}
+          <m.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={VIEWPORT}
+            className="space-y-6"
+          >
+            <div>
+              <p className="font-mono text-xs text-accent-blue uppercase tracking-[0.2em] font-bold mb-3 flex items-center gap-2">
+                <span className="w-6 h-px bg-accent-blue/50" />
                 ACCREDITATIONS & PARTNERS
+              </p>
+              <h3 className="font-heading font-bold text-2xl sm:text-3xl text-text-primary uppercase tracking-tight">
+                Backed by Leading Ecosystem Pioneers
+              </h3>
+              <p className="font-sans text-sm text-text-secondary leading-relaxed mt-2">
+                Cybokrafts collaborates with prestigious academic institutions and government startup programs to scale reliable infrastructure solutions.
               </p>
             </div>
             
-            <div className="flex flex-wrap gap-3">
-              {["DPIIT Startup India", "IIT Indore Incubation", "Tata Tele Business"].map((partner, i) => (
-                <m.span
-                  key={i}
-                  variants={fadeUp}
-                  custom={i * 0.1}
-                  className="px-4 py-2 bg-bg-surface border border-bg-border rounded-[3px] font-sans text-xs font-semibold text-text-secondary uppercase tracking-wider hover:border-accent-blue/40 hover:text-accent-blue transition-all duration-200 cursor-default"
+            <div className="grid sm:grid-cols-3 gap-4">
+              {PARTNERS.map((partner, i) => (
+                <m.div
+                  key={partner.name}
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  className="p-4 rounded-xl bg-bg-surface/80 backdrop-blur-md border border-bg-border/60 shadow-sm hover:border-accent-blue/40 hover:shadow-md transition-all duration-300 group"
                 >
-                  {partner}
-                </m.span>
+                  <p className="font-mono text-[9px] text-accent-blue font-semibold uppercase tracking-wider mb-1">
+                    {partner.tag}
+                  </p>
+                  <p className="font-heading font-bold text-sm text-text-primary uppercase tracking-wide group-hover:text-accent-blue transition-colors">
+                    {partner.name}
+                  </p>
+                </m.div>
               ))}
             </div>
 
-            <m.div variants={fadeUp} className="mt-8 pt-6 border-t border-bg-border/50">
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-bg-muted border-2 border-white flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-status-green" />
-                    </div>
-                  ))}
-                </div>
-                <span className="font-mono text-[10px] text-text-muted uppercase tracking-wider">
-                  Trusted by Industry Leaders
-                </span>
+            <div className="p-4 rounded-xl bg-accent-blue-light/50 border border-accent-blue/15 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-accent-blue/10 flex items-center justify-center text-accent-blue shrink-0">
+                <span className="w-3 h-3 rounded-full bg-accent-blue animate-ping" />
               </div>
-            </m.div>
+              <div>
+                <p className="font-sans text-xs text-text-primary font-semibold">
+                  Atmanirbhar Bharat Initiative
+                </p>
+                <p className="font-sans text-xs text-text-secondary">
+                  Designing 100% indigenous hardware & software for power grids.
+                </p>
+              </div>
+            </div>
           </m.div>
 
-          {/* Right: Nikola Tesla — Wide Image with Quote */}
+          {/* Right: Nikola Tesla Banner */}
           <m.div
             variants={slideLeft}
             initial="hidden"
@@ -254,48 +312,38 @@ export default function AboutSection() {
             viewport={VIEWPORT}
             className="relative group"
           >
-            <div className="relative w-full rounded-xl overflow-hidden shadow-2xl">
-              <div className="relative w-full h-[320px] bg-gradient-to-r from-slate-800 to-slate-900">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-bg-border/60 bg-bg-surface">
+              <div className="relative w-full h-[360px] sm:h-[400px]">
                 <Image
                   src="/images/nikola_tesla.png"
                   alt="Nikola Tesla"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   style={{ objectPosition: "50% 25%" }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
               </div>
               
-              <div className="absolute left-6 xs:left-8 top-1/2 -translate-y-1/2 max-w-[75%] sm:max-w-[300px] text-left">
-                <div className="text-6xl text-accent-blue/30 font-serif mb-2">"</div>
-                <p className="font-serif text-white text-lg leading-relaxed font-medium">
-                  Think in terms of energy, frequency and vibration.
+              <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8 text-left">
+                <div className="text-5xl text-accent-blue/40 font-serif leading-none mb-2">“</div>
+                <p className="font-serif text-white text-lg sm:text-xl leading-relaxed font-medium">
+                  If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.
                 </p>
-                <p className="font-mono text-[10px] text-accent-blue uppercase tracking-wider mt-3">
-                  — Nikola Tesla
-                </p>
-                <div className="w-12 h-px bg-accent-blue/50 mt-3" />
+                <div className="mt-4 flex items-center justify-between pt-3 border-t border-white/15">
+                  <div>
+                    <p className="font-mono text-xs text-accent-blue font-semibold uppercase tracking-wider">
+                      Nikola Tesla
+                    </p>
+                    <p className="font-sans text-[11px] text-white/70">
+                      AC Power Pioneer · Inventor of Modern Energy Infrastructure
+                    </p>
+                  </div>
+                  <div className="w-8 h-px bg-accent-blue/60" />
+                </div>
               </div>
             </div>
-            
-            <div className="mt-3 flex items-center gap-2">
-              <span className="font-mono text-[9px] text-text-muted uppercase tracking-wider">
-                AC Power Pioneer · Inventor of Modern Electricity
-              </span>
-              <div className="w-8 h-px bg-accent-blue/40" />
-            </div>
           </m.div>
-        </div>
-
-        {/* Decorative corner accents */}
-        <div className="absolute bottom-8 left-8 w-24 h-24 pointer-events-none opacity-20">
-          <div className="absolute bottom-0 left-0 w-12 h-px bg-accent-amber" />
-          <div className="absolute bottom-0 left-0 w-px h-12 bg-accent-amber" />
-        </div>
-        <div className="absolute top-8 right-8 w-24 h-24 pointer-events-none opacity-20">
-          <div className="absolute top-0 right-0 w-12 h-px bg-accent-blue" />
-          <div className="absolute top-0 right-0 w-px h-12 bg-accent-blue" />
         </div>
       </div>
     </section>
