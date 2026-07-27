@@ -21,8 +21,8 @@ const MILESTONES = [
   },
   {
     year: "2025",
-    title: "CYBO-VAJRA Patent Filing",
-    desc: "Cybokrafts files the primary patent (Patent #202521117118) covering the custom edge hardware sensors and intelligent firmware logic of the CYBO-VAJRA grid monitoring device.",
+    title: "AIPowerOS Patent Filing",
+    desc: "Cybokrafts files the primary patent (Patent #202521117118) covering the custom edge hardware sensors and intelligent firmware logic of the AIPowerOS a system for tranformer health montoring.",
     icon: FileText,
     color: "border-accent-amber text-accent-amber bg-accent-amber/5",
   },
