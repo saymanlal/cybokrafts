@@ -33,7 +33,7 @@ const FOUNDER: TeamMemberData = {
   name: "Akhil Chawla",
   role: "Founder",
   img: "/images/akhil.jpeg",
-  bio: "Akhil is the visionary engineer leading Cybokrafts' mission to secure India's grid infrastructure. As the primary inventor of the patented CYBO-VAJRA device, he operates at the intersection of electrical engineering and industrial IoT. His goal is to eliminate energy asset downtime through indigenous hardware innovation.",
+  bio: "Akhil is the visionary engineer leading Cybokrafts' mission to secure India's grid infrastructure. As the primary inventor of the patented AIPowerOS, he operates at the intersection of electrical engineering and industrial IoT. His goal is to eliminate energy asset downtime through indigenous hardware innovation.",
   skills: ["Hardware IP & Sensors", "Grid Analytics", "Embedded IoT Systems", "Product Roadmap"],
   linkedin: "https://www.linkedin.com/in/akhil-chawla-cybokrafts/",
   email: "akhil@cybokrafts.com",
