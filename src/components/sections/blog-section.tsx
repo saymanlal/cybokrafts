@@ -51,7 +51,7 @@ function FeedUnavailable() {
 }
 
 export default async function BlogSection() {
-  const posts = await getMediumPosts(6);
+  const posts = await getMediumPosts(10);
 
   return (
     <section
