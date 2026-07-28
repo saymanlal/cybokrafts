@@ -700,7 +700,7 @@ export default function HeroSection() {
         {/* CTAs */}
         <m.div variants={fadeUp} custom={0.4} initial="hidden" animate="show"
           className="flex flex-wrap gap-4 justify-center mb-16">
-          <MagneticBtn href="#platform" style={{
+          <MagneticBtn href="/#platform" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             padding: "14px 32px", borderRadius: 12,
             background: "#2563eb", color: "#fff",
@@ -709,7 +709,7 @@ export default function HeroSection() {
           }}>
             Explore Platform <span style={{ fontSize: 16 }}>→</span>
           </MagneticBtn>
-          <MagneticBtn href="#demo" style={{
+          <MagneticBtn href="/#contact" style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             padding: "14px 32px", borderRadius: 12,
             background: "white", color: "#0f172a",

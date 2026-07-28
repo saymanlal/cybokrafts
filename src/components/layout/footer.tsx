@@ -61,7 +61,7 @@ export default function Footer() {
             <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
               {["AIpowerOS Platform", "CYBO-VAJRA Device", "Solar Intelligence", "EV Infrastructure", "Transformer Analytics"].map((item) => (
                 <li key={item}>
-                  <a href="#solutions" className="text-white/60 hover:text-white transition-colors duration-200">{item}</a>
+                  <a href="/#solutions" className="text-white/60 hover:text-white transition-colors duration-200">{item}</a>
                 </li>
               ))}
             </ul>
@@ -75,16 +75,16 @@ export default function Footer() {
 
             <ul className="space-y-3 font-sans text-[13px] uppercase tracking-wider font-semibold">
               <li>
-                <a href="#about" className="text-white/60 hover:text-white transition-colors duration-200">About Us</a>
+                <a href="/about" className="text-white/60 hover:text-white transition-colors duration-200">About Us</a>
               </li>
               <li>
-                <a href="#values" className="text-white/60 hover:text-white transition-colors duration-200">Our 7G Values</a>
+                <a href="/#values" className="text-white/60 hover:text-white transition-colors duration-200">Our 7G Values</a>
               </li>
               <li>
-                <a href="#contact" className="text-white/60 hover:text-white transition-colors duration-200">Careers</a>
+                <a href="/#contact" className="text-white/60 hover:text-white transition-colors duration-200">Careers</a>
               </li>
               <li>
-                <a href="#contact" className="text-white/60 hover:text-white transition-colors duration-200">Contact</a>
+                <a href="/#contact" className="text-white/60 hover:text-white transition-colors duration-200">Contact</a>
               </li>
               <li>
                 <a href="/privacy" className="text-white/60 hover:text-white transition-colors duration-200">Privacy Policy</a>

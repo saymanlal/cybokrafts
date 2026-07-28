@@ -6,12 +6,12 @@ import Image from "next/image"
 import { m, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Solutions", href: "#solutions" },
-  { label: "Platform", href: "#platform" },
+  { label: "Solutions", href: "/#solutions" },
+  { label: "Platform", href: "/#platform" },
   { label: "About", href: "/about" },
-  { label: "Values", href: "#values" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Values", href: "/#values" },
+  { label: "Blog", href: "/#blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 /** Navbar slide-in animation */
@@ -91,7 +91,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           {/* CTA - Desktop / Tablet */}
           <a
-            href="#contact"
+            href="/#contact"
             className="hidden sm:inline-block px-[22px] py-[8px] bg-accent-blue text-white text-[13px] font-sans font-semibold rounded-[3px] hover:bg-accent-blue-hover transition-colors duration-200 shadow-none tracking-[0.04em]"
           >
             Request Demo
@@ -137,7 +137,7 @@ export default function Navbar() {
                 </Link>
               ))}
               <a
-                href="#contact"
+                href="/#contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full text-center px-4 py-3 bg-accent-blue text-white text-[13px] font-sans font-semibold rounded-[3px] hover:bg-accent-blue-hover transition-colors duration-200 mt-2 block shadow-sm tracking-[0.04em]"
               >
