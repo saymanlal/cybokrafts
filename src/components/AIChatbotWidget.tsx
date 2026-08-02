@@ -212,6 +212,8 @@ export default function AIChatbotWidget() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [typing, setTyping] = useState(false);
   const [faqSpeaking, setFaqSpeaking] = useState<number | null>(null);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
+  const [hasSpokenGreeting, setHasSpokenGreeting] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -228,16 +230,25 @@ export default function AIChatbotWidget() {
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
-  // On first open: seed greeting + speak (inside user gesture = safe)
+  // On first open: seed greeting
   useEffect(() => {
     if (open && !greeted) {
       const greet = getGreetingText();
       setMessages([{ role: "bot", text: greet, id: Date.now() }]);
       setGreeted(true);
-      // Small delay lets the panel render before speech fires
-      setTimeout(() => speak(greet), 150);
+      // Auto-speak removed to prevent unexpected audio on load.
     }
   }, [open, greeted]);
+
+  // Speak greeting when user enters the chat view (if audio is unmuted)
+  useEffect(() => {
+    if (view === "chat" && !hasSpokenGreeting) {
+      if (isAudioEnabled) {
+        setTimeout(() => speak(getGreetingText()), 150);
+      }
+      setHasSpokenGreeting(true);
+    }
+  }, [view, isAudioEnabled, hasSpokenGreeting]);
 
   // Stop speech when panel closes
   useEffect(() => {
@@ -311,8 +322,11 @@ export default function AIChatbotWidget() {
       const reply = autoReply(text);
       setTyping(false);
       setMessages(m => [...m, { role: "bot", text: reply, id: Date.now() + 1 }]);
+      if (isAudioEnabled) {
+        speak(reply);
+      }
     }, 950);
-  }, [input]);
+  }, [input, isAudioEnabled]);
 
   function handleNarration() {
     if (speaking) {
@@ -850,6 +864,18 @@ export default function AIChatbotWidget() {
                   <span className="cw-header-sub">Energy Intelligence</span>
                 </div>
               </div>
+              <button
+                className="cw-close"
+                onClick={() => {
+                  if (isAudioEnabled) stopSpeech();
+                  setIsAudioEnabled(!isAudioEnabled);
+                }}
+                title={isAudioEnabled ? "Mute Assistant" : "Unmute Assistant"}
+                aria-label={isAudioEnabled ? "Mute" : "Unmute"}
+                style={{ marginRight: '-4px' }}
+              >
+                {isAudioEnabled ? <IconSpeaker /> : <IconMute />}
+              </button>
               <button className="cw-close" onClick={() => setOpen(false)} aria-label="Close">
                 <IconClose />
               </button>
