@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import HeroSection from "@/components/sections/hero-section";
 import AboutSection from "@/components/sections/about-section";
+import RecognitionSection from "@/components/sections/recognition-section";
 import SolutionsSection from "@/components/sections/solutions-section";
 import FeaturesSection from "@/components/sections/features-section";
 import ValuesSection from "@/components/sections/values-section";
@@ -14,6 +15,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <AboutSection />
+      <RecognitionSection />
       <SolutionsSection />
       <FeaturesSection />
       <ValuesSection />

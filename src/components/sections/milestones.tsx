@@ -1,7 +1,7 @@
 "use client";
 
 import { m } from "framer-motion";
-import { Milestone, Flag, Cpu, FileText, CheckCircle2, ShieldAlert } from "lucide-react";
+import { Flag, Cpu, FileText, CheckCircle2, ShieldAlert, Trophy } from "lucide-react";
 import { VIEWPORT } from "@/lib/motion";
 
 const MILESTONES = [
@@ -39,6 +39,13 @@ const MILESTONES = [
     desc: "Cybokrafts rolls out production-level installations across public and private transformer grids, bringing real-time predictive failure telemetry directly to control room dashboards.",
     icon: CheckCircle2,
     color: "border-accent-blue text-accent-blue bg-accent-blue/5",
+  },
+  {
+    year: "2026",
+    title: "MP Semi Summit Startup Challenge Winner",
+    desc: "Named a winner of the Madhya Pradesh Semi Summit Startup Challenge 2026 and awarded a Certificate of Merit by Chief Minister Shri Mohan Yadav at the Madhya Pradesh Semiconductor Summit 2026.",
+    icon: Trophy,
+    color: "border-accent-amber text-accent-amber bg-accent-amber/5",
   },
 ];
 
@@ -117,7 +124,7 @@ export default function Milestones() {
                     >
                       {/* Year Indicator Pill */}
                       <span className={`inline-block font-mono text-xs font-bold px-2.5 py-0.5 rounded-full border mb-3 ${
-                        idx === 4 ? "text-accent-blue bg-accent-blue-light border-accent-blue/15" : "text-text-muted bg-bg-muted border-bg-border/50"
+                        idx === MILESTONES.length - 1 ?"text-accent-blue bg-accent-blue-light border-accent-blue/15" : "text-text-muted bg-bg-muted border-bg-border/50"
                       }`}>
                         {m_item.year}
                       </span>
