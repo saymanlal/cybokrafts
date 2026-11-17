@@ -227,7 +227,7 @@ export default function PrivacyPolicyPage() {
 
                 <p>
                   <span className="text-text-muted">Website:</span>{" "}
-                  https://cybokrafts.vercel.app
+                  https://cybokrafts.com
                 </p>
               </div>
             </div>
