@@ -8,7 +8,7 @@ export const metadata = {
   title: "About & Leadership",
   description:
     "Meet the team behind Cybokrafts Universal Innovations — founders, operators, and advisors building indigenous AI-powered energy intelligence for India's critical infrastructure.",
-  alternates: { canonical: "https://cybokrafts.vercel.app/about" },
+  alternates: { canonical: "https://cybokrafts.com/about" },
 };
 
 export default function AboutPage() {
