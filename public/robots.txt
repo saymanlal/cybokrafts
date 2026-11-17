@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://cybokrafts.vercel.app
+Host: https://cybokrafts.com
 
 # Sitemaps
-Sitemap: https://cybokrafts.vercel.app/sitemap.xml
+Sitemap: https://cybokrafts.com/sitemap.xml
