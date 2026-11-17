@@ -1,5 +1,5 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-    siteUrl: 'https://cybokrafts.vercel.app',
+    siteUrl: 'https://cybokrafts.com',
     generateRobotsTxt: true,
   }
