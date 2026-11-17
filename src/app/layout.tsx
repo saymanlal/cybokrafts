@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://cybokrafts.vercel.app"),
+  metadataBase: new URL("https://cybokrafts.com"),
 
   title: {
     default:
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Cybokrafts Universal Innovations Private Limited",
-      url: "https://cybokrafts.vercel.app",
+      url: "https://cybokrafts.com",
     },
   ],
 
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://cybokrafts.vercel.app",
+    url: "https://cybokrafts.com",
     siteName: "Cybokrafts Universal Innovations",
     title:
       "Cybokrafts - AI-Powered Energy Infrastructure Monitoring & Smart Grid Solutions",
@@ -139,9 +139,9 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://cybokrafts.vercel.app",
+    canonical: "https://cybokrafts.com",
     languages: {
-      "en-IN": "https://cybokrafts.vercel.app",
+      "en-IN": "https://cybokrafts.com",
     },
   },
 
@@ -183,8 +183,8 @@ export default function RootLayout({
     "@type": "Organization",
     name: "Cybokrafts Universal Innovations Private Limited",
     alternateName: "Cybokrafts",
-    url: "https://cybokrafts.vercel.app",
-    logo: "https://cybokrafts.vercel.app/logo.png",
+    url: "https://cybokrafts.com",
+    logo: "https://cybokrafts.com/logo.png",
     description:
       "Leading AI-powered monitoring systems for energy infrastructure including transformers, solar, and EV charging networks.",
     foundingDate: "2025",
