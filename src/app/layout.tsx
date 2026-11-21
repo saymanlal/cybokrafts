@@ -146,7 +146,7 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: "GtDRX3ONvRXYgr6Gxfgy4zf1Cml79WpXWbHNIvIoTwE",
+    google: "3f7649mDwDwjX8DTQ-pY9dGp9DF237xw4vsvfBLniJY",
     yandex: "3ff81350da35c2b0",
     other: {
       "msvalidate.01": "97C9E42B6BA2F653B1D1B55F184ED3B8",
